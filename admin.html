@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PvP Club - Admin Panel</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --white: #ffffff; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .admin-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 700px; max-width: 95vw; padding: 32px; }
+  h2 { color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; margin-bottom: 6px; color: var(--primary2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+  .form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--surface2); border-radius: 6px; color: var(--white); font-family: monospace; font-size: 13px; outline: none; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+  .form-group textarea { height: 300px; resize: vertical; }
+  .btn { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; transition: all 0.2s; text-decoration: none; }
+  .btn-primary { background: var(--primary); color: var(--bg); } .btn-primary:hover { background: var(--primary2); }
+  .btn-secondary { background: var(--surface2); color: var(--white); } .btn-secondary:hover { background: #34495e; }
+  .btn-danger { background: #dc3545; color: white; } 
+  .actions { display: flex; justify-content: space-between; margin-top: 20px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="admin-box">
+  <h2><i class="fas fa-cog"></i> PvP Club Admin Panel</h2>
+  
+  <div id="loginView">
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="passInput" placeholder="Enter admin password...">
+    </div>
+    <button class="btn btn-primary" onclick="attemptLogin()">Login</button>
+    <a href="index.html" class="btn btn-secondary" style="float: right;">Back to Site</a>
+  </div>
+
+  <div id="controlView" class="hidden">
+    <div class="form-group">
+      <label>Change Admin Password</label>
+      <input type="text" id="newPassInput" placeholder="New password">
+    </div>
+    <button class="btn btn-secondary" onclick="changePassword()">Update Password</button>
+
+    <hr style="border-color: var(--surface2); margin: 24px 0;">
+
+    <div class="form-group">
+      <label>Website Data (JSON)</label>
+      <textarea id="jsonEditor"></textarea>
+    </div>
+    
+    <div class="actions">
+      <button class="btn btn-primary" onclick="saveJsonData()">Save & Apply Data</button>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function getData() { return JSON.parse(localStorage.getItem('pvpClubData')) || { password: "Arexx_Playz", categories: {} }; }
+  function saveData(data) { localStorage.setItem('pvpClubData', JSON.stringify(data)); }
+
+  function attemptLogin() {
+    const pass = document.getElementById('passInput').value;
+    const siteData = getData();
+    if (pass === siteData.password) {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('controlView').classList.remove('hidden');
+      document.getElementById('newPassInput').value = siteData.password;
+      document.getElementById('jsonEditor').value = JSON.stringify(siteData.categories, null, 2);
+    } else {
+      alert("Incorrect Password!");
+    }
+  }
+
+  function changePassword() {
+    const newPass = document.getElementById('newPassInput').value;
+    if (newPass.trim() !== '') {
+      let siteData = getData();
+      siteData.password = newPass;
+      saveData(siteData);
+      alert("Password updated successfully!");
+    }
+  }
+
+  function saveJsonData() {
+    try {
+      const jsonData = JSON.parse(document.getElementById('jsonEditor').value);
+      let siteData = getData();
+      siteData.categories = jsonData;
+      saveData(siteData);
+      alert("Website Data Updated! Go back to the site to see changes.");
+    } catch (e) {
+      alert("Invalid JSON Format! Please check your code. Error: " + e.message);
+    }
+  }
+
+  function logout() {
+    document.getElementById('loginView').classList.remove('hidden');
+    document.getElementById('controlView').classList.add('hidden');
+    document.getElementById('passInput').value = '';
+  }
+</script>
+</body>
+</html>
