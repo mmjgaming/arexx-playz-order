@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PvP Club - API Documentation</title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #9c27b0; --primary2: #7b1fa2; --primary-glow: rgba(156, 39, 176, 0.15); --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(156, 39, 176, 0.2) 0%, rgba(123, 31, 162, 0.05) 35%, transparent 65%); background-attachment: fixed; }
+
+  header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: bold; font-size: 18px; }
+  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+  .logo-text span { color: var(--primary); }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-active { color: var(--primary) !important; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+  
+  h1 { font-size: 42px; font-weight: 800; color: var(--white); margin-bottom: 12px; }
+  h1 span { color: var(--primary); }
+  .subtitle { font-size: 18px; color: var(--text2); margin-bottom: 48px; line-height: 1.5; }
+
+  .api-section { background: var(--surface); border: 1px solid var(--surface2); border-radius: 12px; padding: 24px; margin-bottom: 24px; transition: border-color 0.2s; }
+  .api-section:hover { border-color: var(--primary2); }
+  
+  .endpoint-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .method { padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 800; font-family: monospace; }
+  .get { background: rgba(3, 169, 244, 0.15); color: #03a9f4; }
+  .post { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
+  .route { font-family: monospace; font-size: 16px; color: var(--white); font-weight: 600; }
+  
+  .desc { color: var(--text); font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
+  
+  .code-block { background: var(--bg); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; color: var(--primary); overflow-x: auto; position: relative; }
+  .copy-code { position: absolute; top: 8px; right: 8px; background: var(--surface); border: 1px solid var(--surface2); color: var(--text2); padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+  .copy-code:hover { background: var(--primary); color: var(--white); }
+
+  footer { text-align: center; padding: 24px; color: var(--text2); font-size: 12px; border-top: 1px solid var(--surface); margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-container">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-khanda"></i></div>
+      <div class="logo-text">PvP <span>Club</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="index.html"><i class="fas fa-trophy"></i> Rankings</a>
+      <a href="api.html" class="nav-active"><i class="fas fa-book"></i> API Docs</a>
+      <a href="https://discord.gg/MxUjNNMWdu" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <h1>PvP Club <span>API</span></h1>
+  <p class="subtitle">Welcome to the PvP Club API documentation. Use this API to integrate real-time Minecraft PvP ranking data into your applications, Discord bots, and servers.</p>
+
+  <div class="api-section">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="route">/api/v1/overall</span>
+    </div>
+    <p class="desc">Fetches the complete overall leaderboard including player points, titles, regions, and sub-category tiers.</p>
+    <div class="code-block">
+      <button class="copy-code" onclick="copyCode(this)">Copy</button>
+      {<br>
+      &nbsp;&nbsp;"rank": 1,<br>
+      &nbsp;&nbsp;"name": "ItzRealMe",<br>
+      &nbsp;&nbsp;"title": "Combat Master",<br>
+      &nbsp;&nbsp;"points": 330,<br>
+      &nbsp;&nbsp;"region": "NA",<br>
+      &nbsp;&nbsp;"tiers": {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"sword": "HT3",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"smp": "HT1",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"pot": "HT1"<br>
+      &nbsp;&nbsp;}<br>
+      }
+    </div>
+  </div>
+
+  <div class="api-section">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="route">/api/v1/category/{category}</span>
+    </div>
+    <p class="desc">Fetches the tier list for a specific combat category. Replace <code>{category}</code> with: <code>vanilla</code>, <code>uhc</code>, <code>pot</code>, <code>nethop</code>, <code>smp</code>, <code>sword</code>, <code>axe</code>, or <code>mace</code>.</p>
+    <div class="code-block">
+      <button class="copy-code" onclick="copyCode(this)">Copy</button>
+      {<br>
+      &nbsp;&nbsp;"tier": 1,<br>
+      &nbsp;&nbsp;"players": [<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;{ "name": "scftdrexmz2", "region": "EU" }<br>
+      &nbsp;&nbsp;]<br>
+      }
+    </div>
+  </div>
+
+  <div class="api-section">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="route">/api/v1/player/{username}</span>
+    </div>
+    <p class="desc">Looks up a specific player by their Minecraft username. Returns all their ranking data across every category.</p>
+    <div class="code-block">
+      <button class="copy-code" onclick="copyCode(this)">Copy</button>
+      {<br>
+      &nbsp;&nbsp;"name": "Swight",<br>
+      &nbsp;&nbsp;"title": "Combat Master",<br>
+      &nbsp;&nbsp;"points": 290,<br>
+      &nbsp;&nbsp;"region": "NA",<br>
+      &nbsp;&nbsp;"tiers": { ... }<br>
+      }
+    </div>
+  </div>
+
+</main>
+
+<footer><p>&copy; 2025 PvP Club. All rights reserved.</p></footer>
+
+<script>
+  function copyCode(button) {
+    const codeBlock = button.parentElement;
+    // Simple copy text extraction
+    const text = codeBlock.innerText.replace('Copy', '').trim();
+    navigator.clipboard.writeText(text);
+    button.textContent = "Copied!";
+    setTimeout(() => { button.textContent = "Copy"; }, 2000);
+  }
+</script>
+</body>
+</html>
