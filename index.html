@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PvP Club - Minecraft Rankings</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; --ht1: #ff5722; --ht2: #ff9800; --ht3: #ffc107; --ht4: #8bc34a; --lt1: #03a9f4; --lt2: #2196f3; --lt3: #3f51b5; --lt4: #673ab7; --lt5: #9c27b0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  header { background: var(--surface); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; }
+  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+  .logo-text span { color: var(--primary); }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-links a, .nav-links button { color: var(--text2); text-decoration: none; font-weight: 500; font-size: 14px; background: none; border: none; cursor: pointer; transition: color 0.2s; font-family: inherit; }
+  .nav-links a:hover, .nav-links button:hover { color: var(--primary); }
+  .nav-active { color: var(--primary) !important; }
+  .admin-btn { font-size: 16px; }
+
+  /* Container */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  /* Announcement */
+  .announcement { background: linear-gradient(135deg, rgba(69, 162, 158, 0.1), rgba(102, 252, 241, 0.05)); border: 1px solid var(--primary2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 12px; }
+  .ann-icon { color: var(--primary); font-size: 20px; }
+  .ann-content h3 { color: var(--primary); font-size: 14px; margin-bottom: 4px; }
+  .ann-content p { font-size: 13px; line-height: 1.4; color: var(--text); }
+
+  /* Server IP */
+  .server-ip-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .ip-info h3 { color: var(--white); font-size: 16px; margin-bottom: 2px; }
+  .ip-info p { color: var(--text2); font-size: 12px; }
+  .ip-copy-container { display: flex; align-items: center; gap: 8px; background: var(--bg); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--primary2); }
+  .ip-text { color: var(--primary); font-family: monospace; font-weight: 700; font-size: 16px; letter-spacing: 1px; }
+  .copy-btn { background: var(--primary2); color: var(--bg); border: none; padding: 6px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; transition: background 0.2s; }
+  .copy-btn:hover { background: var(--primary); }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 6px; margin-bottom: 24px; border-bottom: 1px solid var(--surface); padding-bottom: 12px; overflow-x: auto; }
+  .tab-btn { background: var(--surface); color: var(--text2); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn:hover { background: var(--surface2); color: var(--white); }
+  .tab-btn.active { background: var(--primary); color: var(--bg); }
+
+  /* Overall Table */
+  .lb-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 8px; overflow: hidden; }
+  .lb-table th { background: var(--bg); color: var(--text2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--surface2); }
+  .lb-table td { padding: 12px 16px; border-bottom: 1px solid var(--surface2); vertical-align: middle; }
+  .lb-table tr:last-child td { border-bottom: none; }
+  .lb-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .player-cell { display: flex; align-items: center; gap: 12px; }
+  .mc-skin { width: 36px; height: 36px; image-rendering: pixelated; border-radius: 4px; background: var(--bg); }
+  .p-name { font-weight: 600; color: var(--white); font-size: 14px; display: block; }
+  .p-title { font-size: 11px; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .region-badge { background: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--surface2); }
+  .tier-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tier-tag { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+  .tier-tag span { opacity: 0.7; font-weight: 400; }
+
+  /* Category Grid */
+  .tier-section { margin-bottom: 32px; }
+  .tier-header { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .tier-header i { color: var(--primary); }
+  .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+  .tier-card { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px; text-align: center; transition: transform 0.2s, border-color 0.2s; }
+  .tier-card:hover { transform: translateY(-2px); border-color: var(--primary2); }
+  .tier-card .mc-skin { width: 48px; height: 48px; margin: 0 auto 8px; display: block; }
+  .tier-card .p-name { font-size: 13px; margin-bottom: 4px; }
+
+  /* Colors for tiers */
+  .t-ht1 { background: rgba(255, 87, 34, 0.15); color: var(--ht1); } .t-ht2 { background: rgba(255, 152, 0, 0.15); color: var(--ht2); }
+  .t-ht3 { background: rgba(255, 193, 7, 0.15); color: var(--ht3); } .t-ht4 { background: rgba(139, 195, 74, 0.15); color: var(--ht4); }
+  .t-lt1 { background: rgba(3, 169, 244, 0.15); color: var(--lt1); } .t-lt2 { background: rgba(33, 150, 243, 0.15); color: var(--lt2); }
+  .t-lt3 { background: rgba(63, 81, 181, 0.15); color: var(--lt3); } .t-lt4 { background: rgba(103, 58, 183, 0.15); color: var(--lt4); }
+  .t-lt5 { background: rgba(156, 39, 176, 0.15); color: var(--lt5); }
+  .r-na { color: var(--primary); border-color: rgba(102, 252, 241, 0.3); }
+  .r-eu { color: var(--ht2); border-color: rgba(255, 152, 0, 0.3); }
+  .r-as { color: var(--lt1); border-color: rgba(3, 169, 244, 0.3); }
+  .r-au { color: var(--lt3); border-color: rgba(63, 81, 181, 0.3); }
+  .r-sa { color: var(--ht1); border-color: rgba(255, 87, 34, 0.3); }
+
+  /* Modal & Admin */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: center; justify-content: center; }
+  .modal-overlay.active { display: flex; }
+  .modal-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 600px; max-width: 90vw; max-height: 80vh; overflow-y: auto; padding: 24px; }
+  .modal-box h2 { color: var(--primary); margin-bottom: 16px; font-size: 20px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; margin-bottom: 6px; color: var(--text2); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+  .form-group input, .form-group textarea { width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--surface2); border-radius: 6px; color: var(--white); font-family: monospace; font-size: 13px; outline: none; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+  .form-group textarea { height: 250px; resize: vertical; }
+  .btn { padding: 10px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .btn-primary { background: var(--primary); color: var(--bg); } .btn-primary:hover { background: var(--primary2); }
+  .btn-danger { background: #dc3545; color: white; } .btn-danger:hover { background: #c82333; }
+
+  .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--bg); padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 2000; transition: bottom 0.3s ease; }
+  .toast.show { bottom: 40px; }
+
+  @media (max-width: 768px) {
+    .lb-table { font-size: 12px; }
+    .hide-mobile { display: none; }
+    .tier-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <div class="logo-icon"><i class="fas fa-khanda"></i></div>
+      <div class="logo-text">PvP <span>Club</span></div>
+    </a>
+    <nav class="nav-links">
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="#" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
+      <a href="https://discord.gg" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+      <button class="admin-btn" onclick="openAdminLogin()"><i class="fas fa-cog"></i></button>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="announcement">
+    <div class="ann-icon"><i class="fas fa-rocket"></i></div>
+    <div class="ann-content">
+      <h3>Limited-Time Modes are coming!</h3>
+      <p>We're working on implementing LTMs, which will include team-based leaderboards for various kit events - however, a few other things will take priority :)</p>
+    </div>
+  </div>
+
+  <div class="server-ip-box">
+    <div class="ip-info">
+      <h3><i class="fas fa-server"></i> Server IP</h3>
+      <p>Join the club and start climbing the ranks</p>
+    </div>
+    <div class="ip-copy-container">
+      <span class="ip-text">mcpvp.club</span>
+      <button class="copy-btn" onclick="copyIP()">Copy</button>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabContainer"></div>
+  <div id="contentArea"></div>
+</div>
+
+<!-- Admin Modal -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-box">
+    <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+    <div id="adminLoginView">
+      <div class="form-group">
+        <label>Admin Password</label>
+        <input type="password" id="adminPassInput" placeholder="Enter password...">
+      </div>
+      <button class="btn btn-primary" onclick="attemptLogin()">Login</button>
+    </div>
+    <div id="adminControlView" style="display:none;">
+      <div class="form-group">
+        <label>Change Password</label>
+        <input type="text" id="newPassInput" placeholder="New password">
+      </div>
+      <button class="btn btn-primary" onclick="changePassword()" style="margin-bottom: 20px;">Update Password</button>
+      
+      <div class="form-group">
+        <label>Edit Website Data (JSON)</label>
+        <textarea id="jsonEditor"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveJsonData()">Save Data</button>
+      <button class="btn btn-danger" onclick="closeAdmin()" style="float: right;">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">IP Copied!</div>
+
+<script>
+  // Default Data (Extracted from your prompt)
+  const defaultData = {
+    password: "Arexx_Playz",
+    categories: {
+      overall: [
+        { rank: 1, name: "ItzRealMe", title: "Combat Master", points: 330, region: "NA", tiers: {sword:"HT3", smp:"HT1", nethop:"HT1", pot:"HT1", vanilla:"HT1", axe:"LT2", uhc:"LT2", mace:"LT2"} },
+        { rank: 2, name: "coldified", title: "Combat Master", points: 326, region: "EU", tiers: {pot:"LT1", mace:"LT1", vanilla:"LT3", uhc:"HT1", smp:"HT1", sword:"LT1", axe:"LT1", nethop:"LT2"} },
+        { rank: 3, name: "Swight", title: "Combat Master", points: 290, region: "NA", tiers: {pot:"HT3", vanilla:"LT3", uhc:"HT1", axe:"HT1", smp:"HT1", nethop:"HT2", mace:"LT2", sword:"LT2"} },
+        { rank: 4, name: "janekv", title: "Combat Master", points: 260, region: "EU", tiers: {mace:"LT3", vanilla:"HT4", smp:"HT1", nethop:"HT1", pot:"HT1", sword:"HT2", axe:"LT2", uhc:"LT2"} },
+        { rank: 5, name: "BlvckWlf", title: "Combat Ace", points: 226, region: "EU", tiers: {mace:"HT2", sword:"HT3", nethop:"LT3", vanilla:"LT3", smp:"HT1", uhc:"HT1", axe:"HT2", pot:"LT2"} }
+      ],
+      vanilla: [
+        { tier: 1, players: [{name:"K1RBE",region:"NA"},{name:"Cowarted",region:"EU"},{name:"Testmaster11",region:"NA"}] },
+        { tier: 2, players: [{name:"Snowzyy_",region:"EU"},{name:"Dwggo",region:"NA"},{name:"kataxur",region:"EU"},{name:"xMexus",region:"EU"}] }
+      ],
+      uhc: [
+        { tier: 2, players: [{name:"DryAU",region:"AU"},{name:"Koharu89",region:"NA"},{name:"Triser5000",region:"EU"},{name:"molksa",region:"AS"},{name:"Rivise",region:"AU"}] },
+        { tier: 3, players: [{name:"TPGWill",region:"AS"},{name:"Sclution",region:"EU"},{name:"POOP76",region:"AU"},{name:"tafo30fps",region:"EU"}] }
+      ],
+      pot: [
+        { tier: 1, players: [{name:"coldified",region:"EU"},{name:"sashia2m",region:"EU"}] },
+        { tier: 2, players: [{name:"LuisBack",region:"EU"},{name:"Raviolii",region:"AU"},{name:"badspelhr",region:"AU"},{name:"ciphar",region:"AS"}] }
+      ],
+      nethop: [
+        { tier: 1, players: [{name:"sashia2m",region:"EU"},{name:"LuisBack",region:"EU"}] },
+        { tier: 2, players: [{name:"K1ngmichi",region:"NA"},{name:"bruhxerliskie",region:"AS"},{name:"entit1es",region:"EU"}] }
+      ],
+      smp: [
+        { tier: 1, players: [{name:"ninorc15",region:"EU"},{name:"Freekee_Fang",region:"NA"}] },
+        { tier: 2, players: [{name:"Enlock",region:"EU"},{name:"SpicyEwwow455_Uw",region:"EU"},{name:"CrazyCrafter123",region:"NA"},{name:"Shieldcracker",region:"EU"}] }
+      ],
+      sword: [
+        { tier: 1, players: [{name:"kwevin",region:"EU"}] },
+        { tier: 2, players: [{name:"Corblow",region:"NA"},{name:"Moroccan_Mjinina",region:"EU"},{name:"Leaferd",region:"AU"},{name:"elpoco858",region:"EU"}] }
+      ],
+      axe: [ // Mace uses the same data as Axe as requested
+        { tier: 1, players: [{name:"scftdrexmz2",region:"EU"}] },
+        { tier: 2, players: [{name:"1Sarpy",region:"EU"},{name:"kqwod",region:"NA"},{name:"Kansas2g",region:"AU"},{name:"Rivise",region:"AU"}] }
+      ]
+    }
+  };
+
+  // Load data from LocalStorage or use default
+  let siteData = JSON.parse(localStorage.getItem('pvpClubData')) || JSON.parse(JSON.stringify(defaultData));
+  let activeTab = 'overall';
+  let isAdmin = false;
+
+  // Initialize
+  function init() {
+    renderTabs();
+    renderContent();
+  }
+
+  function renderTabs() {
+    const tabs = document.getElementById('tabContainer');
+    const categories = ['overall', 'ltms', 'vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
+    tabs.innerHTML = categories.map(cat => 
+      `<button class="tab-btn ${cat === activeTab ? 'active' : ''} ${cat === 'ltms' ? '' : ''}" onclick="switchTab('${cat}')">${cat === 'ltms' ? 'LTMs' : cat.charAt(0).toUpperCase() + cat.slice(1)}</button>`
+    ).join('');
+  }
+
+  function switchTab(tab) {
+    if (tab === 'ltms') return; // Disabled
+    activeTab = tab;
+    renderTabs();
+    renderContent();
+  }
+
+  function renderContent() {
+    const content = document.getElementById('contentArea');
+    if (activeTab === 'overall') {
+      renderOverall(content);
+    } else if (activeTab === 'ltms') {
+      content.innerHTML = `<div style="text-align:center; padding:60px; color:var(--text2)"><h3>Coming Soon</h3><p>LTMs are not yet implemented.</p></div>`;
+    } else {
+      let catData = siteData.categories[activeTab];
+      // Axe and Mace share the same data
+      if (activeTab === 'mace') catData = siteData.categories.axe;
+      renderCategory(content, catData, activeTab);
+    }
+  }
+
+  function renderOverall(container) {
+    const data = siteData.categories.overall;
+    let html = `
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th class="hide-mobile">Region</th>
+            <th>Tiers</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    data.forEach(p => {
+      let tierTags = '';
+      for (const [key, value] of Object.entries(p.tiers)) {
+        if (value) {
+          const tClass = `t-${value.toLowerCase()}`;
+          tierTags += `<div class="tier-tag ${tClass}"><span>${key}</span> ${value}</div>`;
+        }
+      }
+
+      html += `
+        <tr>
+          <td style="font-weight:700; color:var(--text2)">${p.rank}</td>
+          <td>
+            <div class="player-cell">
+              <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}">
+              <div>
+                <span class="p-name">${p.name}</span>
+                <span class="p-title"><i class="fas fa-shield-halved"></i> ${p.title} (${p.points} points)</span>
+              </div>
+            </div>
+          </td>
+          <td class="hide-mobile"><span class="region-badge r-${p.region.toLowerCase()}">${p.region}</span></td>
+          <td><div class="tier-tags">${tierTags}</div></td>
+        </tr>
+      `;
+    });
+
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  }
+
+  function renderCategory(container, data, catName) {
+    if (!data) {
+      container.innerHTML = `<div style="text-align:center; padding:60px; color:var(--text2)"><h3>No Data</h3><p>Add data via Admin Panel.</p></div>`;
+      return;
+    }
+
+    let html = '';
+    data.forEach(tierGroup => {
+      html += `
+        <div class="tier-section">
+          <div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierGroup.tier}</div>
+          <div class="tier-grid">
+      `;
+      
+      tierGroup.players.forEach(p => {
+        html += `
+          <div class="tier-card">
+            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}">
+            <div class="p-name">${p.name}</div>
+            <span class="region-badge r-${p.region.toLowerCase()}" style="font-size:10px; padding:2px 6px;">${p.region}</span>
+          </div>
+        `;
+      });
+
+      html += `</div></div>`;
+    });
+
+    container.innerHTML = html;
+  }
+
+  // Utils
+  function copyIP() {
+    navigator.clipboard.writeText("mcpvp.club");
+    showToast("IP Copied to clipboard!");
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // Admin Logic
+  function openAdminLogin() {
+    document.getElementById('adminModal').classList.add('active');
+    document.getElementById('adminLoginView').style.display = 'block';
+    document.getElementById('adminControlView').style.display = 'none';
+    document.getElementById('adminPassInput').value = '';
+    isAdmin = false;
+  }
+
+  function closeAdmin() {
+    document.getElementById('adminModal').classList.remove('active');
+  }
+
+  function attemptLogin() {
+    const pass = document.getElementById('adminPassInput').value;
+    if (pass === siteData.password) {
+      isAdmin = true;
+      document.getElementById('adminLoginView').style.display = 'none';
+      document.getElementById('adminControlView').style.display = 'block';
+      document.getElementById('newPassInput').value = siteData.password;
+      document.getElementById('jsonEditor').value = JSON.stringify(siteData.categories, null, 2);
+    } else {
+      showToast("Incorrect Password!");
+    }
+  }
+
+  function changePassword() {
+    const newPass = document.getElementById('newPassInput').value;
+    if (newPass.trim() !== '') {
+      siteData.password = newPass;
+      saveData();
+      showToast("Password Updated Successfully!");
+    }
+  }
+
+  function saveJsonData() {
+    try {
+      const jsonData = JSON.parse(document.getElementById('jsonEditor').value);
+      siteData.categories = jsonData;
+      saveData();
+      renderContent(); // Refresh UI
+      showToast("Website Data Updated Successfully!");
+    } catch (e) {
+      showToast("Invalid JSON Format! Data not saved.");
+    }
+  }
+
+  function saveData() {
+    localStorage.setItem('pvpClubData', JSON.stringify(siteData));
+  }
+
+  // Close modal on outside click
+  window.onclick = function(event) {
+    const modal = document.getElementById('adminModal');
+    if (event.target == modal) {
+      closeAdmin();
+    }
+  }
+
+  init();
+</script>
+
+</body>
+</html>
