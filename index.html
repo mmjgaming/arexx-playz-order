@@ -180,7 +180,7 @@
     </div>
     <div class="profile-body">
       <div id="profilePosition" class="profile-stat-box"></div>
-      <div class="profile-tiers-title">Gamemode Tiers</div>
+      <div class="profile-tiers-title">Gamemode Tiers & Ranks</div>
       <div id="profileTiers" class="profile-tiers-list"></div>
     </div>
   </div>
@@ -201,6 +201,7 @@
   const regionNames = { 'NA': 'North America', 'EU': 'Europe', 'AS': 'Asia', 'AU': 'Australia', 'SA': 'South America', 'ME': 'Middle East', 'AF': 'Africa' };
   
   let activeTab = 'overall';
+  let allPlayersCache = []; // Cache players to calculate ranks without extra API calls
 
   function init() { renderTabs(); renderContent(); }
   function renderTabs() {
@@ -217,13 +218,24 @@
   async function renderContent() {
     const content = document.getElementById('contentArea');
     content.innerHTML = `<div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Fetching ${activeTab} rankings...</div>`;
+    
+    // Fetch and cache all players if not already cached
+    if (allPlayersCache.length === 0) {
+      try {
+        const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
+        allPlayersCache = await res.json();
+      } catch (e) {
+        content.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load data.</p></div>`;
+        return;
+      }
+    }
+
     if (activeTab === 'overall') { await renderOverall(content); } else { await renderCategory(content, activeTab); }
   }
 
   async function renderOverall(container) {
     try {
-      const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
-      const data = await res.json();
+      const data = allPlayersCache;
       if (!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p>Add players via the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`; return; }
       
       let html = `<table class="lb-table"><thead><tr><th>#</th><th>Player</th><th>Tiers</th></tr></thead><tbody>`;
@@ -248,8 +260,7 @@
 
   async function renderCategory(container, catName) {
     try {
-      const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
-      const data = await res.json();
+      const data = allPlayersCache;
       if (!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p>Add players via the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`; return; }
       
       const tiers = { 1: [], 2: [], 3: [], 4: [], 5: [] };
@@ -285,6 +296,19 @@
     return { text: 'Warrior', class: 'badge-warrior' };
   }
 
+  // Helper function to calculate rank dynamically
+  function getCategoryRank(username, catName) {
+    // Filter players who actually have a tier in this category
+    const playersInCat = allPlayersCache.filter(p => p[catName] && p[catName].trim() !== '');
+    
+    // Sort by points descending
+    playersInCat.sort((a, b) => (b.points || 0) - (a.points || 0));
+    
+    // Find the 1-based index of the player
+    const rank = playersInCat.findIndex(p => p.username === username) + 1;
+    return rank > 0 ? rank : null;
+  }
+
   async function openProfile(username) {
     document.getElementById('profileUsername').innerText = username;
     document.getElementById('profileAvatar').src = `https://mc-heads.net/avatar/${username}/128`;
@@ -294,14 +318,16 @@
     document.getElementById('profileModal').classList.add('active');
 
     try {
-      const res = await fetch(`${API_BASE}/players?select=*&username=eq.${username}`, { headers });
-      const data = await res.json();
+      // Find the player in our cached data
+      const p = allPlayersCache.find(player => player.username === username);
       
-      if (data && data.length > 0) {
-        const p = data[0];
+      if (p) {
         const pts = p.points || 0;
         const titleInfo = getPlayerTitle(pts);
         const regionFull = regionNames[p.region] || p.region;
+
+        // Calculate Overall Rank (1-based index from the main sorted cache)
+        const overallRank = allPlayersCache.findIndex(player => player.username === username) + 1;
 
         // Badges
         document.getElementById('profileBadges').innerHTML = `
@@ -312,20 +338,22 @@
         // Position Box
         document.getElementById('profilePosition').innerHTML = `
           <div class="stat-label">Position</div>
-          <div class="stat-value">#${p.overall_rank || '?'}</div>
+          <div class="stat-value">#${overallRank}</div>
           <div class="stat-sub">OVERALL (${pts} points)</div>
         `;
 
-        // Tiers List
+        // Tiers List with automatic specific rank calculation
         let tiersHtml = '';
         dbCategories.forEach(cat => {
           if (p[cat] && p[cat].trim() !== '') {
             const tierStr = p[cat].toUpperCase();
+            const catRank = getCategoryRank(username, cat); // Get auto rank for this specific gamemode
+            
             tiersHtml += `
               <div class="p-tier-item t-${tierStr.toLowerCase()}">
                 <span class="p-tier-icon">${catIcons[cat]}</span>
                 <span class="p-tier-name">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
-                <span class="p-tier-rank">${tierStr}</span>
+                <span class="p-tier-rank">${tierStr} ${catRank ? `(#${catRank})` : ''}</span>
               </div>
             `;
           }
