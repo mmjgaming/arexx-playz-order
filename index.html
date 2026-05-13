@@ -5,25 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PvP Club - Minecraft PvP Rankings & Leaderboards</title>
 <meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players.">
-<meta name="keywords" content="Minecraft PvP, PvP Club, MCTiers, Minecraft Leaderboard">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-  
-  /* Enhanced Background Banner Effect */
-  body { 
-    background-color: var(--bg); 
-    color: var(--text); 
-    min-height: 100vh; 
-    background-image: 
-      radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), /* Bright top glow/banner */
-      repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px), /* Subtle grid */
-      radial-gradient(circle at 50% 0%, #1f2833 0%, #0b0c10 30%); /* Base depth */
-    background-attachment: fixed;
-  }
-
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px), radial-gradient(circle at 50% 0%, #1f2833 0%, #0b0c10 30%); background-attachment: fixed; }
   header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
   .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
@@ -34,14 +21,11 @@
   .nav-links a { color: var(--text2); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.2s; }
   .nav-links a:hover { color: var(--primary); }
   .nav-active { color: var(--primary) !important; }
-
   .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-
   .announcement { background: linear-gradient(135deg, rgba(69,162,158,0.1), rgba(102,252,241,0.05)); border: 1px solid var(--primary2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 12px; }
   .ann-icon { color: var(--primary); font-size: 20px; }
   .ann-content h3 { color: var(--primary); font-size: 14px; margin-bottom: 4px; }
   .ann-content p { font-size: 13px; line-height: 1.4; color: var(--text); }
-
   .server-ip-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .ip-info h3 { color: var(--white); font-size: 16px; margin-bottom: 2px; }
   .ip-info p { color: var(--text2); font-size: 12px; }
@@ -49,12 +33,10 @@
   .ip-text { color: var(--primary); font-family: monospace; font-weight: 700; font-size: 16px; }
   .copy-btn { background: var(--primary2); color: var(--bg); border: none; padding: 6px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; }
   .copy-btn:hover { background: var(--primary); }
-
   .tabs { display: flex; gap: 6px; margin-bottom: 24px; border-bottom: 1px solid var(--surface); padding-bottom: 12px; overflow-x: auto; }
   .tab-btn { background: var(--surface); color: var(--text2); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
   .tab-btn:hover { background: var(--surface2); color: var(--white); }
   .tab-btn.active { background: var(--primary); color: var(--bg); }
-
   .lb-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 8px; overflow: hidden; }
   .lb-table th { background: var(--bg); color: var(--text2); font-size: 12px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
   .lb-table td { padding: 12px 16px; border-bottom: 1px solid var(--surface2); vertical-align: middle; }
@@ -72,8 +54,6 @@
   .t-ht3 { background: rgba(255,193,7,0.15); color: #ffc107; } .t-ht4 { background: rgba(139,195,74,0.15); color: #8bc34a; }
   .t-lt1 { background: rgba(3,169,244,0.15); color: #03a9f4; } .t-lt2 { background: rgba(33,150,243,0.15); color: #2196f3; }
   .t-lt3 { background: rgba(63,81,181,0.15); color: #3f51b5; } .t-lt4 { background: rgba(103,58,183,0.15); color: #673ab7; }
-
-  /* Tier Grid Layout */
   .tier-section { margin-bottom: 40px; }
   .tier-header { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--surface2); }
   .tier-1 .tier-header { color: #ffc107; border-color: #ffc10740; } .tier-2 .tier-header { color: #ff5722; border-color: #ff572240; }
@@ -84,8 +64,6 @@
   .tier-card:hover { transform: translateY(-4px); border-color: var(--primary2); }
   .tier-card .mc-skin { width: 64px; height: 64px; margin: 0 auto 12px; display: block; }
   .tier-card .p-name { font-size: 13px; margin-bottom: 6px; }
-
-  /* Profile Modal */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   .modal-overlay.active { display: flex; }
   .modal-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 450px; max-width: 90vw; padding: 32px; text-align: center; position: relative; }
@@ -96,7 +74,6 @@
   .profile-title { color: var(--primary); font-weight: 600; font-size: 14px; margin-bottom: 16px; }
   .profile-tiers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; text-align: left; }
   .profile-tier-item { background: var(--bg); padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; }
-
   .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--bg); padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; z-index: 2000; transition: bottom 0.3s ease; }
   .toast.show { bottom: 40px; }
   footer { text-align: center; padding: 24px; color: var(--text2); font-size: 12px; border-top: 1px solid var(--surface); margin-top: 40px; }
@@ -106,13 +83,14 @@
 
 <header>
   <nav class="nav-container">
-    <a href="#" class="logo">
+    <a href="index.html" class="logo">
       <div class="logo-icon"><i class="fas fa-khanda"></i></div>
       <div class="logo-text">PvP <span>Club</span></div>
     </a>
     <div class="nav-links">
-      <a href="#"><i class="fas fa-home"></i> Home</a>
-      <a href="#" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="index.html" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
+      <a href="api.html"><i class="fas fa-book"></i> API Docs</a>
       <a href="https://discord.gg/MxUjNNMWdu" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i> Discord</a>
     </div>
   </nav>
@@ -142,7 +120,6 @@
   <section id="contentArea"></section>
 </main>
 
-<!-- Profile Modal -->
 <div class="modal-overlay" id="profileModal">
   <div class="modal-box">
     <button class="close-modal" onclick="closeProfile()"><i class="fas fa-times"></i></button>
@@ -158,119 +135,19 @@
 
 <script>
   const catIcons = { overall: "🏆", vanilla: "🗡️", uhc: "🍎", pot: "🧪", nethop: "🔥", smp: "🌍", sword: "⚔️", axe: "🪓", mace: "🔨" };
-  const defaultData = {
-    password: "Arexx_Playz",
-    categories: {
-      overall: [
-        { rank: 1, name: "ItzRealMe", title: "Combat Master", points: 330, region: "NA", tiers: {sword:"HT3", smp:"HT1", nethop:"HT1", pot:"HT1", vanilla:"HT1", axe:"LT2", uhc:"LT2", mace:"LT2"} },
-        { rank: 2, name: "coldified", title: "Combat Master", points: 326, region: "EU", tiers: {pot:"LT1", mace:"LT1", vanilla:"LT3", uhc:"HT1", smp:"HT1", sword:"LT1", axe:"LT1", nethop:"LT2"} },
-        { rank: 3, name: "Swight", title: "Combat Master", points: 290, region: "NA", tiers: {pot:"HT3", vanilla:"LT3", uhc:"HT1", axe:"HT1", smp:"HT1", nethop:"HT2", mace:"LT2", sword:"LT2"} },
-        { rank: 4, name: "janekv", title: "Combat Master", points: 260, region: "EU", tiers: {mace:"LT3", vanilla:"HT4", smp:"HT1", nethop:"HT1", pot:"HT1", sword:"HT2", axe:"LT2", uhc:"LT2"} },
-        { rank: 5, name: "BlvckWlf", title: "Combat Ace", points: 226, region: "EU", tiers: {mace:"HT2", sword:"HT3", nethop:"LT3", vanilla:"LT3", smp:"HT1", uhc:"HT1", axe:"HT2", pot:"LT2"} }
-      ],
-      vanilla: [{ tier: 1, players: [{name:"K1RBE",region:"NA"},{name:"Cowarted",region:"EU"}] }, { tier: 2, players: [{name:"Snowzyy_",region:"EU"},{name:"Dwggo",region:"NA"}] }],
-      uhc: [{ tier: 2, players: [{name:"DryAU",region:"AU"},{name:"Koharu89",region:"NA"}] }],
-      pot: [{ tier: 1, players: [{name:"coldified",region:"EU"},{name:"sashia2m",region:"EU"}] }],
-      nethop: [{ tier: 1, players: [{name:"sashia2m",region:"EU"},{name:"LuisBack",region:"EU"}] }],
-      smp: [{ tier: 1, players: [{name:"ninorc15",region:"EU"},{name:"Freekee_Fang",region:"NA"}] }],
-      sword: [{ tier: 1, players: [{name:"kwevin",region:"EU"}] }],
-      axe: [{ tier: 1, players: [{name:"scftdrexmz2",region:"EU"}] }, { tier: 2, players: [{name:"1Sarpy",region:"EU"},{name:"kqwod",region:"NA"}] }]
-    }
-  };
-
+  const defaultData = { password: "Arexx_Playz", categories: { overall: [ { rank: 1, name: "ItzRealMe", title: "Combat Master", points: 330, region: "NA", tiers: {sword:"HT3", smp:"HT1", nethop:"HT1", pot:"HT1", vanilla:"HT1", axe:"LT2", uhc:"LT2", mace:"LT2"} }, { rank: 2, name: "coldified", title: "Combat Master", points: 326, region: "EU", tiers: {pot:"LT1", mace:"LT1", vanilla:"LT3", uhc:"HT1", smp:"HT1", sword:"LT1", axe:"LT1", nethop:"LT2"} }, { rank: 3, name: "Swight", title: "Combat Master", points: 290, region: "NA", tiers: {pot:"HT3", vanilla:"LT3", uhc:"HT1", axe:"HT1", smp:"HT1", nethop:"HT2", mace:"LT2", sword:"LT2"} }, { rank: 4, name: "janekv", title: "Combat Master", points: 260, region: "EU", tiers: {mace:"LT3", vanilla:"HT4", smp:"HT1", nethop:"HT1", pot:"HT1", sword:"HT2", axe:"LT2", uhc:"LT2"} }, { rank: 5, name: "BlvckWlf", title: "Combat Ace", points: 226, region: "EU", tiers: {mace:"HT2", sword:"HT3", nethop:"LT3", vanilla:"LT3", smp:"HT1", uhc:"HT1", axe:"HT2", pot:"LT2"} } ], vanilla: [{ tier: 1, players: [{name:"K1RBE",region:"NA"},{name:"Cowarted",region:"EU"}] }], uhc: [{ tier: 2, players: [{name:"DryAU",region:"AU"},{name:"Koharu89",region:"NA"}] }], pot: [{ tier: 1, players: [{name:"coldified",region:"EU"},{name:"sashia2m",region:"EU"}] }], nethop: [{ tier: 1, players: [{name:"sashia2m",region:"EU"},{name:"LuisBack",region:"EU"}] }], smp: [{ tier: 1, players: [{name:"ninorc15",region:"EU"},{name:"Freekee_Fang",region:"NA"}] }], sword: [{ tier: 1, players: [{name:"kwevin",region:"EU"}] }], axe: [{ tier: 1, players: [{name:"scftdrexmz2",region:"EU"}] }, { tier: 2, players: [{name:"1Sarpy",region:"EU"},{name:"kqwod",region:"NA"}] }] } };
   let siteData = JSON.parse(localStorage.getItem('pvpClubData')) || JSON.parse(JSON.stringify(defaultData));
   let activeTab = 'overall';
-
   function init() { renderTabs(); renderContent(); }
-
-  function renderTabs() {
-    const tabs = document.getElementById('tabContainer');
-    const categories = ['overall', 'vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
-    tabs.innerHTML = categories.map(cat => {
-      const name = cat.charAt(0).toUpperCase() + cat.slice(1);
-      return `<button class="tab-btn ${cat === activeTab ? 'active' : ''}" onclick="switchTab('${cat}')">${catIcons[cat]} ${name}</button>`;
-    }).join('');
-  }
-
-  function switchTab(tab) {
-    activeTab = tab;
-    renderTabs();
-    renderContent();
-  }
-
-  function renderContent() {
-    const content = document.getElementById('contentArea');
-    if (activeTab === 'overall') { renderOverall(content); } 
-    else {
-      let catData = siteData.categories[activeTab];
-      if (activeTab === 'mace') catData = siteData.categories.axe;
-      renderCategory(content, catData, activeTab);
-    }
-  }
-
-  function renderOverall(container) {
-    const data = siteData.categories.overall;
-    let html = `<table class="lb-table"><thead><tr><th>#</th><th>Player</th><th>Tiers</th></tr></thead><tbody>`;
-    data.forEach(p => {
-      let tierTags = '';
-      for (const [key, value] of Object.entries(p.tiers)) {
-        if (value) { tierTags += `<div class="tier-tag t-${value.toLowerCase()}"><span>${catIcons[key]} ${key}</span> ${value}</div>`; }
-      }
-      html += `<tr>
-        <td style="font-weight:700; color:var(--text2)">${p.rank}</td>
-        <td><div class="player-cell" onclick="openProfile('${p.name}')">
-          <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}" loading="lazy">
-          <div><span class="p-name">${p.name}</span><span class="p-title"><i class="fas fa-shield-halved"></i> ${p.title} (${p.points} pts)</span></div>
-        </div></td>
-        <td><div class="tier-tags">${tierTags}</div></td>
-      </tr>`;
-    });
-    html += `</tbody></table>`;
-    container.innerHTML = html;
-  }
-
-  function renderCategory(container, data, catName) {
-    if (!data) { container.innerHTML = `<div style="text-align:center; padding:60px;"><h3>No Data</h3></div>`; return; }
-    let html = '';
-    data.forEach(tierGroup => {
-      html += `<section class="tier-section tier-${tierGroup.tier}">
-        <div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierGroup.tier}</div>
-        <div class="tier-grid">`;
-      tierGroup.players.forEach(p => {
-        html += `<article class="tier-card" onclick="openProfile('${p.name}')">
-          <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}" loading="lazy">
-          <div class="p-name">${p.name}</div>
-          <span class="region-badge r-${p.region.toLowerCase()}">${p.region}</span>
-        </article>`;
-      });
-      html += `</div></section>`;
-    });
-    container.innerHTML = html;
-  }
-
-  function openProfile(name) {
-    const overallPlayer = siteData.categories.overall.find(p => p.name === name);
-    document.getElementById('profileName').innerText = name;
-    document.getElementById('profileSkin').src = `https://mc-heads.net/avatar/${name}/128`;
-    
-    let tiersHtml = '';
-    if (overallPlayer) {
-      document.getElementById('profileTitle').innerText = `${overallPlayer.title} (${overallPlayer.points} pts)`;
-      for (const [key, value] of Object.entries(overallPlayer.tiers)) {
-        tiersHtml += `<div class="profile-tier-item t-${value.toLowerCase()}" style="border-left: 3px solid;"><span>${catIcons[key]} ${key.charAt(0).toUpperCase() + key.slice(1)}</span> <span>${value}</span></div>`;
-      }
-    } else {
-      document.getElementById('profileTitle').innerText = "Combat Player";
-      tiersHtml = '<div style="grid-column: span 2; color:var(--text2); font-size:12px;">No overall tier data found for this player.</div>';
-    }
-    document.getElementById('profileTiers').innerHTML = tiersHtml;
-    document.getElementById('profileModal').classList.add('active');
-  }
-
+  function renderTabs() { const tabs = document.getElementById('tabContainer'); const categories = ['overall', 'vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace']; tabs.innerHTML = categories.map(cat => { const name = cat.charAt(0).toUpperCase() + cat.slice(1); return `<button class="tab-btn ${cat === activeTab ? 'active' : ''}" onclick="switchTab('${cat}')">${catIcons[cat]} ${name}</button>`; }).join(''); }
+  function switchTab(tab) { activeTab = tab; renderTabs(); renderContent(); }
+  function renderContent() { const content = document.getElementById('contentArea'); if (activeTab === 'overall') { renderOverall(content); } else { let catData = siteData.categories[activeTab]; if (activeTab === 'mace') catData = siteData.categories.axe; renderCategory(content, catData, activeTab); } }
+  function renderOverall(container) { const data = siteData.categories.overall; let html = `<table class="lb-table"><thead><tr><th>#</th><th>Player</th><th>Tiers</th></tr></thead><tbody>`; data.forEach(p => { let tierTags = ''; for (const [key, value] of Object.entries(p.tiers)) { if (value) { tierTags += `<div class="tier-tag t-${value.toLowerCase()}"><span>${catIcons[key]} ${key}</span> ${value}</div>`; } } html += `<tr><td style="font-weight:700; color:var(--text2)">${p.rank}</td><td><div class="player-cell" onclick="openProfile('${p.name}')"><img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}" loading="lazy"><div><span class="p-name">${p.name}</span><span class="p-title"><i class="fas fa-shield-halved"></i> ${p.title} (${p.points} pts)</span></div></div></td><td><div class="tier-tags">${tierTags}</div></td></tr>`; }); html += `</tbody></table>`; container.innerHTML = html; }
+  function renderCategory(container, data, catName) { if (!data) { container.innerHTML = `<div style="text-align:center; padding:60px;"><h3>No Data</h3></div>`; return; } let html = ''; data.forEach(tierGroup => { html += `<section class="tier-section tier-${tierGroup.tier}"><div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierGroup.tier}</div><div class="tier-grid">`; tierGroup.players.forEach(p => { html += `<article class="tier-card" onclick="openProfile('${p.name}')"><img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}" loading="lazy"><div class="p-name">${p.name}</div><span class="region-badge r-${p.region.toLowerCase()}">${p.region}</span></article>`; }); html += `</div></section>`; }); container.innerHTML = html; }
+  function openProfile(name) { const overallPlayer = siteData.categories.overall.find(p => p.name === name); document.getElementById('profileName').innerText = name; document.getElementById('profileSkin').src = `https://mc-heads.net/avatar/${name}/128`; let tiersHtml = ''; if (overallPlayer) { document.getElementById('profileTitle').innerText = `${overallPlayer.title} (${overallPlayer.points} pts)`; for (const [key, value] of Object.entries(overallPlayer.tiers)) { tiersHtml += `<div class="profile-tier-item t-${value.toLowerCase()}" style="border-left: 3px solid;"><span>${catIcons[key]} ${key.charAt(0).toUpperCase() + key.slice(1)}</span> <span>${value}</span></div>`; } } else { document.getElementById('profileTitle').innerText = "Combat Player"; tiersHtml = '<div style="grid-column: span 2; color:var(--text2); font-size:12px;">No overall tier data found for this player.</div>'; } document.getElementById('profileTiers').innerHTML = tiersHtml; document.getElementById('profileModal').classList.add('active'); }
   function closeProfile() { document.getElementById('profileModal').classList.remove('active'); }
   function copyIP() { navigator.clipboard.writeText("mcpvp.club"); showToast("IP Copied to clipboard!"); }
   function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-
   window.onclick = function(event) { if (event.target == document.getElementById('profileModal')) closeProfile(); }
   init();
 </script>
