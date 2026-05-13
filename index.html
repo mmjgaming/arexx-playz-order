@@ -196,7 +196,7 @@
   const API_BASE = `${SUPABASE_URL}/rest/v1`;
   const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` };
 
-  const catIcons = { overall: "🏆", vanilla: "🗡️", uhc: "🍎", pot: "🧪", nethop: "🔥", smp: "🌍", sword: "⚔️", axe: "🪓", mace: "🔨" };
+  const catIcons = { overall: "<span class="w-28 h-fit duration-100 text-muted-foreground/40 hover:bg-accent/50 hover:text-accent-foreground active:bg-accent/20 text-nowrap relative flex flex-col items-center justify-end rounded-t-3xl border-2 border-b-none border-border px-8 pt-1" style="transform: none;"><img src="/tier_icons/vanilla.svg" width="30" height="30" alt="Vanilla"><strong class="capitalize">Vanilla</strong></span>", vanilla: "🗡️", uhc: "🍎", pot: "🧪", nethop: "🔥", smp: "🌍", sword: "⚔️", axe: "🪓", mace: "🔨" };
   const dbCategories = ['vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
   const regionNames = { 'NA': 'North America', 'EU': 'Europe', 'AS': 'Asia', 'AU': 'Australia', 'SA': 'South America', 'ME': 'Middle East', 'AF': 'Africa' };
   
