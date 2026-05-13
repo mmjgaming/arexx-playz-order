@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PvP Club - Live Minecraft PvP Rankings</title>
+<meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players.">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px); background-attachment: fixed; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+  
+  .animate-row { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+  .animate-card { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+  .modal-box { animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+  header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; font-size: 18px; }
+  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing:
