@@ -5,103 +5,284 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PvP Club - Admin Panel</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --white: #ffffff; }
+  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-  body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-  .admin-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 700px; max-width: 95vw; padding: 32px; }
-  h2 { color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
-  .form-group { margin-bottom: 20px; }
-  .form-group label { display: block; margin-bottom: 6px; color: var(--primary2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
-  .form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--surface2); border-radius: 6px; color: var(--white); font-family: monospace; font-size: 13px; outline: none; }
-  .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
-  .form-group textarea { height: 300px; resize: vertical; }
-  .btn { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; transition: all 0.2s; text-decoration: none; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; }
+  
+  header { background: rgba(31, 40, 51, 0.85); border-bottom: 1px solid var(--primary2); padding: 0 24px; }
+  .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; font-size: 18px; }
+  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+  .logo-text span { color: var(--primary); }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--primary); }
+
+  .container { max-width: 1000px; margin: 40px auto; padding: 0 24px; }
+  h1 { color: var(--white); font-size: 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  h1 i { color: var(--primary); }
+
+  .card { background: var(--surface); border: 1px solid var(--surface2); border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+  .card h2 { color: var(--primary2); font-size: 18px; margin-bottom: 16px; border-bottom: 1px solid var(--surface2); padding-bottom: 8px; }
+
+  .btn { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
   .btn-primary { background: var(--primary); color: var(--bg); } .btn-primary:hover { background: var(--primary2); }
-  .btn-secondary { background: var(--surface2); color: var(--white); } .btn-secondary:hover { background: #34495e; }
-  .btn-danger { background: #dc3545; color: white; } 
-  .actions { display: flex; justify-content: space-between; margin-top: 20px; }
-  .hidden { display: none; }
+  .btn-danger { background: #dc3545; color: white; } .btn-danger:hover { background: #c82333; }
+  .btn-secondary { background: var(--surface2); color: var(--white); } .btn-secondary:hover { background: #3a4a5c; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .form-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 120px; }
+  .form-group label { font-size: 12px; color: var(--text2); font-weight: 600; text-transform: uppercase; }
+  .form-group input, .form-group select { background: var(--bg); border: 1px solid var(--surface2); border-radius: 6px; padding: 10px; color: var(--white); font-size: 14px; outline: none; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+
+  .player-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  .player-table th { text-align: left; color: var(--text2); font-size: 12px; text-transform: uppercase; padding: 12px 8px; border-bottom: 1px solid var(--surface2); }
+  .player-table td { padding: 12px 8px; border-bottom: 1px solid var(--bg); font-size: 14px; }
+  .player-table tr:hover td { background: rgba(255,255,255,0.02); }
+  
+  .badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+  .badge-ht1 { background: rgba(255,87,34,0.15); color: #ff5722; } .badge-ht2 { background: rgba(255,152,0,0.15); color: #ff9800; }
+  .badge-ht3 { background: rgba(255,193,7,0.15); color: #ffc107; } .badge-lt1 { background: rgba(3,169,244,0.15); color: #03a9f4; }
+  .badge-lt2 { background: rgba(33,150,243,0.15); color: #2196f3; } .badge-lt3 { background: rgba(63,81,181,0.15); color: #3f51b5; }
+
+  .login-box { max-width: 400px; margin: 100px auto; text-align: center; }
+  .login-box input { width: 100%; padding: 12px; margin-bottom: 16px; background: var(--bg); border: 1px solid var(--surface2); border-radius: 6px; color: white; font-size: 16px; outline: none; }
+  
+  #statusMessage { margin-top: 12px; font-size: 14px; font-weight: 600; }
+  .success { color: var(--primary); }
+  .error { color: #ff4f4f; }
 </style>
 </head>
 <body>
 
-<div class="admin-box">
-  <h2><i class="fas fa-cog"></i> PvP Club Admin Panel</h2>
-  
-  <div id="loginView">
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="passInput" placeholder="Enter admin password...">
+<header>
+  <nav class="nav-container">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-khanda"></i></div>
+      <div class="logo-text">PvP <span>Club</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><i class="fas fa-trophy"></i> Rankings</a>
+      <a href="admin.html" style="color: var(--primary);"><i class="fas fa-cog"></i> Admin</a>
     </div>
-    <button class="btn btn-primary" onclick="attemptLogin()">Login</button>
-    <a href="index.html" class="btn btn-secondary" style="float: right;">Back to Site</a>
+  </nav>
+</header>
+
+<div class="container">
+  <!-- Login View -->
+  <div id="loginView" class="login-box">
+    <h2><i class="fas fa-lock"></i> Admin Login</h2>
+    <p style="color:var(--text2); margin-bottom:24px;">Enter admin password to manage the API.</p>
+    <input type="password" id="passwordInput" placeholder="Password...">
+    <button class="btn btn-primary" style="width:100%;" onclick="attemptLogin()">Login</button>
   </div>
 
-  <div id="controlView" class="hidden">
-    <div class="form-group">
-      <label>Change Admin Password</label>
-      <input type="text" id="newPassInput" placeholder="New password">
-    </div>
-    <button class="btn btn-secondary" onclick="changePassword()">Update Password</button>
+  <!-- Dashboard View -->
+  <div id="dashboardView" style="display: none;">
+    <h1><i class="fas fa-tools"></i> API Admin Dashboard</h1>
 
-    <hr style="border-color: var(--surface2); margin: 24px 0;">
-
-    <div class="form-group">
-      <label>Website Data (JSON)</label>
-      <textarea id="jsonEditor"></textarea>
+    <!-- Import Tool -->
+    <div class="card">
+      <h2><i class="fas fa-cloud-download-alt"></i> Import from MCTiers API</h2>
+      <p style="color:var(--text2); margin-bottom:16px; font-size:14px;">
+        Fetch the top 50 players directly from the official MCTiers API and add them to your custom database. Existing players will be updated.
+      </p>
+      <button class="btn btn-primary" id="importBtn" onclick="importFromMctiers()">
+        <i class="fas fa-sync-alt"></i> Import Top 50 Players
+      </button>
+      <div id="importStatus" style="margin-top:12px; font-size:14px;"></div>
     </div>
-    
-    <div class="actions">
-      <button class="btn btn-primary" onclick="saveJsonData()">Save & Apply Data</button>
-      <button class="btn btn-danger" onclick="logout()">Logout</button>
+
+    <!-- Manual Add Tool -->
+    <div class="card">
+      <h2><i class="fas fa-user-plus"></i> Add/Edit Player Manually</h2>
+      <div class="form-row">
+        <div class="form-group"><label>Username</label><input type="text" id="f_username" placeholder="ItzRealMe" required></div>
+        <div class="form-group"><label>Region</label>
+          <select id="f_region"><option value="NA">NA</option><option value="EU">EU</option><option value="AS">AS</option><option value="AU">AU</option><option value="SA">SA</option></select>
+        </div>
+        <div class="form-group"><label>Points</label><input type="number" id="f_points" placeholder="330" value="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Vanilla</label><input type="text" id="f_vanilla" placeholder="HT1 or LT3"></div>
+        <div class="form-group"><label>UHC</label><input type="text" id="f_uhc" placeholder="LT1"></div>
+        <div class="form-group"><label>Pot</label><input type="text" id="f_pot" placeholder="HT2"></div>
+        <div class="form-group"><label>NethOP</label><input type="text" id="f_nethop" placeholder="LT2"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>SMP</label><input type="text" id="f_smp" placeholder="HT1"></div>
+        <div class="form-group"><label>Sword</label><input type="text" id="f_sword" placeholder="HT3"></div>
+        <div class="form-group"><label>Axe</label><input type="text" id="f_axe" placeholder="LT2"></div>
+        <div class="form-group"><label>Mace</label><input type="text" id="f_mace" placeholder="LT2"></div>
+      </div>
+      <button class="btn btn-secondary" onclick="savePlayer()" style="margin-top:8px;">
+        <i class="fas fa-save"></i> Save Player
+      </button>
+      <div id="saveStatus" style="margin-top:12px; font-size:14px;"></div>
+    </div>
+
+    <!-- Current Database Players -->
+    <div class="card">
+      <h2><i class="fas fa-database"></i> Current Database Players</h2>
+      <div style="overflow-x: auto;">
+        <table class="player-table">
+          <thead>
+            <tr>
+              <th>Username</th><th>Region</th><th>Points</th><th>Tiers</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="playerTableBody">
+            <tr><td colspan="5" style="text-align:center; color:var(--text2);">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  function getData() { return JSON.parse(localStorage.getItem('pvpClubData')) || { password: "Arexx_Playz", categories: {} }; }
-  function saveData(data) { localStorage.setItem('pvpClubData', JSON.stringify(data)); }
+  const SUPABASE_URL = 'https://yxzxlyxtxysynbimpins.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4enhseXh0eHlzeW5iaW1waW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MzI4MDMsImV4cCI6MjA5NDIwODgwM30.l8GMu54hozDFL8kLA4_LJcm0sLSTEgArMpQ1GK3Tbgo';
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const dbCategories = ['vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
+  let isAdmin = false;
 
   function attemptLogin() {
-    const pass = document.getElementById('passInput').value;
-    const siteData = getData();
-    if (pass === siteData.password) {
-      document.getElementById('loginView').classList.add('hidden');
-      document.getElementById('controlView').classList.remove('hidden');
-      document.getElementById('newPassInput').value = siteData.password;
-      document.getElementById('jsonEditor').value = JSON.stringify(siteData.categories, null, 2);
+    const pass = document.getElementById('passwordInput').value;
+    // In a real app, check against Supabase auth. For now, simple localStorage gate.
+    const storedPass = localStorage.getItem('pvp_admin_pass') || 'Arexx_Playz';
+    if (pass === storedPass) {
+      isAdmin = true;
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'block';
+      loadPlayers();
     } else {
-      alert("Incorrect Password!");
+      alert('Incorrect Password!');
     }
   }
 
-  function changePassword() {
-    const newPass = document.getElementById('newPassInput').value;
-    if (newPass.trim() !== '') {
-      let siteData = getData();
-      siteData.password = newPass;
-      saveData(siteData);
-      alert("Password updated successfully!");
+  async function loadPlayers() {
+    const { data, error } = await db.from('players').select('*').order('points', { ascending: false });
+    const tbody = document.getElementById('playerTableBody');
+    
+    if (error || !data) {
+      tbody.innerHTML = `<tr><td colspan="5" style="color:#ff4f4f;">Error loading database.</td></tr>`;
+      return;
     }
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--text2);">No players in database. Use the import tool above!</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = data.map(p => {
+      let tiersHtml = '';
+      dbCategories.forEach(cat => {
+        if (p[cat]) {
+          const cls = p[cat].startsWith('HT') ? `badge-${p[cat].toLowerCase()}` : `badge-${p[cat].toLowerCase()}`;
+          tiersHtml += `<span class="badge ${cls}">${cat}: ${p[cat]}</span> `;
+        }
+      });
+
+      return `<tr>
+        <td style="font-weight:600; color:var(--white);">${p.username}</td>
+        <td>${p.region}</td>
+        <td>${p.points || 0}</td>
+        <td>${tiersHtml || '<span style="color:var(--text2)">None</span>'}</td>
+        <td><button class="btn btn-danger" style="padding:4px 10px; font-size:12px;" onclick="deletePlayer(${p.id}, '${p.username}')"><i class="fas fa-trash"></i></button></td>
+      </tr>`;
+    }).join('');
   }
 
-  function saveJsonData() {
+  async function deletePlayer(id, name) {
+    if(!confirm(`Are you sure you want to delete ${name}?`)) return;
+    const { error } = await db.from('players').delete().eq('id', id);
+    if (!error) { loadPlayers(); } else { alert('Error deleting player.'); }
+  }
+
+  async function savePlayer() {
+    const username = document.getElementById('f_username').value.trim();
+    if (!username) return alert("Username is required!");
+
+    const playerData = {
+      username: username,
+      region: document.getElementById('f_region').value,
+      points: parseInt(document.getElementById('f_points').value) || 0,
+      vanilla: document.getElementById('f_vanilla').value.toUpperCase(),
+      uhc: document.getElementById('f_uhc').value.toUpperCase(),
+      pot: document.getElementById('f_pot').value.toUpperCase(),
+      nethop: document.getElementById('f_nethop').value.toUpperCase(),
+      smp: document.getElementById('f_smp').value.toUpperCase(),
+      sword: document.getElementById('f_sword').value.toUpperCase(),
+      axe: document.getElementById('f_axe').value.toUpperCase(),
+      mace: document.getElementById('f_mace').value.toUpperCase()
+    };
+
+    // Upsert inserts if new, updates if username exists
+    const { error } = await db.from('players').upsert(playerData, { onConflict: 'username' });
+    const statusDiv = document.getElementById('saveStatus');
+
+    if (error) {
+      statusDiv.innerHTML = `<span class="error"><i class="fas fa-times-circle"></i> Error: ${error.message}</span>`;
+    } else {
+      statusDiv.innerHTML = `<span class="success"><i class="fas fa-check-circle"></i> ${username} saved successfully!</span>`;
+      // Clear form
+      document.querySelectorAll('.form-group input').forEach(inp => inp.value = '');
+      document.getElementById('f_points').value = '0';
+      loadPlayers();
+    }
+    setTimeout(() => statusDiv.innerHTML = '', 4000);
+  }
+
+  async function importFromMctiers() {
+    const btn = document.getElementById('importBtn');
+    const statusDiv = document.getElementById('importStatus');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+    statusDiv.innerHTML = `<span style="color:var(--text2)"><i class="fas fa-cloud-download-alt"></i> Fetching from MCTiers API...</span>`;
+
     try {
-      const jsonData = JSON.parse(document.getElementById('jsonEditor').value);
-      let siteData = getData();
-      siteData.categories = jsonData;
-      saveData(siteData);
-      alert("Website Data Updated! Go back to the site to see changes.");
-    } catch (e) {
-      alert("Invalid JSON Format! Please check your code. Error: " + e.message);
-    }
-  }
+      // Fetch top 50 overall players from official MCTiers API
+      const res = await fetch('https://mctiers.com/api/v2/mode/overall?count=50');
+      if (!res.ok) throw new Error('MCTiers API failed to respond.');
+      const mctiersData = await res.json();
 
-  function logout() {
-    document.getElementById('loginView').classList.remove('hidden');
-    document.getElementById('controlView').classList.add('hidden');
-    document.getElementById('passInput').value = '';
+      // Map MCTiers format to our Supabase format
+      const formattedData = mctiersData.map(p => {
+        let obj = { username: p.name, region: p.region, points: p.points };
+        
+        if (p.rankings) {
+          for (const [key, rank] of Object.entries(p.rankings)) {
+            if (dbCategories.includes(key)) {
+              // pos 0 means High Tier, pos 1 means Low Tier
+              const prefix = rank.pos === 0 ? 'HT' : 'LT';
+              obj[key] = `${prefix}${rank.tier}`;
+            }
+          }
+        }
+        return obj;
+      });
+
+      // Bulk Upsert to Supabase
+      const { error } = await db.from('players').upsert(formattedData, { onConflict: 'username' });
+
+      if (error) throw error;
+
+      statusDiv.innerHTML = `<span class="success"><i class="fas fa-check-circle"></i> Successfully imported/updated ${formattedData.length} players!</span>`;
+      loadPlayers();
+
+    } catch (err) {
+      console.error(err);
+      statusDiv.innerHTML = `<span class="error"><i class="fas fa-exclamation-triangle"></i> Import failed: ${err.message}. (CORS might be blocked by browser)`; 
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-sync-alt"></i> Import Top 50 Players';
+    }
   }
 </script>
 </body>
