@@ -11,9 +11,20 @@
 <style>
   :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-  body { background-color: var(--bg); color: var(--text); min-height: 100vh; }
+  
+  /* Enhanced Background Banner Effect */
+  body { 
+    background-color: var(--bg); 
+    color: var(--text); 
+    min-height: 100vh; 
+    background-image: 
+      radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), /* Bright top glow/banner */
+      repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px), /* Subtle grid */
+      radial-gradient(circle at 50% 0%, #1f2833 0%, #0b0c10 30%); /* Base depth */
+    background-attachment: fixed;
+  }
 
-  header { background: var(--surface); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
   .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; font-size: 18px; }
@@ -75,7 +86,7 @@
   .tier-card .p-name { font-size: 13px; margin-bottom: 6px; }
 
   /* Profile Modal */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: none; align-items: center; justify-content: center; }
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   .modal-overlay.active { display: flex; }
   .modal-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 450px; max-width: 90vw; padding: 32px; text-align: center; position: relative; }
   .close-modal { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; }
@@ -102,7 +113,7 @@
     <div class="nav-links">
       <a href="#"><i class="fas fa-home"></i> Home</a>
       <a href="#" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
-      <a href="admin.html"><i class="fas fa-cog"></i> Admin</a>
+      <a href="https://discord.gg/MxUjNNMWdu" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i> Discord</a>
     </div>
   </nav>
 </header>
@@ -238,7 +249,6 @@
   }
 
   function openProfile(name) {
-    // Search for player data across all categories for their specific tiers
     const overallPlayer = siteData.categories.overall.find(p => p.name === name);
     document.getElementById('profileName').innerText = name;
     document.getElementById('profileSkin').src = `https://mc-heads.net/avatar/${name}/128`;
