@@ -3,36 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PvP Club - Minecraft Rankings</title>
+
+<!-- Core SEO Meta Tags -->
+<title>PvP Club - Minecraft PvP Rankings & Leaderboards</title>
+<meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players. View global leaderboards, combat tiers, and LTM rankings for Vanilla, UHC, Pot, NethOP, SMP, Sword, Axe, and Mace.">
+<meta name="keywords" content="Minecraft PvP, PvP Club, Minecraft Rankings, MCTiers, Minecraft Leaderboard, Minecraft UHC, Minecraft Pot PvP, Minecraft NethOP, Minecraft SMP PvP, Minecraft Sword, Minecraft Axe, Minecraft Mace">
+<meta name="author" content="PvP Club">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mcpvp.club/">
+
+<!-- Open Graph / Social Media SEO -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="PvP Club - Minecraft PvP Rankings">
+<meta property="og:description" content="The definitive ranking system for Minecraft PvP players. View global leaderboards, combat tiers, and LTM rankings.">
+<meta property="og:url" content="https://mcpvp.club/">
+<meta property="og:site_name" content="PvP Club">
+<meta property="og:image" content="https://mcpvp.club/og-image.png">
+
+<!-- Twitter Card SEO -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PvP Club - Minecraft PvP Rankings">
+<meta name="twitter:description" content="The definitive ranking system for Minecraft PvP players.">
+<meta name="twitter:image" content="https://mcpvp.club/og-image.png">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "PvP Club",
+  "url": "https://mcpvp.club/",
+  "description": "The definitive ranking system for Minecraft PvP players.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://mcpvp.club/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; --ht1: #ff5722; --ht2: #ff9800; --ht3: #ffc107; --ht4: #8bc34a; --lt1: #03a9f4; --lt2: #2196f3; --lt3: #3f51b5; --lt4: #673ab7; --lt5: #9c27b0; }
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
   body { background-color: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* Header */
   header { background: var(--surface); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
   .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; }
+  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; font-size: 18px; }
   .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
   .logo-text span { color: var(--primary); }
   .nav-links { display: flex; gap: 20px; align-items: center; }
   .nav-links a, .nav-links button { color: var(--text2); text-decoration: none; font-weight: 500; font-size: 14px; background: none; border: none; cursor: pointer; transition: color 0.2s; font-family: inherit; }
   .nav-links a:hover, .nav-links button:hover { color: var(--primary); }
   .nav-active { color: var(--primary) !important; }
-  .admin-btn { font-size: 16px; }
 
-  /* Container */
   .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
 
-  /* Announcement */
   .announcement { background: linear-gradient(135deg, rgba(69, 162, 158, 0.1), rgba(102, 252, 241, 0.05)); border: 1px solid var(--primary2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 12px; }
   .ann-icon { color: var(--primary); font-size: 20px; }
   .ann-content h3 { color: var(--primary); font-size: 14px; margin-bottom: 4px; }
   .ann-content p { font-size: 13px; line-height: 1.4; color: var(--text); }
 
-  /* Server IP */
   .server-ip-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .ip-info h3 { color: var(--white); font-size: 16px; margin-bottom: 2px; }
   .ip-info p { color: var(--text2); font-size: 12px; }
@@ -41,13 +77,12 @@
   .copy-btn { background: var(--primary2); color: var(--bg); border: none; padding: 6px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; transition: background 0.2s; }
   .copy-btn:hover { background: var(--primary); }
 
-  /* Tabs */
   .tabs { display: flex; gap: 6px; margin-bottom: 24px; border-bottom: 1px solid var(--surface); padding-bottom: 12px; overflow-x: auto; }
-  .tab-btn { background: var(--surface); color: var(--text2); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn { background: var(--surface); color: var(--text2); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
   .tab-btn:hover { background: var(--surface2); color: var(--white); }
   .tab-btn.active { background: var(--primary); color: var(--bg); }
+  .tab-btn.disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* Overall Table */
   .lb-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 8px; overflow: hidden; }
   .lb-table th { background: var(--bg); color: var(--text2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--surface2); }
   .lb-table td { padding: 12px 16px; border-bottom: 1px solid var(--surface2); vertical-align: middle; }
@@ -60,31 +95,24 @@
   .region-badge { background: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--surface2); }
   .tier-tags { display: flex; flex-wrap: wrap; gap: 4px; }
   .tier-tag { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
-  .tier-tag span { opacity: 0.7; font-weight: 400; }
+  .tier-tag span { opacity: 0.7; font-weight: 400; font-size: 9px; }
 
-  /* Category Grid */
   .tier-section { margin-bottom: 32px; }
   .tier-header { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .tier-header i { color: var(--primary); }
   .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
   .tier-card { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px; text-align: center; transition: transform 0.2s, border-color 0.2s; }
   .tier-card:hover { transform: translateY(-2px); border-color: var(--primary2); }
   .tier-card .mc-skin { width: 48px; height: 48px; margin: 0 auto 8px; display: block; }
   .tier-card .p-name { font-size: 13px; margin-bottom: 4px; }
 
-  /* Colors for tiers */
   .t-ht1 { background: rgba(255, 87, 34, 0.15); color: var(--ht1); } .t-ht2 { background: rgba(255, 152, 0, 0.15); color: var(--ht2); }
   .t-ht3 { background: rgba(255, 193, 7, 0.15); color: var(--ht3); } .t-ht4 { background: rgba(139, 195, 74, 0.15); color: var(--ht4); }
   .t-lt1 { background: rgba(3, 169, 244, 0.15); color: var(--lt1); } .t-lt2 { background: rgba(33, 150, 243, 0.15); color: var(--lt2); }
   .t-lt3 { background: rgba(63, 81, 181, 0.15); color: var(--lt3); } .t-lt4 { background: rgba(103, 58, 183, 0.15); color: var(--lt4); }
   .t-lt5 { background: rgba(156, 39, 176, 0.15); color: var(--lt5); }
-  .r-na { color: var(--primary); border-color: rgba(102, 252, 241, 0.3); }
-  .r-eu { color: var(--ht2); border-color: rgba(255, 152, 0, 0.3); }
-  .r-as { color: var(--lt1); border-color: rgba(3, 169, 244, 0.3); }
-  .r-au { color: var(--lt3); border-color: rgba(63, 81, 181, 0.3); }
-  .r-sa { color: var(--ht1); border-color: rgba(255, 87, 34, 0.3); }
+  .r-na { color: var(--primary); border-color: rgba(102, 252, 241, 0.3); } .r-eu { color: var(--ht2); border-color: rgba(255, 152, 0, 0.3); }
+  .r-as { color: var(--lt1); border-color: rgba(3, 169, 244, 0.3); } .r-au { color: var(--lt3); border-color: rgba(63, 81, 181, 0.3); }
 
-  /* Modal & Admin */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: center; justify-content: center; }
   .modal-overlay.active { display: flex; }
   .modal-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 600px; max-width: 90vw; max-height: 80vh; overflow-y: auto; padding: 24px; }
@@ -101,9 +129,10 @@
   .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--bg); padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 2000; transition: bottom 0.3s ease; }
   .toast.show { bottom: 40px; }
 
+  footer { text-align: center; padding: 24px; color: var(--text2); font-size: 12px; border-top: 1px solid var(--surface); margin-top: 40px; }
+
   @media (max-width: 768px) {
-    .lb-table { font-size: 12px; }
-    .hide-mobile { display: none; }
+    .lb-table { font-size: 12px; } .hide-mobile { display: none; }
     .tier-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
   }
 </style>
@@ -111,64 +140,68 @@
 <body>
 
 <header>
-  <div class="nav-container">
-    <a href="#" class="logo">
+  <nav class="nav-container" aria-label="Main Navigation">
+    <a href="#" class="logo" aria-label="PvP Club Home">
       <div class="logo-icon"><i class="fas fa-khanda"></i></div>
       <div class="logo-text">PvP <span>Club</span></div>
     </a>
-    <nav class="nav-links">
-      <a href="#"><i class="fas fa-home"></i> Home</a>
-      <a href="#" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
-      <a href="https://discord.gg" target="_blank"><i class="fab fa-discord"></i> Discord</a>
-      <button class="admin-btn" onclick="openAdminLogin()"><i class="fas fa-cog"></i></button>
-    </nav>
-  </div>
+    <div class="nav-links">
+      <a href="#" aria-label="Home"><i class="fas fa-home"></i> Home</a>
+      <a href="#" class="nav-active" aria-current="page"><i class="fas fa-trophy"></i> Rankings</a>
+      <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" aria-label="Discord"><i class="fab fa-discord"></i> Discord</a>
+      <button class="admin-btn" onclick="openAdminLogin()" aria-label="Admin Settings"><i class="fas fa-cog"></i></button>
+    </div>
+  </nav>
 </header>
 
-<div class="container">
-  <div class="announcement">
+<main class="container">
+  <section class="announcement" aria-label="Announcement">
     <div class="ann-icon"><i class="fas fa-rocket"></i></div>
     <div class="ann-content">
       <h3>Limited-Time Modes are coming!</h3>
       <p>We're working on implementing LTMs, which will include team-based leaderboards for various kit events - however, a few other things will take priority :)</p>
     </div>
-  </div>
+  </section>
 
-  <div class="server-ip-box">
+  <section class="server-ip-box" aria-label="Server IP">
     <div class="ip-info">
       <h3><i class="fas fa-server"></i> Server IP</h3>
       <p>Join the club and start climbing the ranks</p>
     </div>
     <div class="ip-copy-container">
       <span class="ip-text">mcpvp.club</span>
-      <button class="copy-btn" onclick="copyIP()">Copy</button>
+      <button class="copy-btn" onclick="copyIP()" aria-label="Copy Server IP">Copy</button>
     </div>
-  </div>
+  </section>
 
-  <div class="tabs" id="tabContainer"></div>
-  <div id="contentArea"></div>
-</div>
+  <nav class="tabs" id="tabContainer" aria-label="Category Tabs"></nav>
+  <section id="contentArea" aria-label="Rankings Content"></section>
+</main>
+
+<footer>
+  <p>&copy; 2025 PvP Club. All rights reserved.</p>
+</footer>
 
 <!-- Admin Modal -->
-<div class="modal-overlay" id="adminModal">
+<div class="modal-overlay" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
   <div class="modal-box">
-    <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+    <h2 id="adminTitle"><i class="fas fa-cog"></i> Admin Panel</h2>
     <div id="adminLoginView">
       <div class="form-group">
-        <label>Admin Password</label>
+        <label htmlFor="adminPassInput">Admin Password</label>
         <input type="password" id="adminPassInput" placeholder="Enter password...">
       </div>
       <button class="btn btn-primary" onclick="attemptLogin()">Login</button>
     </div>
     <div id="adminControlView" style="display:none;">
       <div class="form-group">
-        <label>Change Password</label>
+        <label htmlFor="newPassInput">Change Password</label>
         <input type="text" id="newPassInput" placeholder="New password">
       </div>
       <button class="btn btn-primary" onclick="changePassword()" style="margin-bottom: 20px;">Update Password</button>
       
       <div class="form-group">
-        <label>Edit Website Data (JSON)</label>
+        <label htmlFor="jsonEditor">Edit Website Data (JSON)</label>
         <textarea id="jsonEditor"></textarea>
       </div>
       <button class="btn btn-primary" onclick="saveJsonData()">Save Data</button>
@@ -177,10 +210,24 @@
   </div>
 </div>
 
-<div class="toast" id="toast">IP Copied!</div>
+<div class="toast" id="toast" role="status" aria-live="polite">IP Copied!</div>
 
 <script>
-  // Default Data (Extracted from your prompt)
+  // Combat Category Logos/Icons Mapping
+  const catIcons = {
+    overall: "🏆",
+    ltms: "⏳",
+    vanilla: "🗡️",
+    uhc: "🍎",
+    pot: "🧪",
+    nethop: "🔥",
+    smp: "🌍",
+    sword: "⚔️",
+    axe: "🪓",
+    mace: "🔨"
+  };
+
+  // Default Data
   const defaultData = {
     password: "Arexx_Playz",
     categories: {
@@ -215,19 +262,17 @@
         { tier: 1, players: [{name:"kwevin",region:"EU"}] },
         { tier: 2, players: [{name:"Corblow",region:"NA"},{name:"Moroccan_Mjinina",region:"EU"},{name:"Leaferd",region:"AU"},{name:"elpoco858",region:"EU"}] }
       ],
-      axe: [ // Mace uses the same data as Axe as requested
+      axe: [
         { tier: 1, players: [{name:"scftdrexmz2",region:"EU"}] },
         { tier: 2, players: [{name:"1Sarpy",region:"EU"},{name:"kqwod",region:"NA"},{name:"Kansas2g",region:"AU"},{name:"Rivise",region:"AU"}] }
       ]
     }
   };
 
-  // Load data from LocalStorage or use default
   let siteData = JSON.parse(localStorage.getItem('pvpClubData')) || JSON.parse(JSON.stringify(defaultData));
   let activeTab = 'overall';
   let isAdmin = false;
 
-  // Initialize
   function init() {
     renderTabs();
     renderContent();
@@ -236,13 +281,17 @@
   function renderTabs() {
     const tabs = document.getElementById('tabContainer');
     const categories = ['overall', 'ltms', 'vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
-    tabs.innerHTML = categories.map(cat => 
-      `<button class="tab-btn ${cat === activeTab ? 'active' : ''} ${cat === 'ltms' ? '' : ''}" onclick="switchTab('${cat}')">${cat === 'ltms' ? 'LTMs' : cat.charAt(0).toUpperCase() + cat.slice(1)}</button>`
-    ).join('');
+    tabs.innerHTML = categories.map(cat => {
+      const isActive = cat === activeTab ? 'active' : '';
+      const isDisabled = cat === 'ltms' ? 'disabled' : '';
+      const icon = catIcons[cat] || '';
+      const name = cat === 'ltms' ? 'LTMs' : cat.charAt(0).toUpperCase() + cat.slice(1);
+      return `<button class="tab-btn ${isActive} ${isDisabled}" onclick="switchTab('${cat}')" aria-label="${name} Rankings">${icon} ${name}</button>`;
+    }).join('');
   }
 
   function switchTab(tab) {
-    if (tab === 'ltms') return; // Disabled
+    if (tab === 'ltms') return;
     activeTab = tab;
     renderTabs();
     renderContent();
@@ -256,8 +305,7 @@
       content.innerHTML = `<div style="text-align:center; padding:60px; color:var(--text2)"><h3>Coming Soon</h3><p>LTMs are not yet implemented.</p></div>`;
     } else {
       let catData = siteData.categories[activeTab];
-      // Axe and Mace share the same data
-      if (activeTab === 'mace') catData = siteData.categories.axe;
+      if (activeTab === 'mace') catData = siteData.categories.axe; // Mace uses Axe data
       renderCategory(content, catData, activeTab);
     }
   }
@@ -265,7 +313,7 @@
   function renderOverall(container) {
     const data = siteData.categories.overall;
     let html = `
-      <table class="lb-table">
+      <table class="lb-table" aria-label="Overall PvP Rankings">
         <thead>
           <tr>
             <th>#</th>
@@ -282,7 +330,8 @@
       for (const [key, value] of Object.entries(p.tiers)) {
         if (value) {
           const tClass = `t-${value.toLowerCase()}`;
-          tierTags += `<div class="tier-tag ${tClass}"><span>${key}</span> ${value}</div>`;
+          const icon = catIcons[key] || '';
+          tierTags += `<div class="tier-tag ${tClass}"><span>${icon} ${key}</span> ${value}</div>`;
         }
       }
 
@@ -291,7 +340,7 @@
           <td style="font-weight:700; color:var(--text2)">${p.rank}</td>
           <td>
             <div class="player-cell">
-              <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}">
+              <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}'s Minecraft Skin" loading="lazy">
               <div>
                 <span class="p-name">${p.name}</span>
                 <span class="p-title"><i class="fas fa-shield-halved"></i> ${p.title} (${p.points} points)</span>
@@ -313,32 +362,33 @@
       container.innerHTML = `<div style="text-align:center; padding:60px; color:var(--text2)"><h3>No Data</h3><p>Add data via Admin Panel.</p></div>`;
       return;
     }
+    
+    const catIcon = catIcons[catName] || '';
 
     let html = '';
     data.forEach(tierGroup => {
       html += `
-        <div class="tier-section">
+        <section class="tier-section" aria-label="Tier ${tierGroup.tier}">
           <div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierGroup.tier}</div>
           <div class="tier-grid">
       `;
       
       tierGroup.players.forEach(p => {
         html += `
-          <div class="tier-card">
-            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}">
+          <article class="tier-card">
+            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}'s Minecraft Skin" loading="lazy">
             <div class="p-name">${p.name}</div>
             <span class="region-badge r-${p.region.toLowerCase()}" style="font-size:10px; padding:2px 6px;">${p.region}</span>
-          </div>
+          </article>
         `;
       });
 
-      html += `</div></div>`;
+      html += `</div></section>`;
     });
 
     container.innerHTML = html;
   }
 
-  // Utils
   function copyIP() {
     navigator.clipboard.writeText("mcpvp.club");
     showToast("IP Copied to clipboard!");
@@ -391,7 +441,7 @@
       const jsonData = JSON.parse(document.getElementById('jsonEditor').value);
       siteData.categories = jsonData;
       saveData();
-      renderContent(); // Refresh UI
+      renderContent(); 
       showToast("Website Data Updated Successfully!");
     } catch (e) {
       showToast("Invalid JSON Format! Data not saved.");
@@ -402,7 +452,6 @@
     localStorage.setItem('pvpClubData', JSON.stringify(siteData));
   }
 
-  // Close modal on outside click
   window.onclick = function(event) {
     const modal = document.getElementById('adminModal');
     if (event.target == modal) {
