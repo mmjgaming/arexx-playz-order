@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mythic Tiers- Live Minecraft PvP Rankings</title>
+<title>Mythic Tiers - Live Minecraft PvP Rankings</title>
 <meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players.">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,14 +12,13 @@
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
   body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px); background-attachment: fixed; }
 
-  /* Animations */
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
   
   .animate-row { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
   .animate-card { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
-  .modal-box { animation: scaleIn 0.3s ease-out forwards; }
+  .modal-box { animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
   header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
   .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
@@ -88,18 +87,38 @@
   .tier-card .p-name { font-size: 13px; margin-bottom: 6px; transition: color 0.2s; }
   .tier-card:hover .p-name { color: var(--primary); }
 
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  /* --- PROFILE MODAL (Redesigned) --- */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
   .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
-  .modal-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 450px; max-width: 90vw; padding: 32px; text-align: center; position: relative; }
-  .close-modal { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; transition: color 0.2s, transform 0.2s; }
-  .close-modal:hover { color: var(--white); transform: rotate(90deg); }
-  .profile-skin { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 8px; margin: 0 auto 16px; border: 3px solid var(--primary2); transition: transform 0.3s; }
-  .profile-skin:hover { transform: scale(1.05) rotate(5deg); }
-  .profile-name { font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
-  .profile-title { color: var(--primary); font-weight: 600; font-size: 14px; margin-bottom: 16px; }
-  .profile-tiers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; text-align: left; }
-  .profile-tier-item { background: var(--bg); padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; transition: transform 0.2s; }
-  .profile-tier-item:hover { transform: translateX(4px); }
+  .modal-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 16px; width: 420px; max-width: 95vw; overflow: hidden; }
+  .modal-banner { height: 80px; background: linear-gradient(135deg, var(--primary2), var(--bg)); position: relative; }
+  .close-modal { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: background 0.2s; z-index: 10; display: flex; align-items: center; justify-content: center; }
+  .close-modal:hover { background: rgba(255,0,0,0.6); }
+  
+  .profile-header { text-align: center; margin-top: -48px; padding: 0 24px 20px; border-bottom: 1px solid var(--surface2); }
+  .profile-avatar { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 50%; border: 4px solid var(--surface); margin-bottom: 12px; transition: transform 0.3s; }
+  .profile-avatar:hover { transform: scale(1.1) rotate(5deg); }
+  .profile-username { font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+  .profile-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .p-badge { padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-master { background: linear-gradient(135deg, #ffc107, #ff9800); color: #000; }
+  .badge-ace { background: linear-gradient(135deg, #03a9f4, #2196f3); color: #fff; }
+  .badge-warrior { background: linear-gradient(135deg, #4caf50, #2e7d32); color: #fff; }
+  .badge-region { background: var(--bg); color: var(--text2); border: 1px solid var(--surface2); }
+
+  .profile-body { padding: 20px 24px; }
+  .profile-stat-box { background: var(--bg); border: 1px solid var(--surface2); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 20px; }
+  .stat-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .stat-value { font-size: 28px; font-weight: 800; color: var(--white); }
+  .stat-sub { font-size: 13px; color: var(--primary); font-weight: 600; }
+
+  .profile-tiers-title { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; }
+  .profile-tiers-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .p-tier-item { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--bg); border: 1px solid var(--surface2); transition: transform 0.2s, border-color 0.2s; }
+  .p-tier-item:hover { transform: translateY(-2px); border-color: var(--primary2); }
+  .p-tier-icon { font-size: 16px; }
+  .p-tier-name { color: var(--text2); font-size: 12px; }
+  .p-tier-rank { font-weight: 800; }
 
   .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--bg); padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; z-index: 2000; transition: bottom 0.3s ease; }
   .toast.show { bottom: 40px; }
@@ -114,7 +133,7 @@
   <nav class="nav-container">
     <a href="index.html" class="logo">
       <div class="logo-icon"><i class="fas fa-khanda"></i></div>
-      <div class="logo-text">Mythic<span>Tiers</span></div>
+      <div class="logo-text">Mythic <span>Tiers</span></div>
     </a>
     <div class="nav-links">
       <a href="index.html" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
@@ -139,7 +158,7 @@
       <p>Join the club and start climbing the ranks</p>
     </div>
     <div class="ip-copy-container">
-      <span class="ip-text">coming soon</span>
+      <span class="ip-text">coming</span>
       <button class="copy-btn" onclick="copyIP()">Copy</button>
     </div>
   </section>
@@ -148,13 +167,22 @@
   <section id="contentArea"><div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Loading API Data...</div></section>
 </main>
 
+<!-- Profile Modal -->
 <div class="modal-overlay" id="profileModal">
   <div class="modal-box">
-    <button class="close-modal" onclick="closeProfile()"><i class="fas fa-times"></i></button>
-    <img id="profileSkin" class="profile-skin" src="" alt="Player Skin">
-    <h2 id="profileName" class="profile-name"></h2>
-    <div id="profileTitle" class="profile-title"></div>
-    <div id="profileTiers" class="profile-tiers"></div>
+    <div class="modal-banner">
+      <button class="close-modal" onclick="closeProfile()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="profile-header">
+      <img id="profileAvatar" class="profile-avatar" src="" alt="Avatar">
+      <div id="profileUsername" class="profile-username"></div>
+      <div id="profileBadges" class="profile-badges"></div>
+    </div>
+    <div class="profile-body">
+      <div id="profilePosition" class="profile-stat-box"></div>
+      <div class="profile-tiers-title">Gamemode Tiers</div>
+      <div id="profileTiers" class="profile-tiers-list"></div>
+    </div>
   </div>
 </div>
 
@@ -170,11 +198,11 @@
 
   const catIcons = { overall: "🏆", vanilla: "🗡️", uhc: "🍎", pot: "🧪", nethop: "🔥", smp: "🌍", sword: "⚔️", axe: "🪓", mace: "🔨" };
   const dbCategories = ['vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
+  const regionNames = { 'NA': 'North America', 'EU': 'Europe', 'AS': 'Asia', 'AU': 'Australia', 'SA': 'South America', 'ME': 'Middle East', 'AF': 'Africa' };
   
   let activeTab = 'overall';
 
   function init() { renderTabs(); renderContent(); }
-
   function renderTabs() {
     const tabs = document.getElementById('tabContainer');
     const categories = ['overall', ...dbCategories];
@@ -196,23 +224,15 @@
     try {
       const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
       const data = await res.json();
+      if (!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p>Add players via the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`; return; }
       
-      if (!data || data.length === 0) {
-        container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p>Add players via the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`;
-        return;
-      }
-
       let html = `<table class="lb-table"><thead><tr><th>#</th><th>Player</th><th>Tiers</th></tr></thead><tbody>`;
       data.forEach((p, index) => {
         let tierTags = '';
         dbCategories.forEach(cat => {
-          if (p[cat]) {
-            const tierStr = p[cat].toUpperCase();
-            tierTags += `<div class="tier-tag t-${tierStr.toLowerCase()}"><span>${catIcons[cat]} ${cat}</span> ${tierStr}</div>`;
-          }
+          if (p[cat]) { const tierStr = p[cat].toUpperCase(); tierTags += `<div class="tier-tag t-${tierStr.toLowerCase()}"><span>${catIcons[cat]} ${cat}</span> ${tierStr}</div>`; }
         });
-        const delay = index * 50;
-        html += `<tr class="animate-row" style="animation-delay: ${delay}ms">
+        html += `<tr class="animate-row" style="animation-delay: ${index * 50}ms">
           <td style="font-weight:700; color:var(--text2)">${index + 1}</td>
           <td><div class="player-cell" onclick="openProfile('${p.username}')">
             <img class="mc-skin" src="https://mc-heads.net/avatar/${p.username}/48" alt="${p.username}" loading="lazy">
@@ -223,74 +243,53 @@
       });
       html += `</tbody></table>`;
       container.innerHTML = html;
-    } catch (e) {
-      container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load overall rankings. Did you run the SQL setup?</p></div>`;
-    }
+    } catch (e) { container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load overall rankings.</p></div>`; }
   }
 
   async function renderCategory(container, catName) {
     try {
-      // Fetch ALL players, we will filter empty tiers in JavaScript to avoid Supabase null/empty string bugs
       const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
       const data = await res.json();
-
-      if (!data || data.length === 0) {
-        container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p>Add players via the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`;
-        return;
-      }
+      if (!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p>Add players via the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`; return; }
       
-      // Group by tier for THIS specific category, ignoring empty/null values
       const tiers = { 1: [], 2: [], 3: [], 4: [], 5: [] };
       data.forEach(p => {
         if (p[catName] && p[catName].trim() !== '') {
           const tierVal = parseInt(p[catName].replace(/[^0-9]/g, ''));
-          if (tierVal >= 1 && tierVal <= 5) {
-            tiers[tierVal].push(p);
-          }
+          if (tierVal >= 1 && tierVal <= 5) tiers[tierVal].push(p);
         }
       });
 
-      let html = '';
-      let sectionDelay = 0;
-      let hasAnyTiers = false;
-
+      let html = ''; let sectionDelay = 0; let hasAnyTiers = false;
       for (const [tierNum, players] of Object.entries(tiers)) {
         if (players.length === 0) continue;
         hasAnyTiers = true;
-        
-        html += `<section class="tier-section tier-${tierNum}" style="animation-delay: ${sectionDelay}ms">
-          <div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierNum}</div>
-          <div class="tier-grid">`;
-          
+        html += `<section class="tier-section tier-${tierNum}" style="animation-delay: ${sectionDelay}ms"><div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierNum}</div><div class="tier-grid">`;
         let cardDelay = 0;
         players.forEach(p => {
           html += `<article class="tier-card animate-card" style="animation-delay: ${cardDelay}ms" onclick="openProfile('${p.username}')">
             <img class="mc-skin" src="https://mc-heads.net/avatar/${p.username}/48" alt="${p.username}" loading="lazy">
             <div class="p-name">${p.username}</div>
             <span class="region-badge r-${(p.region || 'na').toLowerCase()}">${p.region || 'NA'}</span>
-          </article>`;
-          cardDelay += 60;
+          </article>`; cardDelay += 60;
         });
-
-        html += `</div></section>`;
-        sectionDelay += 150;
+        html += `</div></section>`; sectionDelay += 150;
       }
-      
-      if (!hasAnyTiers) {
-         container.innerHTML = `<div class="empty-state"><h3>No ${catName} tiers found</h3><p>Assign ${catName} tiers to players in the <a href="admin.html" style="color:var(--primary)">Admin Panel</a></p></div>`;
-      } else {
-         container.innerHTML = html;
-      }
+      container.innerHTML = hasAnyTiers ? html : `<div class="empty-state"><h3>No ${catName} tiers found</h3></div>`;
+    } catch (e) { container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3></div>`; }
+  }
 
-    } catch (e) {
-      container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load ${catName} rankings.</p></div>`;
-    }
+  function getPlayerTitle(points) {
+    if (points >= 300) return { text: 'Combat Master', class: 'badge-master' };
+    if (points >= 200) return { text: 'Combat Ace', class: 'badge-ace' };
+    return { text: 'Warrior', class: 'badge-warrior' };
   }
 
   async function openProfile(username) {
-    document.getElementById('profileName').innerText = username;
-    document.getElementById('profileSkin').src = `https://mc-heads.net/avatar/${username}/128`;
-    document.getElementById('profileTitle').innerText = "Loading profile...";
+    document.getElementById('profileUsername').innerText = username;
+    document.getElementById('profileAvatar').src = `https://mc-heads.net/avatar/${username}/128`;
+    document.getElementById('profileBadges').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--text2)"></i>';
+    document.getElementById('profilePosition').innerHTML = '';
     document.getElementById('profileTiers').innerHTML = '';
     document.getElementById('profileModal').classList.add('active');
 
@@ -300,23 +299,43 @@
       
       if (data && data.length > 0) {
         const p = data[0];
-        document.getElementById('profileTitle').innerText = `Rank #${p.overall_rank || '?' } • ${p.points || 0} pts`;
-        
+        const pts = p.points || 0;
+        const titleInfo = getPlayerTitle(pts);
+        const regionFull = regionNames[p.region] || p.region;
+
+        // Badges
+        document.getElementById('profileBadges').innerHTML = `
+          <span class="p-badge ${titleInfo.class}"><i class="fas fa-crown"></i> ${titleInfo.text}</span>
+          <span class="p-badge badge-region"><i class="fas fa-globe-americas"></i> ${regionFull}</span>
+        `;
+
+        // Position Box
+        document.getElementById('profilePosition').innerHTML = `
+          <div class="stat-label">Position</div>
+          <div class="stat-value">#${p.overall_rank || '?'}</div>
+          <div class="stat-sub">OVERALL (${pts} points)</div>
+        `;
+
+        // Tiers List
         let tiersHtml = '';
         dbCategories.forEach(cat => {
           if (p[cat] && p[cat].trim() !== '') {
             const tierStr = p[cat].toUpperCase();
-            tiersHtml += `<div class="profile-tier-item t-${tierStr.toLowerCase()}" style="border-left: 3px solid;">
-              <span>${catIcons[cat]} ${cat.charAt(0).toUpperCase() + cat.slice(1)}</span> <span>${tierStr}</span>
-            </div>`;
+            tiersHtml += `
+              <div class="p-tier-item t-${tierStr.toLowerCase()}">
+                <span class="p-tier-icon">${catIcons[cat]}</span>
+                <span class="p-tier-name">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+                <span class="p-tier-rank">${tierStr}</span>
+              </div>
+            `;
           }
         });
-        document.getElementById('profileTiers').innerHTML = tiersHtml;
+        document.getElementById('profileTiers').innerHTML = tiersHtml || '<span style="color:var(--text2); font-size:13px;">No tiers assigned yet.</span>';
       } else {
-        document.getElementById('profileTitle').innerText = "Player not in database";
+        document.getElementById('profileBadges').innerHTML = '<span class="p-badge badge-region">Unknown Player</span>';
       }
     } catch (e) {
-      document.getElementById('profileTitle').innerText = "Error loading profile";
+      document.getElementById('profileBadges').innerHTML = '<span style="color:red;">Error loading</span>';
     }
   }
 
@@ -324,7 +343,6 @@
   function copyIP() { navigator.clipboard.writeText("mcpvp.club"); showToast("IP Copied to clipboard!"); }
   function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
   window.onclick = function(event) { if (event.target == document.getElementById('profileModal')) closeProfile(); }
-
   init();
 </script>
 </body>
