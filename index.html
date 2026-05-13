@@ -4,13 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PvP Club - Live Minecraft PvP Rankings</title>
-<meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players. Live data from MCTiers.">
+<meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players.">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
   body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px); background-attachment: fixed; }
+
+  /* Animations */
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+  
+  .animate-row { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+  .animate-card { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+  .modal-box { animation: scaleIn 0.3s ease-out forwards; }
 
   header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
   .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
@@ -25,63 +34,72 @@
 
   .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
 
-  .announcement { background: linear-gradient(135deg, rgba(69,162,158,0.1), rgba(102,252,241,0.05)); border: 1px solid var(--primary2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 12px; }
+  .announcement { background: linear-gradient(135deg, rgba(69,162,158,0.1), rgba(102,252,241,0.05)); border: 1px solid var(--primary2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 12px; animation: fadeIn 0.5s ease-out; }
   .ann-icon { color: var(--primary); font-size: 20px; }
   .ann-content h3 { color: var(--primary); font-size: 14px; margin-bottom: 4px; }
   .ann-content p { font-size: 13px; line-height: 1.4; color: var(--text); }
 
-  .server-ip-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .server-ip-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; animation: fadeIn 0.6s ease-out; }
   .ip-info h3 { color: var(--white); font-size: 16px; margin-bottom: 2px; }
   .ip-info p { color: var(--text2); font-size: 12px; }
   .ip-copy-container { display: flex; align-items: center; gap: 8px; background: var(--bg); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--primary2); }
   .ip-text { color: var(--primary); font-family: monospace; font-weight: 700; font-size: 16px; }
-  .copy-btn { background: var(--primary2); color: var(--bg); border: none; padding: 6px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; }
+  .copy-btn { background: var(--primary2); color: var(--bg); border: none; padding: 6px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; transition: background 0.2s, transform 0.1s; }
   .copy-btn:hover { background: var(--primary); }
+  .copy-btn:active { transform: scale(0.95); }
 
   .tabs { display: flex; gap: 6px; margin-bottom: 24px; border-bottom: 1px solid var(--surface); padding-bottom: 12px; overflow-x: auto; }
   .tab-btn { background: var(--surface); color: var(--text2); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
-  .tab-btn:hover { background: var(--surface2); color: var(--white); }
+  .tab-btn:hover { background: var(--surface2); color: var(--white); transform: translateY(-1px); }
   .tab-btn.active { background: var(--primary); color: var(--bg); }
 
   .lb-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 8px; overflow: hidden; }
   .lb-table th { background: var(--bg); color: var(--text2); font-size: 12px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
   .lb-table td { padding: 12px 16px; border-bottom: 1px solid var(--surface2); vertical-align: middle; }
-  .player-cell { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .player-cell { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.1s; }
+  .player-cell:hover { transform: translateX(4px); }
   .player-cell:hover .p-name { color: var(--primary); }
-  .mc-skin { width: 36px; height: 36px; image-rendering: pixelated; border-radius: 4px; background: var(--bg); }
+  .mc-skin { width: 36px; height: 36px; image-rendering: pixelated; border-radius: 4px; background: var(--bg); transition: transform 0.2s; }
+  .player-cell:hover .mc-skin { transform: scale(1.1); }
   .p-name { font-weight: 600; color: var(--white); font-size: 14px; transition: color 0.2s; }
   .p-title { font-size: 11px; color: var(--primary); font-weight: 600; }
-  .region-badge { background: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--surface2); }
+  .region-badge { background: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--surface2); transition: transform 0.2s; }
+  .region-badge:hover { transform: scale(1.1); }
   .r-na { color: var(--primary); } .r-eu { color: #ff9800; } .r-as { color: #03a9f4; } .r-au { color: #3f51b5; } .r-sa { color: #ff5722; }
   .tier-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .tier-tag { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+  .tier-tag { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 4px; transition: transform 0.2s; }
+  .tier-tag:hover { transform: translateY(-2px); }
   .tier-tag span { opacity: 0.7; font-weight: 400; font-size: 9px; }
   .t-ht1 { background: rgba(255,87,34,0.15); color: #ff5722; } .t-ht2 { background: rgba(255,152,0,0.15); color: #ff9800; }
   .t-ht3 { background: rgba(255,193,7,0.15); color: #ffc107; } .t-ht4 { background: rgba(139,195,74,0.15); color: #8bc34a; }
   .t-lt1 { background: rgba(3,169,244,0.15); color: #03a9f4; } .t-lt2 { background: rgba(33,150,243,0.15); color: #2196f3; }
   .t-lt3 { background: rgba(63,81,181,0.15); color: #3f51b5; } .t-lt4 { background: rgba(103,58,183,0.15); color: #673ab7; }
 
-  .tier-section { margin-bottom: 40px; }
+  .tier-section { margin-bottom: 40px; animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
   .tier-header { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--surface2); }
   .tier-1 .tier-header { color: #ffc107; border-color: #ffc10740; } .tier-2 .tier-header { color: #ff5722; border-color: #ff572240; }
   .tier-3 .tier-header { color: #03a9f4; border-color: #03a9f440; } .tier-4 .tier-header { color: #8bc34a; border-color: #8bc34a40; }
   .tier-5 .tier-header { color: #9c27b0; border-color: #9c27b040; }
   .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
-  .tier-card { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 20px 10px; text-align: center; transition: transform 0.2s, border-color 0.2s; cursor: pointer; }
-  .tier-card:hover { transform: translateY(-4px); border-color: var(--primary2); }
-  .tier-card .mc-skin { width: 64px; height: 64px; margin: 0 auto 12px; display: block; }
-  .tier-card .p-name { font-size: 13px; margin-bottom: 6px; }
+  .tier-card { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 20px 10px; text-align: center; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; cursor: pointer; }
+  .tier-card:hover { transform: translateY(-6px); border-color: var(--primary2); box-shadow: 0 8px 20px rgba(102, 252, 241, 0.1); }
+  .tier-card .mc-skin { width: 64px; height: 64px; margin: 0 auto 12px; display: block; transition: transform 0.3s; }
+  .tier-card:hover .mc-skin { transform: scale(1.1); }
+  .tier-card .p-name { font-size: 13px; margin-bottom: 6px; transition: color 0.2s; }
+  .tier-card:hover .p-name { color: var(--primary); }
 
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-  .modal-overlay.active { display: flex; }
+  .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
   .modal-box { background: var(--surface); border: 1px solid var(--primary2); border-radius: 12px; width: 450px; max-width: 90vw; padding: 32px; text-align: center; position: relative; }
-  .close-modal { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; }
-  .close-modal:hover { color: var(--white); }
-  .profile-skin { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 8px; margin: 0 auto 16px; border: 3px solid var(--primary2); }
+  .close-modal { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; transition: color 0.2s, transform 0.2s; }
+  .close-modal:hover { color: var(--white); transform: rotate(90deg); }
+  .profile-skin { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 8px; margin: 0 auto 16px; border: 3px solid var(--primary2); transition: transform 0.3s; }
+  .profile-skin:hover { transform: scale(1.05) rotate(5deg); }
   .profile-name { font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
   .profile-title { color: var(--primary); font-weight: 600; font-size: 14px; margin-bottom: 16px; }
   .profile-tiers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; text-align: left; }
-  .profile-tier-item { background: var(--bg); padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; }
+  .profile-tier-item { background: var(--bg); padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; transition: transform 0.2s; }
+  .profile-tier-item:hover { transform: translateX(4px); }
 
   .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--bg); padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; z-index: 2000; transition: bottom 0.3s ease; }
   .toast.show { bottom: 40px; }
@@ -100,6 +118,7 @@
     <div class="nav-links">
       <a href="index.html" class="nav-active"><i class="fas fa-trophy"></i> Rankings</a>
       <a href="api.html"><i class="fas fa-book"></i> API Docs</a>
+      <a href="admin.html"><i class="fas fa-cog"></i> Admin</a>
       <a href="https://discord.gg/MxUjNNMWdu" target="_blank"><i class="fab fa-discord"></i> Discord</a>
     </div>
   </nav>
@@ -109,8 +128,8 @@
   <section class="announcement">
     <div class="ann-icon"><i class="fas fa-rocket"></i></div>
     <div class="ann-content">
-      <h3>Live MCTiers API Integration!</h3>
-      <p>We now pull data live from the official MCTiers V2 API. Rankings, profiles, and gamemodes are updated in real-time!</p>
+      <h3>Live Custom API Integration!</h3>
+      <p>This site is powered by the PvP Club custom API. Admins can fully customize player data and tiers from the Admin Panel.</p>
     </div>
   </section>
 
@@ -126,7 +145,7 @@
   </section>
 
   <nav class="tabs" id="tabContainer"></nav>
-  <section id="contentArea"><div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Loading Live Data...</div></section>
+  <section id="contentArea"><div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Loading API Data...</div></section>
 </main>
 
 <div class="modal-overlay" id="profileModal">
@@ -140,82 +159,59 @@
 </div>
 
 <div class="toast" id="toast">IP Copied!</div>
-<footer><p>&copy; 2025 PvP Club. Powered by MCTiers API.</p></footer>
+<footer><p>&copy; 2025 PvP Club. Powered by Custom Supabase API.</p></footer>
 
 <script>
-  const API_BASE = "https://mctiers.com/api/v2";
+  const SUPABASE_URL = 'https://yxzxlyxtxysynbimpins.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4enhseXh0eHlzeW5iaW1waW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MzI4MDMsImV4cCI6MjA5NDIwODgwM30.l8GMu54hozDFL8kLA4_LJcm0sLSTEgArMpQ1GK3Tbgo';
+  
+  const API_BASE = `${SUPABASE_URL}/rest/v1`;
+  const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` };
+
   const catIcons = { overall: "🏆", vanilla: "🗡️", uhc: "🍎", pot: "🧪", nethop: "🔥", smp: "🌍", sword: "⚔️", axe: "🪓", mace: "🔨" };
+  const dbCategories = ['vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
   
   let activeTab = 'overall';
-  let gamemodesData = {};
 
-  async function init() {
-    await fetchGamemodes();
-    renderTabs();
-    renderContent();
-  }
-
-  async function fetchGamemodes() {
-    try {
-      const res = await fetch(`${API_BASE}/mode/list`);
-      gamemodesData = await res.json();
-    } catch (e) {
-      console.error("Failed to fetch gamemodes", e);
-      gamemodesData = { overall: {title: "Overall"}, vanilla: {title: "Vanilla"}, uhc: {title: "UHC"}, pot: {title: "Pot"}, nethop: {title: "NethOP"}, smp: {title: "SMP"}, sword: {title: "Sword"}, axe: {title: "Axe"}, mace: {title: "Mace"} };
-    }
-  }
+  function init() { renderTabs(); renderContent(); }
 
   function renderTabs() {
     const tabs = document.getElementById('tabContainer');
-    tabs.innerHTML = Object.keys(catIcons).map(cat => {
-      const name = gamemodesData[cat]?.title || cat.charAt(0).toUpperCase() + cat.slice(1);
+    const categories = ['overall', ...dbCategories];
+    tabs.innerHTML = categories.map(cat => {
+      const name = cat.charAt(0).toUpperCase() + cat.slice(1);
       return `<button class="tab-btn ${cat === activeTab ? 'active' : ''}" onclick="switchTab('${cat}')">${catIcons[cat]} ${name}</button>`;
     }).join('');
   }
 
-  function switchTab(tab) {
-    activeTab = tab;
-    renderTabs();
-    renderContent();
-  }
+  function switchTab(tab) { activeTab = tab; renderTabs(); renderContent(); }
 
   async function renderContent() {
     const content = document.getElementById('contentArea');
     content.innerHTML = `<div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Fetching ${activeTab} rankings...</div>`;
-    
-    if (activeTab === 'overall') {
-      await renderOverall(content);
-    } else {
-      await renderCategory(content, activeTab);
-    }
-  }
-
-  // Convert API pos (0=High, 1=Low) to HT/LT string
-  function formatTier(tier, pos) {
-    if (!tier) return '';
-    return pos === 0 ? `HT${tier}` : `LT${tier}`;
+    if (activeTab === 'overall') { await renderOverall(content); } else { await renderCategory(content, activeTab); }
   }
 
   async function renderOverall(container) {
     try {
-      const res = await fetch(`${API_BASE}/mode/overall?count=50&from=0`);
+      const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
       const data = await res.json();
       
       let html = `<table class="lb-table"><thead><tr><th>#</th><th>Player</th><th>Tiers</th></tr></thead><tbody>`;
       data.forEach((p, index) => {
         let tierTags = '';
-        if (p.rankings) {
-          for (const [key, rank] of Object.entries(p.rankings)) {
-            const tierStr = formatTier(rank.tier, rank.pos);
-            const icon = catIcons[key] || '';
-            tierTags += `<div class="tier-tag t-${tierStr.toLowerCase()}"><span>${icon} ${key}</span> ${tierStr}</div>`;
+        dbCategories.forEach(cat => {
+          if (p[cat]) {
+            const tierStr = p[cat].toUpperCase();
+            tierTags += `<div class="tier-tag t-${tierStr.toLowerCase()}"><span>${catIcons[cat]} ${cat}</span> ${tierStr}</div>`;
           }
-        }
-        html += `<tr>
+        });
+        const delay = index * 50; // Stagger animation
+        html += `<tr class="animate-row" style="animation-delay: ${delay}ms">
           <td style="font-weight:700; color:var(--text2)">${index + 1}</td>
-          <td><div class="player-cell" onclick="openProfile('${p.uuid}', '${p.name}')">
-            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}" loading="lazy">
-            <div><span class="p-name">${p.name}</span><span class="p-title"><i class="fas fa-shield-halved"></i> ${p.points} pts</span></div>
+          <td><div class="player-cell" onclick="openProfile('${p.username}')">
+            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.username}/48" alt="${p.username}" loading="lazy">
+            <div><span class="p-name">${p.username}</span><span class="p-title"><i class="fas fa-shield-halved"></i> ${p.points || 0} pts</span></div>
           </div></td>
           <td><div class="tier-tags">${tierTags}</div></td>
         </tr>`;
@@ -223,61 +219,82 @@
       html += `</tbody></table>`;
       container.innerHTML = html;
     } catch (e) {
-      container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load overall rankings.</p></div>`;
+      container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load overall rankings. Did you run the SQL setup?</p></div>`;
     }
   }
 
   async function renderCategory(container, catName) {
     try {
-      const res = await fetch(`${API_BASE}/mode/${catName}?count=20&from=0`);
-      const data = await res.json(); // Format: { "1": [players], "2": [players]... }
+      // Fetch players who have a rank in this specific category, ordered by points generally
+      const res = await fetch(`${API_BASE}/players?select=username,region,points,${catName}&not.${catName}=is.null&order=points.desc.nullslast`, { headers });
+      const data = await res.json();
       
+      // Group by tier
+      const tiers = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+      data.forEach(p => {
+        const tierVal = parseInt(p[catName].replace(/[^0-9]/g, ''));
+        if (tierVal >= 1 && tierVal <= 5) {
+          tiers[tierVal].push(p);
+        }
+      });
+
       let html = '';
-      for (const [tierNum, players] of Object.entries(data)) {
-        html += `<section class="tier-section tier-${tierNum}">
+      let sectionDelay = 0;
+      for (const [tierNum, players] of Object.entries(tiers)) {
+        if (players.length === 0) continue;
+        
+        html += `<section class="tier-section tier-${tierNum}" style="animation-delay: ${sectionDelay}ms">
           <div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierNum}</div>
           <div class="tier-grid">`;
           
+        let cardDelay = 0;
         players.forEach(p => {
-          html += `<article class="tier-card" onclick="openProfile('${p.uuid}', '${p.name}')">
-            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.name}/48" alt="${p.name}" loading="lazy">
-            <div class="p-name">${p.name}</div>
+          html += `<article class="tier-card animate-card" style="animation-delay: ${cardDelay}ms" onclick="openProfile('${p.username}')">
+            <img class="mc-skin" src="https://mc-heads.net/avatar/${p.username}/48" alt="${p.username}" loading="lazy">
+            <div class="p-name">${p.username}</div>
             <span class="region-badge r-${p.region.toLowerCase()}">${p.region}</span>
           </article>`;
+          cardDelay += 60;
         });
 
         html += `</div></section>`;
+        sectionDelay += 150;
       }
+      
       container.innerHTML = html || `<div style="text-align:center; padding:60px;"><h3>No Data</h3></div>`;
     } catch (e) {
       container.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4f4f;"><h3>API Error</h3><p>Could not load ${catName} rankings.</p></div>`;
     }
   }
 
-  async function openProfile(uuid, name) {
-    document.getElementById('profileName').innerText = name;
-    document.getElementById('profileSkin').src = `https://mc-heads.net/avatar/${name}/128`;
+  async function openProfile(username) {
+    document.getElementById('profileName').innerText = username;
+    document.getElementById('profileSkin').src = `https://mc-heads.net/avatar/${username}/128`;
     document.getElementById('profileTitle').innerText = "Loading profile...";
     document.getElementById('profileTiers').innerHTML = '';
     document.getElementById('profileModal').classList.add('active');
 
     try {
-      const res = await fetch(`${API_BASE}/profile/${uuid}`);
+      const res = await fetch(`${API_BASE}/players?select=*&username=eq.${username}`, { headers });
       const data = await res.json();
-
-      document.getElementById('profileTitle').innerText = `Rank #${data.overall} • ${data.points} pts`;
       
-      let tiersHtml = '';
-      if (data.rankings) {
-        for (const [key, rank] of Object.entries(data.rankings)) {
-          const tierStr = formatTier(rank.tier, rank.pos);
-          const icon = catIcons[key] || '';
-          tiersHtml += `<div class="profile-tier-item t-${tierStr.toLowerCase()}" style="border-left: 3px solid;">
-            <span>${icon} ${gamemodesData[key]?.title || key}</span> <span>${tierStr}</span>
-          </div>`;
-        }
+      if (data && data.length > 0) {
+        const p = data[0];
+        document.getElementById('profileTitle').innerText = `Rank #${p.overall_rank || '?' } • ${p.points || 0} pts`;
+        
+        let tiersHtml = '';
+        dbCategories.forEach(cat => {
+          if (p[cat]) {
+            const tierStr = p[cat].toUpperCase();
+            tiersHtml += `<div class="profile-tier-item t-${tierStr.toLowerCase()}" style="border-left: 3px solid;">
+              <span>${catIcons[cat]} ${cat.charAt(0).toUpperCase() + cat.slice(1)}</span> <span>${tierStr}</span>
+            </div>`;
+          }
+        });
+        document.getElementById('profileTiers').innerHTML = tiersHtml;
+      } else {
+        document.getElementById('profileTitle').innerText = "Player not in database";
       }
-      document.getElementById('profileTiers').innerHTML = tiersHtml;
     } catch (e) {
       document.getElementById('profileTitle').innerText = "Error loading profile";
     }
