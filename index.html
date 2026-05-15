@@ -491,7 +491,7 @@
           <span class="p-badge ${titleInfo.class}"><i class="fas fa-crown"></i> ${titleInfo.text}</span>
           <span class="p-badge badge-region"><i class="fas fa-globe-americas"></i> ${regionFull}</span>`;
 
-        document.getElementById('profile-badges').innerHTML = `
+        document.getElementById('profilePosition').innerHTML = `
           <div class="stat-label">Position</div>
           <div class="stat-value">#${overallRank}</div>
           <div class="stat-sub">OVERALL (${pts} points)</div>`;
@@ -512,7 +512,7 @@
         });
         document.getElementById('profileTiers').innerHTML = tiersHtml || '<span style="color:var(--text2);font-size:13px">No tiers assigned yet.</span>';
       } else {
-        document.getElementById('profileBadges').innerHTML = '<span class="p-badge badge-region">Unknown Player</span>';
+        document.getElementById('profilePosition).innerHTML = '<span class="p-badge badge-region">Unknown Player</span>';
       }
     } catch (e) {
       document.getElementById('profileBadges').innerHTML = '<span style="color:red;">Error loading</span>';
