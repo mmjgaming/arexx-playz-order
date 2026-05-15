@@ -292,28 +292,28 @@
 
   /* ── SVG ICON MAPS ── */
   const catIcons = {
-    overall: '<img src="/tier_icons/overall.svg" width="18" height="18" alt="Overall">',
-    vanilla: '<img src="/tier_icons/vanilla.svg" width="18" height="18" alt="Vanilla">',
-    uhc:     '<img src="/tier_icons/uhc.svg" width="18" height="18" alt="UHC">',
-    pot:     '<img src="/tier_icons/pot.svg" width="18" height="18" alt="Pot">',
-    nethop:  '<img src="/tier_icons/nethop.svg" width="18" height="18" alt="NethOP">',
-    smp:     '<img src="/tier_icons/smp.svg" width="18" height="18" alt="SMP">',
-    sword:   '<img src="/tier_icons/sword.svg" width="18" height="18" alt="Sword">',
-    axe:     '<img src="/tier_icons/axe.svg" width="18" height="18" alt="Axe">', /* Added missing Axe */
-    mace:    '<img src="/tier_icons/mace.svg" width="18" height="18" alt="Mace">',
-    ltm:     '<img src="/tier_icons/2v2.svg" width="18" height="18" alt="LTMs">'
+    overall: '<img src="overall.svg" width="18" height="18" alt="Overall">',
+    vanilla: '<img src="vanilla.svg" width="18" height="18" alt="Vanilla">',
+    uhc:     '<img src="uhc.svg" width="18" height="18" alt="UHC">',
+    pot:     '<img src="pot.svg" width="18" height="18" alt="Pot">',
+    nethop:  '<img src="nethop.svg" width="18" height="18" alt="NethOP">',
+    smp:     '<img src="smp.svg" width="18" height="18" alt="SMP">',
+    sword:   '<img src="sword.svg" width="18" height="18" alt="Sword">',
+    axe:     '<img src="axe.svg" width="18" height="18" alt="Axe">', /* Added missing Axe */
+    mace:    '<img src="mace.svg" width="18" height="18" alt="Mace">',
+    ltm:     '<img src="2v2.svg" width="18" height="18" alt="LTMs">'
   };
 
   const catTags = {
-    overall: '<img src="/tier_icons/overall.svg" width="12" height="12" alt="Overall">',
-    vanilla: '<img src="/tier_icons/vanilla.svg" width="12" height="12" alt="Vanilla">',
-    uhc:     '<img src="/tier_icons/uhc.svg" width="12" height="12" alt="UHC">',
-    pot:     '<img src="/tier_icons/pot.svg" width="12" height="12" alt="Pot">',
-    nethop:  '<img src="/tier_icons/nethop.svg" width="12" height="12" alt="NethOP">',
-    smp:     '<img src="/tier_icons/smp.svg" width="12" height="12" alt="SMP">',
-    sword:   '<img src="/tier_icons/sword.svg" width="12" height="12" alt="Sword">',
-    axe:     '<img src="/tier_icons/axe.svg" width="12" height="12" alt="Axe">',
-    mace:    '<img src="/tier_icons/mace.svg" width="12" height="12" alt="Mace">'
+    overall: '<img src="overall.svg" width="12" height="12" alt="Overall">',
+    vanilla: '<img src="vanilla.svg" width="12" height="12" alt="Vanilla">',
+    uhc:     '<img src="uhc.svg" width="12" height="12" alt="UHC">',
+    pot:     '<img src="pot.svg" width="12" height="12" alt="Pot">',
+    nethop:  '<img src="nethop.svg" width="12" height="12" alt="NethOP">',
+    smp:     '<img src="smp.svg" width="12" height="12" alt="SMP">',
+    sword:   '<img src="sword.svg" width="12" height="12" alt="Sword">',
+    axe:     '<img src="axe.svg" width="12" height="12" alt="Axe">',
+    mace:    '<img src="mace.svg" width="12" height="12" alt="Mace">'
   };
 
   const catModal = {
@@ -491,7 +491,7 @@
           <span class="p-badge ${titleInfo.class}"><i class="fas fa-crown"></i> ${titleInfo.text}</span>
           <span class="p-badge badge-region"><i class="fas fa-globe-americas"></i> ${regionFull}</span>`;
 
-        document.getElementById('profilePosition').innerHTML = `
+        document.getElementById('profile-badges').innerHTML = `
           <div class="stat-label">Position</div>
           <div class="stat-value">#${overallRank}</div>
           <div class="stat-sub">OVERALL (${pts} points)</div>`;
