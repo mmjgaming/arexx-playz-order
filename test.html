@@ -3,25 +3,512 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PvP Club - Live Minecraft PvP Rankings</title>
-<meta name="description" content="PvP Club is the definitive ranking system for Minecraft PvP players.">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<title>MC Tiers - Live Minecraft PvP Rankings</title>
+<meta name="description" content="MC Tiers is the definitive ranking system for Minecraft PvP players.">
+<link rel="icon" href="icon.png" type="image/png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  :root { --bg: #0b0c10; --surface: #1f2833; --surface2: #2c3e50; --primary: #66fcf1; --primary2: #45a29e; --text: #c5c6c7; --text2: #8b8fa3; --white: #ffffff; }
+  :root { --bg: #050507; --surface: #0e0e12; --surface2: #1a1a22; --surface3: #25252f; --primary: #6c5ce7; --primary2: #a29bfe; --text: #b8b8cc; --text2: #6c6c80; --white: #ffffff; --gold: #f1c40f; --silver: #bdc3c7; --bronze: #e67e22; }
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-  body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(102, 252, 241, 0.25) 0%, rgba(69, 162, 158, 0.08) 35%, transparent 65%), repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.01) 15px, rgba(255,255,255,0.01) 30px); background-attachment: fixed; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; background-image: radial-gradient(ellipse at 50% -10%, rgba(108, 92, 231, 0.12) 0%, rgba(108, 92, 231, 0.04) 40%, transparent 70%); background-attachment: fixed; }
 
-  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-  
-  .animate-row { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
-  .animate-card { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
-  .modal-box { animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 
-  header { background: rgba(31, 40, 51, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--primary2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .animate-row { animation: fadeInUp 0.35s ease-out forwards; opacity: 0; }
+  .animate-card { animation: fadeInUp 0.35s ease-out forwards; opacity: 0; }
+
+  /* ── HEADER ── */
+  header { background: rgba(14, 14, 18, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--surface2); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
   .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary2)); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; font-size: 18px; }
-  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing:
+  .logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--primary), #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 900; font-size: 14px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
+  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+  .logo-text span { background: linear-gradient(135deg, var(--primary2), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-weight: 600; font-size: 14px; transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-active { color: var(--primary2) !important; }
+  .nav-ip { display: flex; align-items: center; gap: 8px; background: var(--surface); padding: 7px 14px; border-radius: 8px; border: 1px solid var(--surface2); cursor: pointer; transition: all 0.2s; }
+  .nav-ip:hover { background: var(--surface2); border-color: var(--primary); }
+  .nav-ip-label { color: var(--text2); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .nav-ip-addr { color: var(--primary2); font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; font-size: 13px; }
+
+  /* ── LAYOUT ── */
+  .page-layout { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  .main-content { min-width: 0; }
+
+  /* ── SERVER IP ── */
+  .server-ip-box { background: linear-gradient(135deg, rgba(108, 92, 231, 0.06), rgba(139, 92, 246, 0.03)); border: 1px solid var(--surface2); border-radius: 10px; padding: 18px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; animation: fadeIn 0.5s ease-out; }
+  .ip-info h3 { color: var(--white); font-size: 15px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+  .ip-info h3 i { color: var(--primary2); }
+  .ip-info p { color: var(--text2); font-size: 12px; }
+  .ip-copy-container { display: flex; align-items: center; gap: 8px; background: var(--bg); padding: 7px 14px; border-radius: 8px; border: 1px solid var(--primary); box-shadow: 0 0 16px rgba(108, 92, 231, 0.1); }
+  .ip-text { color: var(--primary2); font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; font-size: 15px; }
+  .copy-btn { background: var(--primary); color: var(--white); border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px; transition: background 0.2s, transform 0.1s; }
+  .copy-btn:hover { background: #7c6cf0; }
+  .copy-btn:active { transform: scale(0.95); }
+
+  /* ── SEARCH BAR ── */
+  .search-wrap { position: relative; margin-bottom: 20px; animation: fadeIn 0.5s ease-out; }
+  .search-bar { width: 100%; background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 12px 44px 12px 44px; color: var(--white); font-size: 14px; font-weight: 500; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+  .search-bar::placeholder { color: var(--text2); }
+  .search-bar:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15); }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text2); font-size: 15px; pointer-events: none; transition: color 0.2s; }
+  .search-bar:focus ~ .search-icon { color: var(--primary2); }
+  .search-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: var(--surface2); border: none; color: var(--text2); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 12px; display: none; align-items: center; justify-content: center; transition: all 0.15s; }
+  .search-clear:hover { background: var(--primary); color: var(--white); }
+  .search-clear.visible { display: flex; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 6px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar { height: 3px; }
+  .tabs::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+  .tab-btn { background: var(--surface); color: var(--text2); border: 1px solid var(--surface2); padding: 10px 16px 8px; border-radius: 8px; cursor: pointer; font-size: 10px; font-weight: 700; transition: all 0.2s; white-space: nowrap; display: flex; flex-direction: column; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.8px; min-width: 72px; }
+  .tab-btn:hover { background: var(--surface2); color: var(--white); transform: translateY(-2px); border-color: var(--surface3); }
+  .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3); }
+  .tab-btn img { width: 24px; height: 24px; vertical-align: middle; transition: transform 0.2s; filter: grayscale(100%); opacity: 0.7; }
+  .tab-btn:hover img { transform: scale(1.1); filter: grayscale(0%); opacity: 1; }
+  .tab-btn.active img { filter: grayscale(0%); opacity: 1; }
+  .tab-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* ── OVERALL TABLE ── */
+  .lb-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 10px; overflow: hidden; border: 1px solid var(--surface2); }
+  .lb-table th { background: var(--bg); color: var(--text2); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--surface2); }
+  .lb-table td { padding: 16px; border-bottom: 1px solid var(--surface2); vertical-align: middle; }
+  .lb-table tr:last-child td { border-bottom: none; }
+  .lb-table tbody tr { transition: background 0.15s; }
+  .lb-table tbody tr:hover { background: var(--surface2); }
+
+  .rank-row-1 { background: rgba(241, 196, 15, 0.04) !important; }
+  .rank-row-1:hover { background: rgba(241, 196, 15, 0.08) !important; }
+  .rank-row-2 { background: rgba(189, 195, 199, 0.04) !important; }
+  .rank-row-2:hover { background: rgba(189, 195, 199, 0.08) !important; }
+  .rank-row-3 { background: rgba(230, 126, 34, 0.04) !important; }
+  .rank-row-3:hover { background: rgba(230, 126, 34, 0.08) !important; }
+
+  .rank-cell { font-weight: 800; font-size: 16px; color: var(--text2); width: 50px; }
+  .rank-cell-1 { color: var(--gold) !important; font-size: 20px !important; }
+  .rank-cell-2 { color: var(--silver) !important; font-size: 18px !important; }
+  .rank-cell-3 { color: var(--bronze) !important; font-size: 18px !important; }
+
+  .player-cell { display: flex; align-items: center; gap: 14px; cursor: pointer; transition: transform 0.1s; }
+  .player-cell:hover { transform: translateX(4px); }
+  .player-cell:hover .p-name { color: var(--primary2); }
+  
+  /* NameMC API specific styling */
+  .mc-skin { width: 36px; height: 36px; image-rendering: pixelated; border-radius: 4px; background: var(--surface3); transition: transform 0.2s; }
+  .player-cell:hover .mc-skin { transform: scale(1.1); }
+  
+  .p-name { font-weight: 700; color: var(--white); font-size: 14px; transition: color 0.2s; }
+  .p-title { font-size: 11px; color: var(--primary2); font-weight: 600; display: block; margin-top: 2px; }
+
+  .region-badge { background: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--surface2); margin-left: auto; }
+  .r-na { color: var(--primary2); } .r-eu { color: #e67e22; } .r-as { color: #3498db; } .r-au { color: #3f51b5; } .r-sa { color: #e74c3c; }
+
+  .tier-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tier-tag { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: inline-flex; align-items: center; gap: 4px; }
+  .tier-tag img { width: 12px; height: 12px; vertical-align: middle; }
+  .t-ht1 { background: rgba(241,196,15,0.15); color: #f1c40f; border: 1px solid #f1c40f20; } .t-ht2 { background: rgba(230,126,34,0.15); color: #e67e22; border: 1px solid #e67e2220; }
+  .t-ht3 { background: rgba(231,76,60,0.15); color: #e74c3c; border: 1px solid #e74c3c20; } .t-ht4 { background: rgba(46,204,113,0.15); color: #2ecc71; border: 1px solid #2ecc7120; }
+  .t-lt1 { background: rgba(52,152,219,0.15); color: #3498db; border: 1px solid #3498db20; } .t-lt2 { background: rgba(108,92,231,0.15); color: #6c5ce7; border: 1px solid #6c5ce720; }
+  .t-lt3 { background: rgba(155,89,182,0.15); color: #9b59b6; border: 1px solid #9b59b620; } .t-lt4 { background: rgba(149,165,166,0.15); color: #95a5a6; border: 1px solid #95a5a620; }
+
+  /* ── TIER SECTIONS ── */
+  .tier-section { margin-bottom: 40px; animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
+  .tier-header { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--surface2); }
+  .tier-1 .tier-header { color: var(--gold); border-color: #f1c40f40; } .tier-2 .tier-header { color: #e67e22; border-color: #e67e2240; }
+  .tier-3 .tier-header { color: #3498db; border-color: #3498db40; } .tier-4 .tier-header { color: #2ecc71; border-color: #2ecc7140; }
+  .tier-5 .tier-header { color: #9b59b6; border-color: #9b59b640; }
+  .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+  .tier-card { background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px; padding: 20px 10px; text-align: center; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; cursor: pointer; }
+  .tier-card:hover { transform: translateY(-6px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.15); }
+  .tier-card .mc-skin { width: 64px; height: 64px; margin: 0 auto 12px; display: block; transition: transform 0.3s; }
+  .tier-card:hover .mc-skin { transform: scale(1.1); }
+  .tier-card .p-name { font-size: 13px; margin-bottom: 6px; transition: color 0.2s; }
+  .tier-card:hover .p-name { color: var(--primary2); }
+
+  /* ── LTM ── */
+  .ltm-container { background: var(--surface); border: 1px solid var(--surface2); border-radius: 12px; padding: 60px 40px; text-align: center; animation: fadeInUp 0.5s ease-out; }
+  .ltm-icon { margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
+  .ltm-icon img { width: 72px; height: 72px; }
+  .ltm-container h2 { color: var(--white); font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+  .ltm-container p { color: var(--text2); font-size: 15px; line-height: 1.7; max-width: 480px; margin: 0 auto; }
+
+  /* ── PROFILE MODAL ── */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,7,0.92); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+  .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
+  .modal-box { background: var(--surface); border: 1px solid var(--surface2); border-radius: 16px; width: 420px; max-width: 95vw; overflow: hidden; animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  .modal-banner { height: 80px; background: linear-gradient(135deg, var(--primary), var(--bg)); position: relative; }
+  .close-modal { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: background 0.2s; z-index: 10; display: flex; align-items: center; justify-content: center; }
+  .close-modal:hover { background: rgba(255,0,0,0.6); }
+
+  .profile-header { text-align: center; margin-top: -48px; padding: 0 24px 20px; border-bottom: 1px solid var(--surface2); }
+  .profile-avatar { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 50%; border: 4px solid var(--surface); margin-bottom: 12px; transition: transform 0.3s; }
+  .profile-avatar:hover { transform: scale(1.1) rotate(5deg); }
+  .profile-username { font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+  .profile-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .p-badge { padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-master { background: linear-gradient(135deg, #f1c40f, #e67e22); color: #000; }
+  .badge-ace { background: linear-gradient(135deg, #3498db, #8e44ad); color: #fff; }
+  .badge-warrior { background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; }
+  .badge-region { background: var(--bg); color: var(--text2); border: 1px solid var(--surface2); }
+
+  .profile-body { padding: 20px 24px; }
+  .profile-stat-box { background: var(--bg); border: 1px solid var(--surface2); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 20px; }
+  .stat-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .stat-value { font-size: 28px; font-weight: 800; color: var(--white); }
+  .stat-sub { font-size: 13px; color: var(--primary2); font-weight: 600; }
+
+  .profile-tiers-title { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; }
+  .profile-tiers-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .p-tier-item { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--bg); border: 1px solid var(--surface2); transition: transform 0.2s, border-color 0.2s; }
+  .p-tier-item:hover { transform: translateY(-2px); border-color: var(--primary); }
+  .p-tier-icon { width: 16px; height: 16px; display: flex; align-items: center; }
+  .p-tier-icon img { width: 16px; height: 16px; }
+  .p-tier-name { color: var(--text2); font-size: 12px; }
+  .p-tier-rank { font-weight: 800; color: var(--white); }
+
+  .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--white); padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; z-index: 2000; transition: bottom 0.3s ease; box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
+  .toast.show { bottom: 40px; }
+  .loading-box { text-align: center; padding: 60px; color: var(--text2); }
+  .empty-state { text-align: center; padding: 60px; color: var(--text2); }
+
+  footer { text-align: center; padding: 24px; color: var(--text2); font-size: 12px; border-top: 1px solid var(--surface2); margin-top: 40px; }
+  footer a { color: var(--primary2); text-decoration: none; }
+  .footer-api { margin-top: 4px; font-size: 11px; }
+
+  @media(max-width:600px) { .lb-table th:nth-child(3),.lb-table td:nth-child(3) { display:none; } .nav-links a span { display:none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-container">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">MT</div>
+      <div class="logo-text">MC <span>Tiers</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><i class="fas fa-home"></i> <span>Home</span></a>
+      <a href="#" class="nav-active"><i class="fas fa-trophy"></i> <span>Rankings</span></a>
+      <a href="#"><i class="fas fa-info-circle"></i> <span>Information</span></a>
+    </div>
+    <div class="nav-ip" onclick="copyIP()" title="Click to copy">
+      <span class="nav-ip-label">IP:</span>
+      <span class="nav-ip-addr">play.snipernetwork.top</span>
+      <i class="fas fa-copy" style="color:var(--text2);font-size:11px;margin-left:4px"></i>
+    </div>
+  </nav>
+</header>
+
+<div class="page-layout">
+  <div class="main-content">
+    <section class="server-ip-box">
+      <div class="ip-info">
+        <h3><i class="fas fa-server"></i> Server IP</h3>
+        <p>Join the club and start climbing the ranks</p>
+      </div>
+      <div class="ip-copy-container">
+        <span class="ip-text">play.snipernetwork.top</span>
+        <button class="copy-btn" onclick="copyIP()">Copy</button>
+      </div>
+    </section>
+
+    <nav class="tabs" id="tabContainer"></nav>
+
+    <div class="search-wrap">
+      <input type="text" class="search-bar" id="searchBar" placeholder="Search player..." oninput="handleSearch()">
+      <i class="fas fa-search search-icon"></i>
+      <button class="search-clear" id="searchClear" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <section id="contentArea"><div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Loading API Data...</div></section>
+  </div>
+</div>
+
+<div class="modal-overlay" id="profileModal">
+  <div class="modal-box">
+    <div class="modal-banner">
+      <button class="close-modal" onclick="closeProfile()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="profile-header">
+      <img id="profileAvatar" class="profile-avatar" src="" alt="Avatar">
+      <div id="profileUsername" class="profile-username"></div>
+      <div id="profileBadges" class="profile-badges"></div>
+    </div>
+    <div class="profile-body">
+      <div id="profilePosition" class="profile-stat-box"></div>
+      <div class="profile-tiers-title">Gamemode Tiers & Ranks</div>
+      <div id="profileTiers" class="profile-tiers-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">IP Copied!</div>
+<footer>
+  <p>&copy; 2026 MC Tiers. All rights reserved.</p>
+  <p class="footer-api">Created by <a href="https://mmjplaysyt.work.gd/" target="_blank">MMJ API</a> &bull; Avatars by <a href="https://namemc.com/" target="_blank">NameMC</a></p>
+</footer>
+
+<script>
+  const SUPABASE_URL = 'https://yxzxlyxtxysynbimpins.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4enhseXh0eHlzeW5iaW1waW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MzI4MDMsImV4cCI6MjA5NDIwODgwM30.l8GMu54hozDFL8kLA4_LJcm0sLSTEgArMpQ1GK3Tbgo';
+
+  const API_BASE = `${SUPABASE_URL}/rest/v1`;
+  const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` };
+  const SERVER_IP = 'play.snipernetwork.top';
+
+  /* ── NAMEMC API ── */
+  function getAvatar(name, size) { return `https://namemc.com/avatar/${name}/${size||48}`; }
+  function getHead(name, size) { return `https://namemc.com/head/${name}/${size||128}`; }
+
+  /* ── SVG ICON MAPS ── */
+  const catIcons = {
+    overall: '<img src="overall.svg" width="24" height="24" alt="Overall">',
+    vanilla: '<img src="vanilla.svg" width="24" height="24" alt="Vanilla">',
+    uhc:     '<img src="uhc.svg" width="24" height="24" alt="UHC">',
+    pot:     '<img src="pot.svg" width="24" height="24" alt="Pot">',
+    nethop:  '<img src="nethop.svg" width="24" height="24" alt="NethOP">',
+    smp:     '<img src="smp.svg" width="24" height="24" alt="SMP">',
+    sword:   '<img src="sword.svg" width="24" height="24" alt="Sword">',
+    axe:     '<img src="axe.svg" width="24" height="24" alt="Axe">',
+    mace:    '<img src="mace.svg" width="24" height="24" alt="Mace">',
+    ltm:     '<img src="2v2.svg" width="24" height="24" alt="LTMs">'
+  };
+
+  const catTags = {
+    overall: '<img src="overall.svg" width="12" height="12" alt="Overall">',
+    vanilla: '<img src="vanilla.svg" width="12" height="12" alt="Vanilla">',
+    uhc:     '<img src="uhc.svg" width="12" height="12" alt="UHC">',
+    pot:     '<img src="pot.svg" width="12" height="12" alt="Pot">',
+    nethop:  '<img src="nethop.svg" width="12" height="12" alt="NethOP">',
+    smp:     '<img src="smp.svg" width="12" height="12" alt="SMP">',
+    sword:   '<img src="sword.svg" width="12" height="12" alt="Sword">',
+    axe:     '<img src="axe.svg" width="12" height="12" alt="Axe">',
+    mace:    '<img src="mace.svg" width="12" height="12" alt="Mace">'
+  };
+
+  const catModal = {
+    overall: '<img src="overall.svg" width="16" height="16" alt="Overall">',
+    vanilla: '<img src="vanilla.svg" width="16" height="16" alt="Vanilla">',
+    uhc:     '<img src="uhc.svg" width="16" height="16" alt="UHC">',
+    pot:     '<img src="pot.svg" width="16" height="16" alt="Pot">',
+    nethop:  '<img src="nethop.svg" width="16" height="16" alt="NethOP">',
+    smp:     '<img src="smp.svg" width="16" height="16" alt="SMP">',
+    sword:   '<img src="sword.svg" width="16" height="16" alt="Sword">',
+    axe:     '<img src="axe.svg" width="16" height="16" alt="Axe">',
+    mace:    '<img src="mace.svg" width="16" height="16" alt="Mace">'
+  };
+
+  const dbCategories = ['vanilla','uhc','pot','nethop','smp','sword','axe','mace'];
+  const regionNames = { 'NA':'North America', 'EU':'Europe', 'AS':'Asia', 'AU':'Australia', 'SA':'South America', 'ME':'Middle East', 'AF':'Africa' };
+
+  let activeTab = 'overall';
+  let allPlayersCache = [];
+
+  const mockTopPlayers = [
+    { username: 'ItzRealMe', points: 330, region: 'NA', vanilla: 'HT3', uhc: 'HT2', pot: 'HT1', sword: 'HT2', nethop: 'HT1', smp: 'HT1', axe: 'HT1', mace: 'HT2' },
+    { username: 'coldified', points: 326, region: 'EU', vanilla: 'LT1', uhc: 'HT1', pot: 'HT2', sword: 'HT1', nethop: 'LT2', smp: 'LT1', axe: 'LT1', mace: 'HT1' },
+    { username: 'Swight', points: 290, region: 'NA', vanilla: 'HT3', uhc: 'LT2', pot: 'HT2', sword: 'HT3', nethop: 'LT1', smp: 'HT2', axe: 'LT3', mace: 'HT2' }
+  ];
+
+  function init() { renderTabs(); renderContent(); }
+
+  function renderTabs() {
+    const tabs = document.getElementById('tabContainer');
+    const categories = ['overall', ...dbCategories, 'ltm'];
+    tabs.innerHTML = categories.map(cat => {
+      const name = cat === 'ltm' ? 'LTMs' : cat.charAt(0).toUpperCase() + cat.slice(1);
+      return `<button class="tab-btn ${cat === activeTab ? 'active' : ''}" onclick="switchTab('${cat}')">${catIcons[cat] || ''}<span class="tab-label">${name}</span></button>`;
+    }).join('');
+  }
+
+  function switchTab(tab) { activeTab = tab; renderTabs(); renderContent(); }
+
+  /* ── SEARCH ── */
+  function handleSearch() {
+    const bar = document.getElementById('searchBar');
+    const clear = document.getElementById('searchClear');
+    clear.classList.toggle('visible', bar.value.length > 0);
+    renderContent();
+  }
+
+  function clearSearch() {
+    document.getElementById('searchBar').value = '';
+    document.getElementById('searchClear').classList.remove('visible');
+    renderContent();
+  }
+
+  function getFilteredPlayers() {
+    const q = document.getElementById('searchBar').value.trim().toLowerCase();
+    if (!q) return allPlayersCache;
+    return allPlayersCache.filter(p => p.username.toLowerCase().includes(q));
+  }
+
+  async function renderContent() {
+    const content = document.getElementById('contentArea');
+    content.innerHTML = `<div class="loading-box"><i class="fas fa-spinner fa-spin"></i> Fetching ${activeTab} rankings...</div>`;
+
+    if (allPlayersCache.length === 0) {
+      try {
+        const res = await fetch(`${API_BASE}/players?select=*&order=points.desc.nullslast`, { headers });
+        let apiData = await res.json();
+        if (!apiData || apiData.length === 0) { allPlayersCache = mockTopPlayers; } else { allPlayersCache = apiData; }
+      } catch (e) { allPlayersCache = mockTopPlayers; }
+    }
+
+    if (activeTab === 'overall') { renderOverall(content); }
+    else if (activeTab === 'ltm') { renderLTM(content); }
+    else { renderCategory(content, activeTab); }
+  }
+
+  /* ── TITLES WITH EMOJIS ── */
+  function getPlayerTitle(points) {
+    if (points >= 300) return { text: '👑 Combat Master', class: 'badge-master' };
+    if (points >= 200) return { text: '⚔️ Combat Ace', class: 'badge-ace' };
+    return { text: '🛡️ Warrior', class: 'badge-warrior' };
+  }
+
+  function renderOverall(container) {
+    const data = getFilteredPlayers();
+    if (!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3><p style="margin-top:8px;font-size:13px">Try a different search.</p></div>`; return; }
+
+    let html = `<table class="lb-table"><thead><tr><th>#</th><th>Player</th><th>Tiers</th></tr></thead><tbody>`;
+    data.forEach((p, index) => {
+      let tierTags = '';
+      dbCategories.forEach(cat => {
+        if (p[cat]) {
+          const tierStr = p[cat].toUpperCase();
+          const num = tierStr.replace(/[^0-9]/g,'');
+          const cls = tierStr.startsWith('H') ? `t-ht${num}` : `t-lt${num}`;
+          const iconHtml = catTags[cat] || '';
+          tierTags += `<div class="tier-tag ${cls}">${iconHtml} ${tierStr}</div>`;
+        }
+      });
+      const globalRank = allPlayersCache.findIndex(pl => pl.username === p.username) + 1;
+      const reg = (p.region || 'NA').toUpperCase();
+      const rowClass = globalRank <= 3 ? `rank-row-${globalRank}` : '';
+      const rankClass = globalRank <= 3 ? `rank-cell-${globalRank}` : '';
+      const titleInfo = getPlayerTitle(p.points || 0);
+      
+      html += `<tr class="animate-row ${rowClass}" style="animation-delay: ${index * 50}ms">
+        <td class="rank-cell ${rankClass}">${globalRank}</td>
+        <td><div class="player-cell" onclick="openProfile('${p.username}')">
+          <img class="mc-skin" src="${getAvatar(p.username,48)}" alt="${p.username}" loading="lazy">
+          <div><span class="p-name">${p.username}</span><span class="p-title">${titleInfo.text} (${p.points || 0} points)</span></div>
+          <span class="region-badge r-${reg.toLowerCase()}">${reg}</span>
+        </div></td>
+        <td><div class="tier-tags">${tierTags}</div></td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  }
+
+  function renderCategory(container, catName) {
+    const data = getFilteredPlayers();
+    if (!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No Players Found</h3></div>`; return; }
+
+    const tiers = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+    data.forEach(p => {
+      if (p[catName] && p[catName].trim() !== '') {
+        const tierVal = parseInt(p[catName].replace(/[^0-9]/g, ''));
+        if (tierVal >= 1 && tierVal <= 5) tiers[tierVal].push(p);
+      }
+    });
+
+    let html = ''; let sectionDelay = 0; let hasAnyTiers = false;
+    for (const [tierNum, players] of Object.entries(tiers)) {
+      if (players.length === 0) continue;
+      hasAnyTiers = true;
+      html += `<section class="tier-section tier-${tierNum}" style="animation-delay: ${sectionDelay}ms"><div class="tier-header"><i class="fas fa-layer-group"></i> Tier ${tierNum}</div><div class="tier-grid">`;
+      let cardDelay = 0;
+      players.forEach(p => {
+        const reg = (p.region || 'NA').toUpperCase();
+        html += `<article class="tier-card animate-card" style="animation-delay: ${cardDelay}ms" onclick="openProfile('${p.username}')">
+          <img class="mc-skin" src="${getAvatar(p.username,64)}" alt="${p.username}" loading="lazy">
+          <div class="p-name">${p.username}</div>
+          <span class="region-badge r-${reg.toLowerCase()}">${reg}</span>
+        </article>`;
+        cardDelay += 60;
+      });
+      html += `</div></section>`; sectionDelay += 150;
+    }
+    container.innerHTML = hasAnyTiers ? html : `<div class="empty-state"><h3>No ${catName} tiers found</h3></div>`;
+  }
+
+  function renderLTM(container) {
+    container.innerHTML = `<div class="ltm-container">
+      <div class="ltm-icon"><img src="2v2.svg" width="72" height="72" alt="LTMs"></div>
+      <h2>Limited-Time Modes are coming!</h2>
+      <p>We are currently developing limited-time modes, which will include a team-based leaderboard. Stay tuned for more information!</p>
+    </div>`;
+  }
+
+  function getCategoryRank(username, catName) {
+    const playersInCat = allPlayersCache.filter(p => p[catName] && p[catName].trim() !== '');
+    playersInCat.sort((a, b) => (b.points || 0) - (a.points || 0));
+    const rank = playersInCat.findIndex(p => p.username === username) + 1;
+    return rank > 0 ? rank : null;
+  }
+
+  function openProfile(username) {
+    document.getElementById('profileUsername').innerText = username;
+    document.getElementById('profileAvatar').src = getHead(username, 128);
+    document.getElementById('profileBadges').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--text2)"></i>';
+    document.getElementById('profilePosition').innerHTML = '';
+    document.getElementById('profileTiers').innerHTML = '';
+    document.getElementById('profileModal').classList.add('active');
+
+    try {
+      const p = allPlayersCache.find(player => player.username === username);
+      if (p) {
+        const pts = p.points || 0;
+        const titleInfo = getPlayerTitle(pts);
+        const regionFull = regionNames[p.region] || p.region;
+        const overallRank = allPlayersCache.findIndex(player => player.username === username) + 1;
+
+        document.getElementById('profileBadges').innerHTML = `
+          <span class="p-badge ${titleInfo.class}">${titleInfo.text}</span>
+          <span class="p-badge badge-region"><i class="fas fa-globe-americas"></i> ${regionFull}</span>`;
+
+        document.getElementById('profilePosition').innerHTML = `
+          <div class="stat-label">Position</div>
+          <div class="stat-value">#${overallRank}</div>
+          <div class="stat-sub">${titleInfo.text} (${pts} points)</div>`;
+
+        let tiersHtml = '';
+        dbCategories.forEach(cat => {
+          if (p[cat] && p[cat].trim() !== '') {
+            const tierStr = p[cat].toUpperCase();
+            const catRank = getCategoryRank(username, cat);
+            const iconHtml = catModal[cat] || '';
+            tiersHtml += `
+              <div class="p-tier-item">
+                <span class="p-tier-icon">${iconHtml}</span>
+                <span class="p-tier-name">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+                <span class="p-tier-rank">${tierStr} ${catRank ? `(#${catRank})` : ''}</span>
+              </div>`;
+          }
+        });
+        document.getElementById('profileTiers').innerHTML = tiersHtml || '<span style="color:var(--text2);font-size:13px">No tiers assigned yet.</span>';
+      } else {
+        document.getElementById('profileBadges').innerHTML = '<span class="p-badge badge-region">Unknown Player</span>';
+      }
+    } catch (e) {
+      document.getElementById('profileBadges').innerHTML = '<span style="color:red;">Error loading</span>';
+    }
+  }
+
+  function closeProfile() { document.getElementById('profileModal').classList.remove('active'); }
+  function copyIP() { navigator.clipboard.writeText(SERVER_IP); showToast("IP Copied to clipboard!"); }
+  function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+  window.onclick = function(event) { if (event.target == document.getElementById('profileModal')) closeProfile(); }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProfile(); });
+  init();
+</script>
+</body>
+</html>
