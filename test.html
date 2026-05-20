@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MCTiers Clone</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root{
     --bg:#050b16;
-    --card:#091120;
-    --card2:#0d1728;
-    --border:#13213b;
+    --surface:#091120;
+    --surface2:#0d1728;
+    --border:#152544;
     --text:#ffffff;
-    --muted:#8fa3c7;
-    --blue:#5da8ff;
-    --gold:#f5c34d;
+    --muted:#8da0c3;
+    --blue:#5ea8ff;
 }
 
 *{
@@ -30,7 +30,7 @@
 }
 
 body{
-    background:linear-gradient(to bottom,#040912,#071120);
+    background:linear-gradient(to bottom,#040913,#071120);
     color:white;
     min-height:100vh;
 }
@@ -38,29 +38,28 @@ body{
 /* NAVBAR */
 
 header{
-    height:78px;
-    border-bottom:1px solid #111d33;
-    background:#08101d;
     position:sticky;
     top:0;
     z-index:999;
+    background:#07101d;
+    border-bottom:1px solid #111e37;
 }
 
 .nav{
-    max-width:1800px;
+    height:86px;
+    max-width:1850px;
     margin:auto;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    height:100%;
     padding:0 30px;
 }
 
 .logo{
-    font-size:42px;
+    font-size:48px;
     font-weight:900;
-    letter-spacing:-2px;
-    background:linear-gradient(to bottom,#ffd84c,#ff8d2f);
+    letter-spacing:-3px;
+    background:linear-gradient(to bottom,#ffd857,#ff8f2e);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
@@ -72,9 +71,9 @@ header{
 }
 
 .links a{
-    color:#8ea2c7;
     text-decoration:none;
-    font-size:17px;
+    color:#8ea2c7;
+    font-size:18px;
     font-weight:600;
     transition:.2s;
 }
@@ -89,61 +88,68 @@ header{
 
 .search{
     width:320px;
-    height:50px;
-    background:#0d1728;
-    border:1px solid #1b2b4a;
-    border-radius:16px;
+    height:54px;
+    background:#0c1729;
+    border:1px solid #1a2a47;
+    border-radius:18px;
     display:flex;
     align-items:center;
     padding:0 18px;
-    color:#8ea2c7;
 }
 
 .search input{
-    background:transparent;
+    background:none;
     border:none;
     outline:none;
-    width:100%;
     color:white;
+    width:100%;
     font-size:15px;
     margin-left:10px;
+}
+
+.search i{
+    color:#7f92b6;
 }
 
 /* TABS */
 
 .tabs{
-    max-width:1800px;
-    margin:20px auto;
-    display:flex;
-    gap:14px;
+    max-width:1850px;
+    margin:22px auto;
     padding:0 30px;
+    display:flex;
+    gap:16px;
     overflow-x:auto;
+}
+
+.tabs::-webkit-scrollbar{
+    display:none;
 }
 
 .tab{
     min-width:150px;
-    height:90px;
+    height:95px;
     background:#091120;
-    border:2px solid #12203a;
-    border-radius:20px;
+    border:2px solid #142340;
+    border-radius:22px;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
-    color:#7f94bb;
+    justify-content:center;
+    color:#7f93ba;
     font-weight:700;
     cursor:pointer;
     transition:.25s;
 }
 
 .tab:hover{
-    transform:translateY(-4px);
-    border-color:#284d8f;
+    transform:translateY(-5px);
+    border-color:#3668c7;
 }
 
 .tab.active{
-    background:#0d1728;
-    border-color:#4f89ff;
+    background:#0e1727;
+    border-color:#5ca8ff;
     color:white;
 }
 
@@ -152,10 +158,10 @@ header{
     margin-bottom:10px;
 }
 
-/* TABLE */
+/* PAGE */
 
 .wrapper{
-    max-width:1800px;
+    max-width:1850px;
     margin:auto;
     padding:0 30px 40px;
 }
@@ -163,18 +169,20 @@ header{
 .topbar{
     display:flex;
     justify-content:flex-end;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .info{
-    background:#16243f;
-    border-radius:14px;
-    padding:14px 24px;
+    background:#172641;
+    padding:14px 22px;
+    border-radius:16px;
     font-weight:700;
     display:flex;
     align-items:center;
     gap:10px;
 }
+
+/* ROWS */
 
 .leaderboard{
     display:flex;
@@ -185,54 +193,56 @@ header{
 .row{
     background:#091120;
     border:1px solid #13213b;
-    border-radius:24px;
+    border-radius:26px;
     display:flex;
     align-items:center;
     overflow:hidden;
-    transition:.2s;
+    transition:.25s;
 }
 
 .row:hover{
-    transform:translateY(-3px);
+    transform:translateY(-4px);
     background:#0d1728;
 }
 
+/* RANK BOX */
+
 .rankbox{
     width:250px;
-    height:115px;
+    height:120px;
     display:flex;
     align-items:center;
     position:relative;
     overflow:hidden;
 }
 
-.rankbox.gold{
-    background:linear-gradient(135deg,#f4c34e,#cf9731);
+.gold{
+    background:linear-gradient(135deg,#efc14d,#c88d2f);
 }
 
-.rankbox.silver{
-    background:linear-gradient(135deg,#b3c1c9,#81939d);
+.silver{
+    background:linear-gradient(135deg,#b6c2cb,#7f919d);
 }
 
-.rankbox.bronze{
-    background:linear-gradient(135deg,#cb7d3d,#995628);
+.bronze{
+    background:linear-gradient(135deg,#ca7a3b,#955423);
 }
 
 .rank{
-    font-size:58px;
+    font-size:62px;
     font-weight:900;
-    margin-left:25px;
     color:white;
-    text-shadow:0 3px 10px rgba(0,0,0,.4);
+    margin-left:28px;
+    text-shadow:0 5px 12px rgba(0,0,0,.3);
 }
 
 .skin{
-    width:80px;
-    height:80px;
-    image-rendering:pixelated;
     position:absolute;
-    right:20px;
+    right:15px;
     bottom:0;
+    width:85px;
+    height:85px;
+    image-rendering:pixelated;
 }
 
 /* PLAYER */
@@ -243,19 +253,19 @@ header{
 }
 
 .player h2{
-    font-size:52px;
+    font-size:54px;
     font-weight:800;
     letter-spacing:-2px;
 }
 
 .player p{
-    margin-top:8px;
-    color:#91a3c5;
-    font-size:26px;
+    margin-top:7px;
+    color:#91a3c6;
+    font-size:25px;
 }
 
-.player p span{
-    color:#ffdb70;
+.player span{
+    color:#ffdc6c;
     font-weight:700;
 }
 
@@ -268,8 +278,8 @@ header{
 }
 
 .badge{
-    width:68px;
-    height:68px;
+    width:70px;
+    height:70px;
     border-radius:18px;
     display:flex;
     align-items:center;
@@ -279,41 +289,41 @@ header{
 }
 
 .na{
-    background:#5f2230;
+    background:#5b2230;
     color:#ff667f;
 }
 
 .eu{
-    background:#204a1f;
-    color:#6fff6c;
+    background:#214920;
+    color:#73ff73;
 }
 
 /* TIERS */
 
 .tiers{
-    width:650px;
+    width:680px;
     display:flex;
-    flex-wrap:wrap;
     gap:14px;
+    flex-wrap:wrap;
     padding-right:30px;
 }
 
 .tier{
-    width:74px;
-    height:74px;
+    width:76px;
+    height:76px;
     border-radius:50%;
     border:4px solid #23324f;
-    background:#091120;
+    background:#08111f;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    font-weight:800;
     font-size:14px;
+    font-weight:800;
 }
 
 .tier i{
-    font-size:24px;
+    font-size:25px;
     margin-bottom:4px;
 }
 
@@ -323,18 +333,121 @@ header{
 }
 
 .ht2{
-    color:#7dc2ff;
-    border-color:#245a83;
+    color:#7cc0ff;
+    border-color:#275982;
 }
 
 .lt2{
     color:#9ea8bf;
-    border-color:#46506a;
+    border-color:#47526a;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:10000;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    width:450px;
+    background:#091120;
+    border:1px solid #1a2a47;
+    border-radius:24px;
+    overflow:hidden;
+}
+
+.banner{
+    height:120px;
+    background:linear-gradient(135deg,#2458b8,#0f1727);
+}
+
+.profile{
+    padding:0 30px 30px;
+    margin-top:-60px;
+    text-align:center;
+}
+
+.profile img{
+    width:120px;
+    height:120px;
+    image-rendering:pixelated;
+    border-radius:18px;
+    border:5px solid #091120;
+}
+
+.profile h1{
+    margin-top:14px;
+    font-size:38px;
+}
+
+.profile p{
+    color:#92a4c6;
+    margin-top:10px;
+}
+
+.close{
+    position:absolute;
+    top:20px;
+    right:20px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:none;
+    background:#ff4d4d;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#7183a4;
+    font-size:14px;
 }
 
 /* MOBILE */
 
-@media(max-width:1400px){
+@media(max-width:1200px){
+
+    .row{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .tiers{
+        width:100%;
+        padding:20px 30px;
+    }
+
+    .region{
+        padding:20px 30px;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .links{
+        display:none;
+    }
+
+    .search{
+        width:180px;
+    }
 
     .player h2{
         font-size:34px;
@@ -344,26 +457,8 @@ header{
         font-size:18px;
     }
 
-    .tiers{
-        width:420px;
-    }
-
-}
-
-@media(max-width:1000px){
-
-    .row{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .region,
-    .tiers{
-        padding:20px 30px;
-    }
-
-    .tiers{
-        width:100%;
+    .rank{
+        font-size:48px;
     }
 
 }
@@ -373,255 +468,273 @@ header{
 <body>
 
 <header>
-    <div class="nav">
 
-        <div class="logo">MCTIERS</div>
+<div class="nav">
 
-        <div class="links">
-            <a href="#"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="#"><i class="fa-solid fa-trophy"></i> Rankings</a>
-            <a href="#"><i class="fa-solid fa-gamepad"></i> Discords</a>
-            <a href="#"><i class="fa-solid fa-file"></i> API Docs</a>
-        </div>
+<div class="logo">MCTIERS</div>
 
-        <div class="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input placeholder="Search player..." />
-        </div>
+<div class="links">
+<a href="#"><i class="fa-solid fa-house"></i> Home</a>
+<a href="#"><i class="fa-solid fa-trophy"></i> Rankings</a>
+<a href="#"><i class="fa-solid fa-gamepad"></i> Discords</a>
+<a href="#"><i class="fa-solid fa-file"></i> API Docs</a>
+</div>
 
-    </div>
+<div class="search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input placeholder="Search player..." id="searchInput">
+</div>
+
+</div>
+
 </header>
+
+<!-- TABS -->
 
 <div class="tabs">
 
-    <div class="tab active">
-        <i class="fa-solid fa-trophy"></i>
-        Overall
-    </div>
+<div class="tab active">
+<i class="fa-solid fa-trophy"></i>
+Overall
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-shield"></i>
-        LTMs
-    </div>
+<div class="tab">
+<i class="fa-solid fa-shield"></i>
+LTMs
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-gem"></i>
-        Vanilla
-    </div>
+<div class="tab">
+<i class="fa-solid fa-gem"></i>
+Vanilla
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-heart"></i>
-        UHC
-    </div>
+<div class="tab">
+<i class="fa-solid fa-heart"></i>
+UHC
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-flask"></i>
-        Pot
-    </div>
+<div class="tab">
+<i class="fa-solid fa-flask"></i>
+Pot
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-cube"></i>
-        NethOP
-    </div>
+<div class="tab">
+<i class="fa-solid fa-cube"></i>
+NethOP
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-circle"></i>
-        SMP
-    </div>
+<div class="tab">
+<i class="fa-solid fa-circle"></i>
+SMP
+</div>
 
-    <div class="tab">
-        <i class="fa-solid fa-sword"></i>
-        Sword
-    </div>
+<div class="tab">
+<i class="fa-solid fa-sword"></i>
+Sword
+</div>
+
+<div class="tab">
+<i class="fa-solid fa-axe-battle"></i>
+Axe
+</div>
 
 </div>
+
+<!-- MAIN -->
 
 <div class="wrapper">
 
-    <div class="topbar">
-        <div class="info">
-            <i class="fa-solid fa-circle-info"></i>
-            Information
-        </div>
-    </div>
+<div class="topbar">
+<div class="info">
+<i class="fa-solid fa-circle-info"></i>
+Information
+</div>
+</div>
 
-    <div class="leaderboard">
-
-        <!-- ROW 1 -->
-
-        <div class="row">
-
-            <div class="rankbox gold">
-
-                <div class="rank">1.</div>
-
-                <img
-                class="skin"
-                src="https://visage.surgeplay.com/full/128/ItzRealMe">
-
-            </div>
-
-            <div class="player">
-                <h2>ItzRealMe</h2>
-                <p><span>Combat Master</span> (330 points)</p>
-            </div>
-
-            <div class="region">
-                <div class="badge na">NA</div>
-            </div>
-
-            <div class="tiers">
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-sword"></i>
-                    HT3
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-cube"></i>
-                    HT1
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-gem"></i>
-                    HT1
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-flask"></i>
-                    HT1
-                </div>
-
-                <div class="tier lt2">
-                    <i class="fa-solid fa-heart"></i>
-                    LT2
-                </div>
-
-                <div class="tier lt2">
-                    <i class="fa-solid fa-hammer"></i>
-                    LT2
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ROW 2 -->
-
-        <div class="row">
-
-            <div class="rankbox silver">
-
-                <div class="rank">2.</div>
-
-                <img
-                class="skin"
-                src="https://visage.surgeplay.com/full/128/coldified">
-
-            </div>
-
-            <div class="player">
-                <h2>coldified</h2>
-                <p><span>Combat Master</span> (326 points)</p>
-            </div>
-
-            <div class="region">
-                <div class="badge eu">EU</div>
-            </div>
-
-            <div class="tiers">
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-hammer"></i>
-                    LT1
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-flask"></i>
-                    LT1
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-gem"></i>
-                    LT3
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-heart"></i>
-                    HT1
-                </div>
-
-                <div class="tier ht2">
-                    <i class="fa-solid fa-circle"></i>
-                    HT1
-                </div>
-
-                <div class="tier lt2">
-                    <i class="fa-solid fa-sword"></i>
-                    LT1
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ROW 3 -->
-
-        <div class="row">
-
-            <div class="rankbox bronze">
-
-                <div class="rank">3.</div>
-
-                <img
-                class="skin"
-                src="https://visage.surgeplay.com/full/128/Swight">
-
-            </div>
-
-            <div class="player">
-                <h2>Swight</h2>
-                <p><span>Combat Master</span> (290 points)</p>
-            </div>
-
-            <div class="region">
-                <div class="badge na">NA</div>
-            </div>
-
-            <div class="tiers">
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-flask"></i>
-                    HT3
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-gem"></i>
-                    LT3
-                </div>
-
-                <div class="tier ht1">
-                    <i class="fa-solid fa-heart"></i>
-                    HT1
-                </div>
-
-                <div class="tier ht2">
-                    <i class="fa-solid fa-circle"></i>
-                    HT1
-                </div>
-
-                <div class="tier lt2">
-                    <i class="fa-solid fa-hammer"></i>
-                    LT2
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+<div class="leaderboard" id="leaderboard">
 
 </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modal-box">
+
+<div class="banner"></div>
+
+<div class="profile">
+
+<img id="profileSkin">
+
+<h1 id="profileName"></h1>
+
+<p>Premium Minecraft Player</p>
+
+</div>
+
+</div>
+
+<button class="close" onclick="closeModal()">
+<i class="fa-solid fa-xmark"></i>
+</button>
+
+</div>
+
+<footer>
+© 2026 MCTIERS Clone — Premium Minecraft PvP Rankings
+</footer>
+
+<script>
+
+/* PREMIUM SKIN API */
+
+function getSkin(username){
+    return `https://visage.surgeplay.com/full/128/${username}`;
+}
+
+function getFace(username){
+    return `https://visage.surgeplay.com/face/256/${username}`;
+}
+
+/* PLAYERS */
+
+const players = [
+
+{
+    rank:1,
+    name:"ItzRealMe",
+    points:330,
+    region:"NA",
+    color:"gold",
+    tiers:["HT3","HT1","HT1","HT1","LT2","LT2"]
+},
+
+{
+    rank:2,
+    name:"coldified",
+    points:326,
+    region:"EU",
+    color:"silver",
+    tiers:["LT1","LT1","LT3","HT1","HT1","LT1"]
+},
+
+{
+    rank:3,
+    name:"Swight",
+    points:290,
+    region:"NA",
+    color:"bronze",
+    tiers:["HT3","LT3","HT1","HT1","LT2"]
+}
+
+];
+
+/* RENDER */
+
+const leaderboard = document.getElementById("leaderboard");
+
+function renderPlayers(data){
+
+    leaderboard.innerHTML = "";
+
+    data.forEach(player=>{
+
+        const row = document.createElement("div");
+        row.className = "row";
+
+        row.innerHTML = `
+
+        <div class="rankbox ${player.color}">
+
+            <div class="rank">${player.rank}.</div>
+
+            <img
+            class="skin"
+            src="${getSkin(player.name)}">
+
+        </div>
+
+        <div class="player">
+            <h2>${player.name}</h2>
+            <p><span>Combat Master</span> (${player.points} points)</p>
+        </div>
+
+        <div class="region">
+            <div class="badge ${player.region.toLowerCase()}">
+                ${player.region}
+            </div>
+        </div>
+
+        <div class="tiers">
+
+            ${player.tiers.map(t=>`
+
+                <div class="tier ${t.includes('HT') ? 'ht1':'lt2'}">
+                    <i class="fa-solid fa-sword"></i>
+                    ${t}
+                </div>
+
+            `).join("")}
+
+        </div>
+
+        `;
+
+        row.onclick = ()=>openModal(player);
+
+        leaderboard.appendChild(row);
+
+    });
+
+}
+
+renderPlayers(players);
+
+/* SEARCH */
+
+document.getElementById("searchInput")
+.addEventListener("input",e=>{
+
+    const value = e.target.value.toLowerCase();
+
+    const filtered = players.filter(p=>
+        p.name.toLowerCase().includes(value)
+    );
+
+    renderPlayers(filtered);
+
+});
+
+/* MODAL */
+
+const modal = document.getElementById("modal");
+
+function openModal(player){
+
+    modal.classList.add("active");
+
+    document.getElementById("profileSkin").src =
+    getFace(player.name);
+
+    document.getElementById("profileName").innerText =
+    player.name;
+
+}
+
+function closeModal(){
+    modal.classList.remove("active");
+}
+
+window.onclick = e=>{
+    if(e.target === modal){
+        closeModal();
+    }
+}
+
+</script>
 
 </body>
 </html>
