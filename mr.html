@@ -1,0 +1,556 @@
+# MC Tiers Inspired Professional Rankings Page
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MC Tiers Inspired Rankings</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Inter',sans-serif;
+    }
+
+    :root{
+      --bg:#07111f;
+      --card:#0d1828;
+      --card2:#101e33;
+      --border:#1d2d46;
+      --text:#ffffff;
+      --muted:#72809c;
+      --accent:#f8c14b;
+      --blue:#60b7ff;
+      --green:#52d39c;
+    }
+
+    body{
+      background:linear-gradient(to bottom,#06101d,#07111f 40%,#081423);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .navbar{
+      height:78px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+      background:rgba(5,10,18,.95);
+      backdrop-filter:blur(12px);
+      position:sticky;
+      top:0;
+      z-index:999;
+    }
+
+    .nav-inner{
+      width:95%;
+      max-width:1600px;
+      margin:auto;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      font-size:38px;
+      font-weight:900;
+      letter-spacing:-2px;
+      background:linear-gradient(180deg,#ffe87c,#ffad42);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:0 4px 20px rgba(255,190,90,.3);
+    }
+
+    .nav-links{
+      display:flex;
+      gap:40px;
+      align-items:center;
+    }
+
+    .nav-links a{
+      color:#8d99af;
+      text-decoration:none;
+      font-size:17px;
+      font-weight:600;
+      transition:.25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links .active{
+      color:white;
+    }
+
+    .search{
+      width:280px;
+      background:#111f33;
+      border:1px solid rgba(255,255,255,.05);
+      height:50px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      padding:0 18px;
+      gap:12px;
+    }
+
+    .search input{
+      flex:1;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:white;
+      font-size:15px;
+    }
+
+    .tabs{
+      width:95%;
+      max-width:1600px;
+      margin:34px auto 0;
+      display:flex;
+      gap:18px;
+      overflow-x:auto;
+      padding-bottom:10px;
+    }
+
+    .tab{
+      min-width:150px;
+      height:92px;
+      background:linear-gradient(180deg,#0c1829,#0a1321);
+      border:1px solid #16253a;
+      border-radius:26px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      cursor:pointer;
+      transition:.3s;
+      color:#66768f;
+      font-weight:800;
+      font-size:18px;
+    }
+
+    .tab:hover{
+      transform:translateY(-4px);
+      border-color:#365a86;
+    }
+
+    .tab.active{
+      color:white;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+      border-color:#33567f;
+      position:relative;
+    }
+
+    .tab.active::after{
+      content:'';
+      position:absolute;
+      left:20px;
+      right:20px;
+      bottom:0;
+      height:4px;
+      border-radius:20px;
+      background:white;
+    }
+
+    .content{
+      width:95%;
+      max-width:1600px;
+      margin:24px auto 80px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:18px;
+      margin-bottom:28px;
+    }
+
+    .info-btn,
+    .server-box{
+      background:#121f33;
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:16px;
+      padding:16px 24px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:white;
+      font-weight:700;
+    }
+
+    .server-box small{
+      display:block;
+      color:#7e8ca4;
+      font-size:11px;
+      margin-bottom:2px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:20px;
+    }
+
+    thead{
+      background:#0a1422;
+    }
+
+    thead th{
+      text-align:left;
+      padding:24px 28px;
+      color:#55657f;
+      font-size:14px;
+      letter-spacing:1px;
+    }
+
+    tbody tr{
+      background:linear-gradient(90deg,#101d30,#0d1728);
+      border-bottom:1px solid rgba(255,255,255,.04);
+      transition:.25s;
+    }
+
+    tbody tr:hover{
+      background:#15253b;
+    }
+
+    tbody td{
+      padding:24px 28px;
+      vertical-align:middle;
+    }
+
+    .rank{
+      width:110px;
+    }
+
+    .rank-box{
+      width:80px;
+      height:80px;
+      border-radius:16px;
+      background:linear-gradient(135deg,#f7c545,#c88b1b);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:42px;
+      font-weight:900;
+      box-shadow:0 12px 30px rgba(255,196,74,.25);
+    }
+
+    .player{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .avatar{
+      width:70px;
+      height:70px;
+      border-radius:18px;
+      image-rendering:pixelated;
+      border:2px solid rgba(255,255,255,.08);
+    }
+
+    .player h2{
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .subtitle{
+      color:#88a3c6;
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .region{
+      width:90px;
+    }
+
+    .region-tag{
+      width:60px;
+      height:60px;
+      border-radius:18px;
+      background:#5b2030;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:20px;
+      color:#ff607d;
+    }
+
+    .tiers{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .tier{
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:#0a1321;
+      border:2px solid rgba(255,255,255,.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:3px;
+      transition:.25s;
+    }
+
+    .tier:hover{
+      transform:translateY(-4px);
+      border-color:#4c85d9;
+    }
+
+    .tier i{
+      color:#60b7ff;
+      font-size:18px;
+    }
+
+    .tier span{
+      font-size:12px;
+      font-weight:800;
+      color:#ffca52;
+    }
+
+    @media(max-width:1200px){
+      .nav-links{
+        display:none;
+      }
+
+      table{
+        display:block;
+        overflow-x:auto;
+      }
+    }
+
+    @media(max-width:700px){
+      .tabs{
+        gap:12px;
+      }
+
+      .tab{
+        min-width:120px;
+        font-size:15px;
+      }
+
+      .search{
+        display:none;
+      }
+
+      .player h2{
+        font-size:18px;
+      }
+
+      tbody td{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="logo">MCTIERS</div>
+
+      <div class="nav-links">
+        <a href="#"><i class="fa-regular fa-house"></i> Home</a>
+        <a class="active" href="#"><i class="fa-solid fa-trophy"></i> Rankings</a>
+        <a href="#"><i class="fa-brands fa-discord"></i> Discords</a>
+        <a href="#"><i class="fa-regular fa-file-lines"></i> API Docs</a>
+      </div>
+
+      <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search player...">
+      </div>
+    </div>
+  </nav>
+
+  <section class="tabs">
+    <div class="tab active">
+      <i class="fa-solid fa-trophy"></i>
+      Overall
+    </div>
+
+    <div class="tab">
+      <i class="fa-solid fa-heart"></i>
+      UHC
+    </div>
+
+    <div class="tab">
+      <i class="fa-solid fa-flask"></i>
+      Pot
+    </div>
+
+    <div class="tab">
+      <i class="fa-solid fa-sword"></i>
+      Sword
+    </div>
+
+    <div class="tab">
+      <i class="fa-solid fa-hammer"></i>
+      Axe
+    </div>
+
+    <div class="tab">
+      <i class="fa-solid fa-gem"></i>
+      SMP
+    </div>
+  </section>
+
+  <main class="content">
+
+    <div class="topbar">
+      <div class="info-btn">
+        <i class="fa-solid fa-circle-info"></i>
+        Information
+      </div>
+
+      <div class="server-box">
+        <div>
+          <small>SERVER IP</small>
+          mcpvp.club
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>PLAYER</th>
+          <th>REGION</th>
+          <th>TIERS</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <td class="rank">
+            <div class="rank-box">1</div>
+          </td>
+
+          <td>
+            <div class="player">
+              <img class="avatar" src="https://mc-heads.net/avatar/ItzRealMe/128">
+
+              <div>
+                <h2>ItzRealMe</h2>
+                <div class="subtitle">Combat Master (330 points)</div>
+              </div>
+            </div>
+          </td>
+
+          <td class="region">
+            <div class="region-tag">NA</div>
+          </td>
+
+          <td>
+            <div class="tiers">
+
+              <div class="tier">
+                <i class="fa-solid fa-sword"></i>
+                <span>HT1</span>
+              </div>
+
+              <div class="tier">
+                <i class="fa-solid fa-heart"></i>
+                <span>HT2</span>
+              </div>
+
+              <div class="tier">
+                <i class="fa-solid fa-flask"></i>
+                <span>HT1</span>
+              </div>
+
+              <div class="tier">
+                <i class="fa-solid fa-hammer"></i>
+                <span>LT2</span>
+              </div>
+
+              <div class="tier">
+                <i class="fa-solid fa-gem"></i>
+                <span>HT1</span>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="rank">
+            <div class="rank-box" style="background:linear-gradient(135deg,#c7d4e6,#7b8ba3)">2</div>
+          </td>
+
+          <td>
+            <div class="player">
+              <img class="avatar" src="https://mc-heads.net/avatar/coldified/128">
+
+              <div>
+                <h2>coldified</h2>
+                <div class="subtitle">Combat Ace (310 points)</div>
+              </div>
+            </div>
+          </td>
+
+          <td class="region">
+            <div class="region-tag" style="background:#1f3555;color:#6db8ff">EU</div>
+          </td>
+
+          <td>
+            <div class="tiers">
+
+              <div class="tier">
+                <i class="fa-solid fa-sword"></i>
+                <span>HT2</span>
+              </div>
+
+              <div class="tier">
+                <i class="fa-solid fa-heart"></i>
+                <span>HT1</span>
+              </div>
+
+              <div class="tier">
+                <i class="fa-solid fa-flask"></i>
+                <span>LT1</span>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </main>
+
+</body>
+</html>
+```
+
+This version includes:
+
+* Professional dark MCTiers-inspired UI
+* Responsive modern layout
+* Animated tabs and hover effects
+* Search bar
+* Ranking table
+* Minecraft avatars
+* Tier badges
+* Fully mobile responsive design
+* Font Awesome icons
+* Modern gradients and glass styling
