@@ -1,740 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>MCTiers Clone</title>
+<title>Mythic Tiers — Minecraft PvP Rankings</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
 :root{
-    --bg:#050b16;
-    --surface:#091120;
-    --surface2:#0d1728;
-    --border:#152544;
-    --text:#ffffff;
-    --muted:#8da0c3;
-    --blue:#5ea8ff;
+  --bg:#050507;
+  --surface:#10131a;
+  --surface2:#171b24;
+  --border:rgba(255,255,255,0.08);
+
+  --primary:#4eeadb;
+  --primary2:#1db6a9;
+
+  --text:#d5d7dc;
+  --muted:#7c8395;
+  --white:#f7f8fa;
+
+  --gold:#ffc107;
 }
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
-    background:linear-gradient(to bottom,#040913,#071120);
-    color:white;
-    min-height:100vh;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
 }
 
-/* NAVBAR */
+/* BACKGROUND */
+
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+}
+
+.glow{
+  position:absolute;
+  width:700px;
+  height:700px;
+  border-radius:50%;
+  filter:blur(120px);
+  opacity:.12;
+}
+
+.glow.one{
+  background:#4eeadb;
+  top:-200px;
+  left:-200px;
+}
+
+.glow.two{
+  background:#7a5cff;
+  bottom:-300px;
+  right:-200px;
+}
+
+/* HEADER */
 
 header{
-    position:sticky;
-    top:0;
-    z-index:999;
-    background:#07101d;
-    border-bottom:1px solid #111e37;
+  position:sticky;
+  top:0;
+  z-index:999;
+  backdrop-filter:blur(18px);
+  background:rgba(5,5,7,.7);
+  border-bottom:1px solid var(--border);
 }
 
 .nav{
-    height:86px;
-    max-width:1850px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 30px;
+  max-width:1200px;
+  margin:auto;
+  height:75px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
 }
 
 .logo{
-    font-size:48px;
-    font-weight:900;
-    letter-spacing:-3px;
-    background:linear-gradient(to bottom,#ffd857,#ff8f2e);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
-.links{
-    display:flex;
-    gap:40px;
-    align-items:center;
+.logo-box{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:black;
+  font-weight:900;
 }
 
-.links a{
-    text-decoration:none;
-    color:#8ea2c7;
-    font-size:18px;
-    font-weight:600;
-    transition:.2s;
+.logo h1{
+  color:white;
+  font-size:20px;
 }
 
-.links a:hover{
-    color:white;
+.logo span{
+  color:var(--primary);
 }
 
-.links i{
-    margin-right:8px;
+.nav-links{
+  display:flex;
+  gap:28px;
 }
 
-.search{
-    width:320px;
-    height:54px;
-    background:#0c1729;
-    border:1px solid #1a2a47;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    padding:0 18px;
+.nav-links a{
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:600;
+  transition:.2s;
 }
 
-.search input{
-    background:none;
-    border:none;
-    outline:none;
-    color:white;
-    width:100%;
-    font-size:15px;
-    margin-left:10px;
+.nav-links a:hover{
+  color:white;
 }
 
-.search i{
-    color:#7f92b6;
+/* HERO */
+
+.hero{
+  max-width:1200px;
+  margin:auto;
+  padding:100px 24px 70px;
+  text-align:center;
 }
 
-/* TABS */
-
-.tabs{
-    max-width:1850px;
-    margin:22px auto;
-    padding:0 30px;
-    display:flex;
-    gap:16px;
-    overflow-x:auto;
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 18px;
+  border:1px solid rgba(78,234,219,.15);
+  background:rgba(78,234,219,.06);
+  border-radius:999px;
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:28px;
 }
 
-.tabs::-webkit-scrollbar{
-    display:none;
+.hero h2{
+  font-size:70px;
+  line-height:1;
+  font-weight:900;
+  color:white;
+  letter-spacing:-3px;
 }
 
-.tab{
-    min-width:150px;
-    height:95px;
-    background:#091120;
-    border:2px solid #142340;
-    border-radius:22px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    color:#7f93ba;
-    font-weight:700;
-    cursor:pointer;
-    transition:.25s;
+.hero p{
+  max-width:700px;
+  margin:28px auto;
+  font-size:18px;
+  line-height:1.7;
+  color:var(--muted);
 }
 
-.tab:hover{
-    transform:translateY(-5px);
-    border-color:#3668c7;
+.hero-buttons{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
 }
 
-.tab.active{
-    background:#0e1727;
-    border-color:#5ca8ff;
-    color:white;
+.btn{
+  padding:15px 28px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:700;
+  transition:.25s;
 }
 
-.tab i{
-    font-size:28px;
-    margin-bottom:10px;
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:black;
 }
 
-/* PAGE */
-
-.wrapper{
-    max-width:1850px;
-    margin:auto;
-    padding:0 30px 40px;
+.btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 35px rgba(78,234,219,.25);
 }
 
-.topbar{
-    display:flex;
-    justify-content:flex-end;
-    margin-bottom:25px;
+.btn-secondary{
+  border:1px solid var(--border);
+  color:white;
+  background:rgba(255,255,255,.03);
 }
 
-.info{
-    background:#172641;
-    padding:14px 22px;
-    border-radius:16px;
-    font-weight:700;
-    display:flex;
-    align-items:center;
-    gap:10px;
+.btn-secondary:hover{
+  background:rgba(255,255,255,.06);
 }
 
-/* ROWS */
+/* STATS */
 
-.leaderboard{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+.stats{
+  max-width:1200px;
+  margin:0 auto 60px;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+
+.stat-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:28px;
+  backdrop-filter:blur(14px);
+}
+
+.stat-card h3{
+  font-size:40px;
+  color:white;
+  margin-bottom:8px;
+}
+
+.stat-card p{
+  color:var(--muted);
+}
+
+/* LEADERBOARD */
+
+.section{
+  max-width:1200px;
+  margin:auto;
+  padding:20px 24px 80px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:30px;
+}
+
+.section-title h2{
+  color:white;
+  font-size:34px;
+}
+
+.table{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
 }
 
 .row{
-    background:#091120;
-    border:1px solid #13213b;
-    border-radius:26px;
-    display:flex;
-    align-items:center;
-    overflow:hidden;
-    transition:.25s;
+  display:grid;
+  grid-template-columns:80px 1fr 180px;
+  align-items:center;
+  padding:20px;
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  transition:.25s;
 }
 
 .row:hover{
-    transform:translateY(-4px);
-    background:#0d1728;
-}
-
-/* RANK BOX */
-
-.rankbox{
-    width:250px;
-    height:120px;
-    display:flex;
-    align-items:center;
-    position:relative;
-    overflow:hidden;
-}
-
-.gold{
-    background:linear-gradient(135deg,#efc14d,#c88d2f);
-}
-
-.silver{
-    background:linear-gradient(135deg,#b6c2cb,#7f919d);
-}
-
-.bronze{
-    background:linear-gradient(135deg,#ca7a3b,#955423);
+  transform:translateY(-4px);
+  border-color:rgba(78,234,219,.25);
 }
 
 .rank{
-    font-size:62px;
-    font-weight:900;
-    color:white;
-    margin-left:28px;
-    text-shadow:0 5px 12px rgba(0,0,0,.3);
+  font-size:24px;
+  font-weight:900;
+  color:var(--gold);
 }
-
-.skin{
-    position:absolute;
-    right:15px;
-    bottom:0;
-    width:85px;
-    height:85px;
-    image-rendering:pixelated;
-}
-
-/* PLAYER */
 
 .player{
-    flex:1;
-    padding-left:35px;
+  display:flex;
+  align-items:center;
+  gap:16px;
 }
 
-.player h2{
-    font-size:54px;
-    font-weight:800;
-    letter-spacing:-2px;
+.player img{
+  width:54px;
+  height:54px;
+  border-radius:12px;
 }
 
-.player p{
-    margin-top:7px;
-    color:#91a3c6;
-    font-size:25px;
+.player-info h4{
+  color:white;
+  font-size:18px;
 }
 
-.player span{
-    color:#ffdc6c;
-    font-weight:700;
+.player-info p{
+  color:var(--muted);
+  font-size:14px;
 }
 
-/* REGION */
-
-.region{
-    width:120px;
-    display:flex;
-    justify-content:center;
+.points{
+  text-align:right;
 }
 
-.badge{
-    width:70px;
-    height:70px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:900;
-    font-size:28px;
+.points h3{
+  color:white;
+  font-size:24px;
 }
 
-.na{
-    background:#5b2230;
-    color:#ff667f;
-}
-
-.eu{
-    background:#214920;
-    color:#73ff73;
-}
-
-/* TIERS */
-
-.tiers{
-    width:680px;
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    padding-right:30px;
-}
-
-.tier{
-    width:76px;
-    height:76px;
-    border-radius:50%;
-    border:4px solid #23324f;
-    background:#08111f;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-    font-weight:800;
-}
-
-.tier i{
-    font-size:25px;
-    margin-bottom:4px;
-}
-
-.ht1{
-    color:#ffe36d;
-    border-color:#6d5b2a;
-}
-
-.ht2{
-    color:#7cc0ff;
-    border-color:#275982;
-}
-
-.lt2{
-    color:#9ea8bf;
-    border-color:#47526a;
-}
-
-/* MODAL */
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.7);
-    backdrop-filter:blur(8px);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:10000;
-}
-
-.modal.active{
-    display:flex;
-}
-
-.modal-box{
-    width:450px;
-    background:#091120;
-    border:1px solid #1a2a47;
-    border-radius:24px;
-    overflow:hidden;
-}
-
-.banner{
-    height:120px;
-    background:linear-gradient(135deg,#2458b8,#0f1727);
-}
-
-.profile{
-    padding:0 30px 30px;
-    margin-top:-60px;
-    text-align:center;
-}
-
-.profile img{
-    width:120px;
-    height:120px;
-    image-rendering:pixelated;
-    border-radius:18px;
-    border:5px solid #091120;
-}
-
-.profile h1{
-    margin-top:14px;
-    font-size:38px;
-}
-
-.profile p{
-    color:#92a4c6;
-    margin-top:10px;
-}
-
-.close{
-    position:absolute;
-    top:20px;
-    right:20px;
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    border:none;
-    background:#ff4d4d;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
+.points p{
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
 }
 
 /* FOOTER */
 
 footer{
-    text-align:center;
-    padding:40px 20px;
-    color:#7183a4;
-    font-size:14px;
+  border-top:1px solid var(--border);
+  padding:50px 24px;
+  text-align:center;
+  color:var(--muted);
+}
+
+footer h3{
+  color:white;
+  margin-bottom:10px;
 }
 
 /* MOBILE */
 
-@media(max-width:1200px){
+@media(max-width:768px){
 
-    .row{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .tiers{
-        width:100%;
-        padding:20px 30px;
-    }
-
-    .region{
-        padding:20px 30px;
-    }
-
+.hero h2{
+  font-size:44px;
 }
 
-@media(max-width:700px){
+.row{
+  grid-template-columns:60px 1fr;
+  gap:12px;
+}
 
-    .links{
-        display:none;
-    }
+.points{
+  grid-column:2;
+  text-align:left;
+}
 
-    .search{
-        width:180px;
-    }
-
-    .player h2{
-        font-size:34px;
-    }
-
-    .player p{
-        font-size:18px;
-    }
-
-    .rank{
-        font-size:48px;
-    }
+.nav-links{
+  display:none;
+}
 
 }
 
 </style>
 </head>
+
 <body>
 
+<div class="bg">
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+</div>
+
 <header>
+  <div class="nav">
 
-<div class="nav">
+    <div class="logo">
+      <div class="logo-box">MT</div>
+      <h1>Mythic <span>Tiers</span></h1>
+    </div>
 
-<div class="logo">MCTIERS</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Rankings</a>
+      <a href="#">Players</a>
+      <a href="#">Discord</a>
+    </div>
 
-<div class="links">
-<a href="#"><i class="fa-solid fa-house"></i> Home</a>
-<a href="#"><i class="fa-solid fa-trophy"></i> Rankings</a>
-<a href="#"><i class="fa-solid fa-gamepad"></i> Discords</a>
-<a href="#"><i class="fa-solid fa-file"></i> API Docs</a>
-</div>
-
-<div class="search">
-<i class="fa-solid fa-magnifying-glass"></i>
-<input placeholder="Search player..." id="searchInput">
-</div>
-
-</div>
-
+  </div>
 </header>
 
-<!-- TABS -->
+<section class="hero">
 
-<div class="tabs">
+  <div class="hero-badge">
+    <i class="fa-solid fa-bolt"></i>
+    LIVE API POWERED RANKINGS
+  </div>
 
-<div class="tab active">
-<i class="fa-solid fa-trophy"></i>
-Overall
-</div>
+  <h2>
+    Minecraft PvP<br>
+    Ranked Properly
+  </h2>
 
-<div class="tab">
-<i class="fa-solid fa-shield"></i>
-LTMs
-</div>
+  <p>
+    The most advanced Minecraft PvP leaderboard system featuring
+    real-time rankings, gamemode tiers, player statistics,
+    and competitive tracking.
+  </p>
 
-<div class="tab">
-<i class="fa-solid fa-gem"></i>
-Vanilla
-</div>
+  <div class="hero-buttons">
+    <a href="#" class="btn btn-primary">
+      View Rankings
+    </a>
 
-<div class="tab">
-<i class="fa-solid fa-heart"></i>
-UHC
-</div>
+    <a href="#" class="btn btn-secondary">
+      Join Server
+    </a>
+  </div>
 
-<div class="tab">
-<i class="fa-solid fa-flask"></i>
-Pot
-</div>
+</section>
 
-<div class="tab">
-<i class="fa-solid fa-cube"></i>
-NethOP
-</div>
+<section class="stats">
 
-<div class="tab">
-<i class="fa-solid fa-circle"></i>
-SMP
-</div>
+  <div class="stat-card">
+    <h3>25K+</h3>
+    <p>Ranked Players</p>
+  </div>
 
-<div class="tab">
-<i class="fa-solid fa-sword"></i>
-Sword
-</div>
+  <div class="stat-card">
+    <h3>9</h3>
+    <p>Competitive Modes</p>
+  </div>
 
-<div class="tab">
-<i class="fa-solid fa-axe-battle"></i>
-Axe
-</div>
+  <div class="stat-card">
+    <h3>Live</h3>
+    <p>Real-Time Updates</p>
+  </div>
 
-</div>
+  <div class="stat-card">
+    <h3>24/7</h3>
+    <p>API Monitoring</p>
+  </div>
 
-<!-- MAIN -->
+</section>
 
-<div class="wrapper">
+<section class="section">
 
-<div class="topbar">
-<div class="info">
-<i class="fa-solid fa-circle-info"></i>
-Information
-</div>
-</div>
+  <div class="section-title">
+    <h2>Top Ranked Players</h2>
+  </div>
 
-<div class="leaderboard" id="leaderboard">
+  <div class="table">
 
-</div>
+    <div class="row">
 
-</div>
+      <div class="rank">#1</div>
 
-<!-- MODAL -->
+      <div class="player">
+        <img src="https://mc-heads.net/avatar/Technoblade/64">
+        <div class="player-info">
+          <h4>Technoblade</h4>
+          <p>Combat Master • 352 Points</p>
+        </div>
+      </div>
 
-<div class="modal" id="modal">
+      <div class="points">
+        <h3>HT1</h3>
+        <p>Global Rank</p>
+      </div>
 
-<div class="modal-box">
+    </div>
 
-<div class="banner"></div>
+    <div class="row">
 
-<div class="profile">
+      <div class="rank">#2</div>
 
-<img id="profileSkin">
+      <div class="player">
+        <img src="https://mc-heads.net/avatar/Dream/64">
+        <div class="player-info">
+          <h4>Dream</h4>
+          <p>Combat Ace • 331 Points</p>
+        </div>
+      </div>
 
-<h1 id="profileName"></h1>
+      <div class="points">
+        <h3>HT1</h3>
+        <p>Global Rank</p>
+      </div>
 
-<p>Premium Minecraft Player</p>
+    </div>
 
-</div>
+    <div class="row">
 
-</div>
+      <div class="rank">#3</div>
 
-<button class="close" onclick="closeModal()">
-<i class="fa-solid fa-xmark"></i>
-</button>
+      <div class="player">
+        <img src="https://mc-heads.net/avatar/Fruitberries/64">
+        <div class="player-info">
+          <h4>Fruitberries</h4>
+          <p>Warrior • 312 Points</p>
+        </div>
+      </div>
 
-</div>
+      <div class="points">
+        <h3>HT2</h3>
+        <p>Global Rank</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
 <footer>
-© 2026 MCTIERS Clone — Premium Minecraft PvP Rankings
+
+  <h3>Mythic Tiers</h3>
+
+  <p>
+    Competitive Minecraft PvP Rankings Platform
+  </p>
+
+  <br>
+
+  <p>
+    © 2026 Mythic Tiers. All rights reserved.
+  </p>
+
 </footer>
-
-<script>
-
-/* PREMIUM SKIN API */
-
-function getSkin(username){
-    return `https://visage.surgeplay.com/full/128/${username}`;
-}
-
-function getFace(username){
-    return `https://visage.surgeplay.com/face/256/${username}`;
-}
-
-/* PLAYERS */
-
-const players = [
-
-{
-    rank:1,
-    name:"ItzRealMe",
-    points:330,
-    region:"NA",
-    color:"gold",
-    tiers:["HT3","HT1","HT1","HT1","LT2","LT2"]
-},
-
-{
-    rank:2,
-    name:"coldified",
-    points:326,
-    region:"EU",
-    color:"silver",
-    tiers:["LT1","LT1","LT3","HT1","HT1","LT1"]
-},
-
-{
-    rank:3,
-    name:"Swight",
-    points:290,
-    region:"NA",
-    color:"bronze",
-    tiers:["HT3","LT3","HT1","HT1","LT2"]
-}
-
-];
-
-/* RENDER */
-
-const leaderboard = document.getElementById("leaderboard");
-
-function renderPlayers(data){
-
-    leaderboard.innerHTML = "";
-
-    data.forEach(player=>{
-
-        const row = document.createElement("div");
-        row.className = "row";
-
-        row.innerHTML = `
-
-        <div class="rankbox ${player.color}">
-
-            <div class="rank">${player.rank}.</div>
-
-            <img
-            class="skin"
-            src="${getSkin(player.name)}">
-
-        </div>
-
-        <div class="player">
-            <h2>${player.name}</h2>
-            <p><span>Combat Master</span> (${player.points} points)</p>
-        </div>
-
-        <div class="region">
-            <div class="badge ${player.region.toLowerCase()}">
-                ${player.region}
-            </div>
-        </div>
-
-        <div class="tiers">
-
-            ${player.tiers.map(t=>`
-
-                <div class="tier ${t.includes('HT') ? 'ht1':'lt2'}">
-                    <i class="fa-solid fa-sword"></i>
-                    ${t}
-                </div>
-
-            `).join("")}
-
-        </div>
-
-        `;
-
-        row.onclick = ()=>openModal(player);
-
-        leaderboard.appendChild(row);
-
-    });
-
-}
-
-renderPlayers(players);
-
-/* SEARCH */
-
-document.getElementById("searchInput")
-.addEventListener("input",e=>{
-
-    const value = e.target.value.toLowerCase();
-
-    const filtered = players.filter(p=>
-        p.name.toLowerCase().includes(value)
-    );
-
-    renderPlayers(filtered);
-
-});
-
-/* MODAL */
-
-const modal = document.getElementById("modal");
-
-function openModal(player){
-
-    modal.classList.add("active");
-
-    document.getElementById("profileSkin").src =
-    getFace(player.name);
-
-    document.getElementById("profileName").innerText =
-    player.name;
-
-}
-
-function closeModal(){
-    modal.classList.remove("active");
-}
-
-window.onclick = e=>{
-    if(e.target === modal){
-        closeModal();
-    }
-}
-
-</script>
 
 </body>
 </html>
