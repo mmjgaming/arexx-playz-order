@@ -1,556 +1,538 @@
-# MC Tiers Inspired Professional Rankings Page
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MC Tiers Inspired Rankings</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<title>Mythic Tiers — Minecraft PvP Rankings</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Inter',sans-serif;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    :root{
-      --bg:#07111f;
-      --card:#0d1828;
-      --card2:#101e33;
-      --border:#1d2d46;
-      --text:#ffffff;
-      --muted:#72809c;
-      --accent:#f8c14b;
-      --blue:#60b7ff;
-      --green:#52d39c;
-    }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-    body{
-      background:linear-gradient(to bottom,#06101d,#07111f 40%,#081423);
-      color:var(--text);
-      min-height:100vh;
-    }
+<style>
 
-    .navbar{
-      height:78px;
-      border-bottom:1px solid rgba(255,255,255,.05);
-      background:rgba(5,10,18,.95);
-      backdrop-filter:blur(12px);
-      position:sticky;
-      top:0;
-      z-index:999;
-    }
+:root{
+  --bg:#050507;
+  --surface:#10131a;
+  --surface2:#171b24;
+  --border:rgba(255,255,255,0.08);
 
-    .nav-inner{
-      width:95%;
-      max-width:1600px;
-      margin:auto;
-      height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
+  --primary:#4eeadb;
+  --primary2:#1db6a9;
 
-    .logo{
-      font-size:38px;
-      font-weight:900;
-      letter-spacing:-2px;
-      background:linear-gradient(180deg,#ffe87c,#ffad42);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      text-shadow:0 4px 20px rgba(255,190,90,.3);
-    }
+  --text:#d5d7dc;
+  --muted:#7c8395;
+  --white:#f7f8fa;
 
-    .nav-links{
-      display:flex;
-      gap:40px;
-      align-items:center;
-    }
+  --gold:#ffc107;
+}
 
-    .nav-links a{
-      color:#8d99af;
-      text-decoration:none;
-      font-size:17px;
-      font-weight:600;
-      transition:.25s;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    .nav-links a:hover,
-    .nav-links .active{
-      color:white;
-    }
+html{
+  scroll-behavior:smooth;
+}
 
-    .search{
-      width:280px;
-      background:#111f33;
-      border:1px solid rgba(255,255,255,.05);
-      height:50px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      padding:0 18px;
-      gap:12px;
-    }
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
 
-    .search input{
-      flex:1;
-      background:transparent;
-      border:none;
-      outline:none;
-      color:white;
-      font-size:15px;
-    }
+/* BACKGROUND */
 
-    .tabs{
-      width:95%;
-      max-width:1600px;
-      margin:34px auto 0;
-      display:flex;
-      gap:18px;
-      overflow-x:auto;
-      padding-bottom:10px;
-    }
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+}
 
-    .tab{
-      min-width:150px;
-      height:92px;
-      background:linear-gradient(180deg,#0c1829,#0a1321);
-      border:1px solid #16253a;
-      border-radius:26px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      cursor:pointer;
-      transition:.3s;
-      color:#66768f;
-      font-weight:800;
-      font-size:18px;
-    }
+.glow{
+  position:absolute;
+  width:700px;
+  height:700px;
+  border-radius:50%;
+  filter:blur(120px);
+  opacity:.12;
+}
 
-    .tab:hover{
-      transform:translateY(-4px);
-      border-color:#365a86;
-    }
+.glow.one{
+  background:#4eeadb;
+  top:-200px;
+  left:-200px;
+}
 
-    .tab.active{
-      color:white;
-      box-shadow:0 10px 30px rgba(0,0,0,.35);
-      border-color:#33567f;
-      position:relative;
-    }
+.glow.two{
+  background:#7a5cff;
+  bottom:-300px;
+  right:-200px;
+}
 
-    .tab.active::after{
-      content:'';
-      position:absolute;
-      left:20px;
-      right:20px;
-      bottom:0;
-      height:4px;
-      border-radius:20px;
-      background:white;
-    }
+/* HEADER */
 
-    .content{
-      width:95%;
-      max-width:1600px;
-      margin:24px auto 80px;
-    }
+header{
+  position:sticky;
+  top:0;
+  z-index:999;
+  backdrop-filter:blur(18px);
+  background:rgba(5,5,7,.7);
+  border-bottom:1px solid var(--border);
+}
 
-    .topbar{
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:18px;
-      margin-bottom:28px;
-    }
+.nav{
+  max-width:1200px;
+  margin:auto;
+  height:75px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+}
 
-    .info-btn,
-    .server-box{
-      background:#121f33;
-      border:1px solid rgba(255,255,255,.05);
-      border-radius:16px;
-      padding:16px 24px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      color:white;
-      font-weight:700;
-    }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    .server-box small{
-      display:block;
-      color:#7e8ca4;
-      font-size:11px;
-      margin-bottom:2px;
-    }
+.logo-box{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:black;
+  font-weight:900;
+}
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:20px;
-    }
+.logo h1{
+  color:white;
+  font-size:20px;
+}
 
-    thead{
-      background:#0a1422;
-    }
+.logo span{
+  color:var(--primary);
+}
 
-    thead th{
-      text-align:left;
-      padding:24px 28px;
-      color:#55657f;
-      font-size:14px;
-      letter-spacing:1px;
-    }
+.nav-links{
+  display:flex;
+  gap:28px;
+}
 
-    tbody tr{
-      background:linear-gradient(90deg,#101d30,#0d1728);
-      border-bottom:1px solid rgba(255,255,255,.04);
-      transition:.25s;
-    }
+.nav-links a{
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:600;
+  transition:.2s;
+}
 
-    tbody tr:hover{
-      background:#15253b;
-    }
+.nav-links a:hover{
+  color:white;
+}
 
-    tbody td{
-      padding:24px 28px;
-      vertical-align:middle;
-    }
+/* HERO */
 
-    .rank{
-      width:110px;
-    }
+.hero{
+  max-width:1200px;
+  margin:auto;
+  padding:100px 24px 70px;
+  text-align:center;
+}
 
-    .rank-box{
-      width:80px;
-      height:80px;
-      border-radius:16px;
-      background:linear-gradient(135deg,#f7c545,#c88b1b);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-size:42px;
-      font-weight:900;
-      box-shadow:0 12px 30px rgba(255,196,74,.25);
-    }
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 18px;
+  border:1px solid rgba(78,234,219,.15);
+  background:rgba(78,234,219,.06);
+  border-radius:999px;
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:28px;
+}
 
-    .player{
-      display:flex;
-      align-items:center;
-      gap:18px;
-    }
+.hero h2{
+  font-size:70px;
+  line-height:1;
+  font-weight:900;
+  color:white;
+  letter-spacing:-3px;
+}
 
-    .avatar{
-      width:70px;
-      height:70px;
-      border-radius:18px;
-      image-rendering:pixelated;
-      border:2px solid rgba(255,255,255,.08);
-    }
+.hero p{
+  max-width:700px;
+  margin:28px auto;
+  font-size:18px;
+  line-height:1.7;
+  color:var(--muted);
+}
 
-    .player h2{
-      font-size:22px;
-      margin-bottom:6px;
-    }
+.hero-buttons{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
 
-    .subtitle{
-      color:#88a3c6;
-      font-size:15px;
-      font-weight:600;
-    }
+.btn{
+  padding:15px 28px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:700;
+  transition:.25s;
+}
 
-    .region{
-      width:90px;
-    }
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:black;
+}
 
-    .region-tag{
-      width:60px;
-      height:60px;
-      border-radius:18px;
-      background:#5b2030;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      font-size:20px;
-      color:#ff607d;
-    }
+.btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 35px rgba(78,234,219,.25);
+}
 
-    .tiers{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
+.btn-secondary{
+  border:1px solid var(--border);
+  color:white;
+  background:rgba(255,255,255,.03);
+}
 
-    .tier{
-      width:62px;
-      height:62px;
-      border-radius:50%;
-      background:#0a1321;
-      border:2px solid rgba(255,255,255,.06);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:3px;
-      transition:.25s;
-    }
+.btn-secondary:hover{
+  background:rgba(255,255,255,.06);
+}
 
-    .tier:hover{
-      transform:translateY(-4px);
-      border-color:#4c85d9;
-    }
+/* STATS */
 
-    .tier i{
-      color:#60b7ff;
-      font-size:18px;
-    }
+.stats{
+  max-width:1200px;
+  margin:0 auto 60px;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
 
-    .tier span{
-      font-size:12px;
-      font-weight:800;
-      color:#ffca52;
-    }
+.stat-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:28px;
+  backdrop-filter:blur(14px);
+}
 
-    @media(max-width:1200px){
-      .nav-links{
-        display:none;
-      }
+.stat-card h3{
+  font-size:40px;
+  color:white;
+  margin-bottom:8px;
+}
 
-      table{
-        display:block;
-        overflow-x:auto;
-      }
-    }
+.stat-card p{
+  color:var(--muted);
+}
 
-    @media(max-width:700px){
-      .tabs{
-        gap:12px;
-      }
+/* LEADERBOARD */
 
-      .tab{
-        min-width:120px;
-        font-size:15px;
-      }
+.section{
+  max-width:1200px;
+  margin:auto;
+  padding:20px 24px 80px;
+}
 
-      .search{
-        display:none;
-      }
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:30px;
+}
 
-      .player h2{
-        font-size:18px;
-      }
+.section-title h2{
+  color:white;
+  font-size:34px;
+}
 
-      tbody td{
-        padding:18px;
-      }
-    }
-  </style>
+.table{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:80px 1fr 180px;
+  align-items:center;
+  padding:20px;
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  transition:.25s;
+}
+
+.row:hover{
+  transform:translateY(-4px);
+  border-color:rgba(78,234,219,.25);
+}
+
+.rank{
+  font-size:24px;
+  font-weight:900;
+  color:var(--gold);
+}
+
+.player{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.player img{
+  width:54px;
+  height:54px;
+  border-radius:12px;
+}
+
+.player-info h4{
+  color:white;
+  font-size:18px;
+}
+
+.player-info p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.points{
+  text-align:right;
+}
+
+.points h3{
+  color:white;
+  font-size:24px;
+}
+
+.points p{
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
+}
+
+/* FOOTER */
+
+footer{
+  border-top:1px solid var(--border);
+  padding:50px 24px;
+  text-align:center;
+  color:var(--muted);
+}
+
+footer h3{
+  color:white;
+  margin-bottom:10px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero h2{
+  font-size:44px;
+}
+
+.row{
+  grid-template-columns:60px 1fr;
+  gap:12px;
+}
+
+.points{
+  grid-column:2;
+  text-align:left;
+}
+
+.nav-links{
+  display:none;
+}
+
+}
+
+</style>
 </head>
+
 <body>
 
-  <nav class="navbar">
-    <div class="nav-inner">
-      <div class="logo">MCTIERS</div>
+<div class="bg">
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+</div>
 
-      <div class="nav-links">
-        <a href="#"><i class="fa-regular fa-house"></i> Home</a>
-        <a class="active" href="#"><i class="fa-solid fa-trophy"></i> Rankings</a>
-        <a href="#"><i class="fa-brands fa-discord"></i> Discords</a>
-        <a href="#"><i class="fa-regular fa-file-lines"></i> API Docs</a>
-      </div>
+<header>
+  <div class="nav">
 
-      <div class="search">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Search player...">
-      </div>
-    </div>
-  </nav>
-
-  <section class="tabs">
-    <div class="tab active">
-      <i class="fa-solid fa-trophy"></i>
-      Overall
+    <div class="logo">
+      <div class="logo-box">MT</div>
+      <h1>Mythic <span>Tiers</span></h1>
     </div>
 
-    <div class="tab">
-      <i class="fa-solid fa-heart"></i>
-      UHC
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Rankings</a>
+      <a href="#">Players</a>
+      <a href="#">Discord</a>
     </div>
 
-    <div class="tab">
-      <i class="fa-solid fa-flask"></i>
-      Pot
-    </div>
+  </div>
+</header>
 
-    <div class="tab">
-      <i class="fa-solid fa-sword"></i>
-      Sword
-    </div>
+<section class="hero">
 
-    <div class="tab">
-      <i class="fa-solid fa-hammer"></i>
-      Axe
-    </div>
+  <div class="hero-badge">
+    <i class="fa-solid fa-bolt"></i>
+    LIVE API POWERED RANKINGS
+  </div>
 
-    <div class="tab">
-      <i class="fa-solid fa-gem"></i>
-      SMP
-    </div>
-  </section>
+  <h2>
+    Minecraft PvP<br>
+    Ranked Properly
+  </h2>
 
-  <main class="content">
+  <p>
+    The most advanced Minecraft PvP leaderboard system featuring
+    real-time rankings, gamemode tiers, player statistics,
+    and competitive tracking.
+  </p>
 
-    <div class="topbar">
-      <div class="info-btn">
-        <i class="fa-solid fa-circle-info"></i>
-        Information
-      </div>
+  <div class="hero-buttons">
+    <a href="#" class="btn btn-primary">
+      View Rankings
+    </a>
 
-      <div class="server-box">
-        <div>
-          <small>SERVER IP</small>
-          mcpvp.club
+    <a href="#" class="btn btn-secondary">
+      Join Server
+    </a>
+  </div>
+
+</section>
+
+<section class="stats">
+
+  <div class="stat-card">
+    <h3>25K+</h3>
+    <p>Ranked Players</p>
+  </div>
+
+  <div class="stat-card">
+    <h3>9</h3>
+    <p>Competitive Modes</p>
+  </div>
+
+  <div class="stat-card">
+    <h3>Live</h3>
+    <p>Real-Time Updates</p>
+  </div>
+
+  <div class="stat-card">
+    <h3>24/7</h3>
+    <p>API Monitoring</p>
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-title">
+    <h2>Top Ranked Players</h2>
+  </div>
+
+  <div class="table">
+
+    <div class="row">
+
+      <div class="rank">#1</div>
+
+      <div class="player">
+        <img src="https://mc-heads.net/avatar/Technoblade/64">
+        <div class="player-info">
+          <h4>Technoblade</h4>
+          <p>Combat Master • 352 Points</p>
         </div>
       </div>
+
+      <div class="points">
+        <h3>HT1</h3>
+        <p>Global Rank</p>
+      </div>
+
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>PLAYER</th>
-          <th>REGION</th>
-          <th>TIERS</th>
-        </tr>
-      </thead>
+    <div class="row">
 
-      <tbody>
+      <div class="rank">#2</div>
 
-        <tr>
-          <td class="rank">
-            <div class="rank-box">1</div>
-          </td>
+      <div class="player">
+        <img src="https://mc-heads.net/avatar/Dream/64">
+        <div class="player-info">
+          <h4>Dream</h4>
+          <p>Combat Ace • 331 Points</p>
+        </div>
+      </div>
 
-          <td>
-            <div class="player">
-              <img class="avatar" src="https://mc-heads.net/avatar/ItzRealMe/128">
+      <div class="points">
+        <h3>HT1</h3>
+        <p>Global Rank</p>
+      </div>
 
-              <div>
-                <h2>ItzRealMe</h2>
-                <div class="subtitle">Combat Master (330 points)</div>
-              </div>
-            </div>
-          </td>
+    </div>
 
-          <td class="region">
-            <div class="region-tag">NA</div>
-          </td>
+    <div class="row">
 
-          <td>
-            <div class="tiers">
+      <div class="rank">#3</div>
 
-              <div class="tier">
-                <i class="fa-solid fa-sword"></i>
-                <span>HT1</span>
-              </div>
+      <div class="player">
+        <img src="https://mc-heads.net/avatar/Fruitberries/64">
+        <div class="player-info">
+          <h4>Fruitberries</h4>
+          <p>Warrior • 312 Points</p>
+        </div>
+      </div>
 
-              <div class="tier">
-                <i class="fa-solid fa-heart"></i>
-                <span>HT2</span>
-              </div>
+      <div class="points">
+        <h3>HT2</h3>
+        <p>Global Rank</p>
+      </div>
 
-              <div class="tier">
-                <i class="fa-solid fa-flask"></i>
-                <span>HT1</span>
-              </div>
+    </div>
 
-              <div class="tier">
-                <i class="fa-solid fa-hammer"></i>
-                <span>LT2</span>
-              </div>
+  </div>
 
-              <div class="tier">
-                <i class="fa-solid fa-gem"></i>
-                <span>HT1</span>
-              </div>
+</section>
 
-            </div>
-          </td>
-        </tr>
+<footer>
 
-        <tr>
-          <td class="rank">
-            <div class="rank-box" style="background:linear-gradient(135deg,#c7d4e6,#7b8ba3)">2</div>
-          </td>
+  <h3>Mythic Tiers</h3>
 
-          <td>
-            <div class="player">
-              <img class="avatar" src="https://mc-heads.net/avatar/coldified/128">
+  <p>
+    Competitive Minecraft PvP Rankings Platform
+  </p>
 
-              <div>
-                <h2>coldified</h2>
-                <div class="subtitle">Combat Ace (310 points)</div>
-              </div>
-            </div>
-          </td>
+  <br>
 
-          <td class="region">
-            <div class="region-tag" style="background:#1f3555;color:#6db8ff">EU</div>
-          </td>
+  <p>
+    © 2026 Mythic Tiers. All rights reserved.
+  </p>
 
-          <td>
-            <div class="tiers">
-
-              <div class="tier">
-                <i class="fa-solid fa-sword"></i>
-                <span>HT2</span>
-              </div>
-
-              <div class="tier">
-                <i class="fa-solid fa-heart"></i>
-                <span>HT1</span>
-              </div>
-
-              <div class="tier">
-                <i class="fa-solid fa-flask"></i>
-                <span>LT1</span>
-              </div>
-
-            </div>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-
-  </main>
+</footer>
 
 </body>
 </html>
-```
-
-This version includes:
-
-* Professional dark MCTiers-inspired UI
-* Responsive modern layout
-* Animated tabs and hover effects
-* Search bar
-* Ranking table
-* Minecraft avatars
-* Tier badges
-* Fully mobile responsive design
-* Font Awesome icons
-* Modern gradients and glass styling
